@@ -1,6 +1,6 @@
-PD8 - równanie choinki - czas na wykonanie 15-12-2018 do 02-01-2019
+PD8 - równanie choinki - czas na wykonanie 20-12-2018 do 20-01-2019
 
-Praca domowa jest kontynuacją ostatnich (jedenastych) zajęć lab z roku 19.12.2018, więc najlepiej poczekać z jej realizacją do tych zajęć.
+Praca domowa jest kontynuacją zajęć laboratoryjnych z roku 13.12.2019, więc najlepiej poczekać z jej realizacją do tych zajęć.
 
 **Wprowadzenie**
 

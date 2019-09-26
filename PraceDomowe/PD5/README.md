@@ -1,4 +1,4 @@
-PD5: czas na wykonanie 7-11-2018 do 21-11-2018
+PD5: czas na wykonanie 22-11-2019 do 06-12-2019
 
 Tę pracę domową można wykonywać samodzielnie lub zespołowo (K osób, patrz opis niżej) i na jej wykonanie są 2 tygodnie czasu.
 Wszystkie osoby z zespołu otrzymują tyle samo punktów.

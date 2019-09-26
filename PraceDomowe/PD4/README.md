@@ -1,4 +1,4 @@
-PD4: czas na wykonanie 31-10-2018 do 7-11-2018
+PD4: czas na wykonanie 08-11-2019 do 22-11-2019
 
 Na wykładzie trzecim omawialiśmy różne zagadnienia związane z percepcją i rolą kolorów na wykresie.
 
@@ -12,9 +12,6 @@ Skomentować czy i co wnosi dodanie koloru do wykresu A.
 
 Pracę domową należy wykonać indywidualnie.
 
-**BONUS:**
-Zamiast wybierać dane z pracy domowej innego studenta, można otrzymać bonusowy 1 punkt za znalezienie ciekawych danych nawiązujących do Dnia Zmarłych lub Halloween.
-
 -------
 
 Skala:
@@ -27,4 +24,3 @@ Skala:
 * 0 - brak pracy domowej lub praca nie na temat
 
 Osoby pracujące na tych samych danych i prezentujące dane w bardzo podobny otrzymują znacznie mniej punktów (do 0 w zależności od stopnia podobieństwa).
-
