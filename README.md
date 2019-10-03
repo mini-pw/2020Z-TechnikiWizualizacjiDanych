@@ -8,12 +8,12 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 
 * 2019-10-03 W: [Gramatyka grafiki](http://biecek.pl/Eseje/indexGramatyka.html); L:
 * 2019-10-10 W: [Standardy w komunikacji](http://www.ibcs-a.org/); L: 
-* 2019-10-17 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L:
-* 2019-10-24 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html); L:
-* 2019-10-31 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L:
-* 2019-11-07
+* 2019-10-17 wykładu nie ma; L:
+* 2019-10-24 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: 
+* 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html); L:
+* 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L:
 * 2019-11-14
-* 2019-11-21
+* 2019-11-21 W: prezentacje projektów;
 * 2019-11-28
 * 2019-12-05
 * 2019-12-12
@@ -28,8 +28,8 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 
 Zaliczenie jest oparte o trzy składowe:
 
-* Punkty z prac domowych. Pod koniec zajęć laboratoryjnych ogłaszane będą prace domowe. Będzie ich 10. Na rozwiązanie pracy domowej jest czas do rozpoczęcia się kolejnych zajęć. Prace domowe należy zgłaszać przez GitHub. Każda praca jest oceniana w skali 0-5 (5 punktów za poprawne i bardzo ciekawe wykonanie pracy domowej).
-* Punkty z projektów. W semestrze wykonać należy dwa projekty. Każdy projekt to od 0 do 20 punktów. 
+* Punkty z prac domowych. Pod koniec zajęć laboratoryjnych ogłaszane będą prace domowe. Będzie ich 10. Na rozwiązanie pracy domowej jest czas do rozpoczęcia się kolejnych zajęć. Prace domowe należy zgłaszać przez GitHub. Każda praca jest oceniana w skali 0-4 (4 punktów za poprawne i bardzo ciekawe wykonanie pracy domowej).
+* Punkty z projektów. W semestrze wykonać należy dwa projekty. Każdy projekt to od 0 do 25 punktów. 
 * Punkty z prezentacji wybranego tematu. Poprawnie wykonana prezentacja to od 0 do 10 punktów.
 
 W sumie uzyskać można do 100 punktów. 51 punktów zalicza przedmiot.
@@ -42,7 +42,9 @@ W sumie uzyskać można do 100 punktów. 51 punktów zalicza przedmiot.
 
 # Projekty
 
-Podczas semestru realizowane będą 2 projekty. Więcej informajci wkrótce.
+Podczas semestru realizowane będą 2 projekty. 
+
+[Projekt 1](Projekt1/README.md)
 
 # Prezentacje studentów
 
