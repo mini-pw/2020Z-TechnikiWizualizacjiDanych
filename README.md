@@ -28,8 +28,8 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 
 Zaliczenie jest oparte o trzy składowe:
 
-* Punkty z prac domowych. Pod koniec zajęć laboratoryjnych ogłaszane będą prace domowe. Będzie ich 10. Na rozwiązanie pracy domowej jest czas do rozpoczęcia się kolejnych zajęć. Prace domowe należy zgłaszać przez GitHub. Każda praca jest oceniana w skali 0-5 (5 punktów za poprawne i bardzo ciekawe wykonanie pracy domowej).
-* Punkty z projektów. W semestrze wykonać należy dwa projekty. Każdy projekt to od 0 do 20 punktów. 
+* Punkty z prac domowych. Pod koniec zajęć laboratoryjnych ogłaszane będą prace domowe. Będzie ich 10. Na rozwiązanie pracy domowej jest czas do rozpoczęcia się kolejnych zajęć. Prace domowe należy zgłaszać przez GitHub. Każda praca jest oceniana w skali 0-4 (4 punktów za poprawne i bardzo ciekawe wykonanie pracy domowej).
+* Punkty z projektów. W semestrze wykonać należy dwa projekty. Każdy projekt to od 0 do 25 punktów. 
 * Punkty z prezentacji wybranego tematu. Poprawnie wykonana prezentacja to od 0 do 10 punktów.
 
 W sumie uzyskać można do 100 punktów. 51 punktów zalicza przedmiot.
