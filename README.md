@@ -8,12 +8,12 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 
 * 2019-10-03 W: [Gramatyka grafiki](http://biecek.pl/Eseje/indexGramatyka.html); L:
 * 2019-10-10 W: [Standardy w komunikacji](http://www.ibcs-a.org/); L: 
-* 2019-10-17 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L:
-* 2019-10-24 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html); L:
-* 2019-10-31 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L:
-* 2019-11-07
+* 2019-10-17 wykładu nie ma; L:
+* 2019-10-24 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: 
+* 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html); L:
+* 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L:
 * 2019-11-14
-* 2019-11-21
+* 2019-11-21 W: prezentacje projektów;
 * 2019-11-28
 * 2019-12-05
 * 2019-12-12
@@ -42,7 +42,9 @@ W sumie uzyskać można do 100 punktów. 51 punktów zalicza przedmiot.
 
 # Projekty
 
-Podczas semestru realizowane będą 2 projekty. Więcej informajci wkrótce.
+Podczas semestru realizowane będą 2 projekty. 
+
+[Projekt 1](Projekt1/README.md)
 
 # Prezentacje studentów
 
