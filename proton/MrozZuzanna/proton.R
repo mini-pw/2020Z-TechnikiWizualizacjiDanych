@@ -28,7 +28,6 @@ count(logs2, host)    #host 194.29.178.16
 proton(action = "server", host="194.29.178.16", hint=TRUE)
 
 
-grep("^\\w+", bash_history, value=TRUE)
 strsplit(bash_history, " ")
 
 unlist(strsplit(bash_history, " ")) -> tmp3
