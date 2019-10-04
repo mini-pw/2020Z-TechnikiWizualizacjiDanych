@@ -51,3 +51,5 @@ for (pass in bash_history){
     break
   }
 }
+
+#Zadanie skończono w czasie: 1h 15 minut
