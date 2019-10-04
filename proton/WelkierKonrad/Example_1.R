@@ -12,9 +12,11 @@ for (i in top1000passwords){
 #powyzszy kod umozliwia nam zalogowanie sie na konto Johna Insecure
 library(dplyr)
 Pietr_login <- employees[employees$surname == "Pietraszko",3]
+#login Pietraszko to slap
 salwek <- logs[logs$login=="slap",] 
 as.character(salwek[unique(salwek$host),2])
 #uzyskujemy interesujace nas hosty
+#sprawdzamy te kilka hostow,a poprawnym okazuje sie byc 194.29.178.16
 
 proton(action = "server", host = "194.29.178.16")
 #podlaczamy sie do interesujacego nas serwera
