@@ -13,7 +13,7 @@ for (haslo in top1000passwords) {
 
 head(logs)
 library(dplyr)
-dplyr::count(hosty)
+
 employees[employees$surname=='Pietraszko',]
 hosty <- logs[logs$login=='slap',]
 hosty <- group_by(hosty, by = hosty$host)
