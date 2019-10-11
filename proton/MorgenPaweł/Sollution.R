@@ -28,5 +28,6 @@ unique(possible_passwords)
 #Odp: DHbb7QXppuHnaXGN
 proton(action="login", login="slap", password="DHbb7QXppuHnaXGN")
 
+#Czas: 15:28 (chwilę mi zajęło doczytanie, że trzeba w międzyczasie znaleźć login Pietraszki)
 
 
