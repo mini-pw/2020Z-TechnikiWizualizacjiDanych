@@ -1,1 +1,0 @@
-print("Próba dodania pliku w ramach ćwiczenia")
