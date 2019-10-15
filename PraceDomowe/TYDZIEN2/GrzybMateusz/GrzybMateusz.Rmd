@@ -15,7 +15,7 @@ Artykuł: <https://www.theguardian.com/environment/2019/oct/09/revealed-20-firms
 
 Wykres: 
 
-![](wykres.png){ width=80% }
+![](wykres.png){ width=65% }
 
 Rozwiązując zadanie starałem się jak najdokładniej odwzorować powyższy wykres z użyciem biblioteki ggplot2.
 
