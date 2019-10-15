@@ -19,8 +19,6 @@ Wykres:
 
 Rozwiązując zadanie starałem się jak najdokładniej odwzorować powyższy wykres z użyciem biblioteki ggplot2.
 
-\pagebreak
-
 ## Rozwiązanie zadania
 
 ```{r plot, fig.height=5.5, fig.width=6}
