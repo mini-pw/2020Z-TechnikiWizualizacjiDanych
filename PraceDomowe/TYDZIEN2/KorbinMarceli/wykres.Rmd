@@ -1,0 +1,42 @@
+---
+title: 'Techniki wizualizacji danych - praca domowa nr 1'
+author: "Marceli Korbin"
+date: "16 X 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## Dane do wykresu
+
+Wykres przedstawia wyniki jednej z ankiet będącej częścią badania przeprowadzonego w 17 krajach przez Pew Research Center, pt. _European Public Opinion Three Decades After the Fall of Comunism_ (pl. Europejska opinia publiczna trzy dekady po upadku komunizmu). Raport obejmuje opinie społeczeństwa na temat m.in. wartości demokratycznych, grup mniejszościowych, Unii Europejskiej i równości płci.
+
+Wybrane do pracy domowej zapytanie brzmi: _który rodzaj małżeństwa uznajesz za lepszy sposób życia?_ Wykres przedstawia procent zapytanych w każdym kraju, którzy udzielili odpowiedzi "tradycyjne" lub "egalitarne".
+
+Oryginalne wyniki są dostępne pod tym adresem: https://www.pewresearch.org/global/2019/10/14/gender-equality-2/pg_10-15-19-europe-values-07-06/, a część artykułu z tym wykresem można przeczytać tutaj: https://www.pewresearch.org/global/2019/10/14/gender-equality-2/
+
+```{r read}
+dane <- readRDS("dane.rds")
+dane$kraj <- factor(dane$kraj, levels=rev(unique(as.character(dane$kraj))))
+  # edycja czynników konieczna dla zachowania oyginalnej kolejności
+dane[dane$odp=="a", "proc"] <- dane[dane$odp=="a", "proc"]*(-1)
+```
+
+Wartości odpowiedzi na jeden z wariantów, oznaczonych w pliku RDS jako "a", zostały lekko zmodyfikowane w celu skierowania ich na wykresie w przeciwnym kierunku względem tych drugich.
+
+## Wykres
+
+```{r graph}
+ggplot(data=dane, aes(x=kraj, y=proc, fill=odp, label=paste(abs(proc), "%", sep=""))) +
+  geom_col(width = 0.75) +
+  geom_text(color="white", size=4, hjust="inward") +
+  scale_fill_manual(values=c("#000080", "#008000"),
+                    name="",
+                    labels=c("TRADYCYJNE\n\n(mąż pracuje, a żona \nopiekuje się domem)", "EGALITARNE\n\n(mąż i żona obydwoje pracują \ni opiekują się domem)")) +
+  theme(legend.position = "top") +
+  labs(y = "procent", subtitle="Który rodzaj małżeństwa uznajesz za lepszy sposób życia?") +
+  coord_flip()
+```
