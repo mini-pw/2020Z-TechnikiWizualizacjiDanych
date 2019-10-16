@@ -12,7 +12,7 @@ library(ggplot2)
 
 ## Dane do wykresu
 
-Wykres przedstawia wyniki jednej z ankiet będącej częścią badania przeprowadzonego w 17 krajach przez Pew Research Center, pt. _European Public Opinion Three Decades After the Fall of Comunism_ (pl. Europejska opinia publiczna trzy dekady po upadku komunizmu). Raport obejmuje opinie społeczeństwa na temat m.in. wartości demokratycznych, grup mniejszościowych, Unii Europejskiej i równości płci.
+Wykres przedstawia wyniki jednej z ankiet będącej częścią badania przeprowadzonego w 17 krajach przez Pew Research Center, pt. _European Public Opinion Three Decades After the Fall of Communism_ (pl. Europejska opinia publiczna trzy dekady po upadku komunizmu). Raport obejmuje opinie społeczeństwa na temat m.in. wartości demokratycznych, grup mniejszościowych, Unii Europejskiej i równości płci.
 
 Wybrane do pracy domowej zapytanie brzmi: _który rodzaj małżeństwa uznajesz za lepszy sposób życia?_ Wykres przedstawia procent zapytanych w każdym kraju, którzy udzielili odpowiedzi "tradycyjne" lub "egalitarne".
 
