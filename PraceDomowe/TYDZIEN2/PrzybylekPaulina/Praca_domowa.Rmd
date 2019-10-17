@@ -90,8 +90,8 @@ levels(Teachers$AGE) <- unique(Teachers$AGE) %>% rev()
 
 #tworzymy wykres, nasz bedzie sie troche roznil od orginalu - ustawiamy panstwa w pewnej kolejnosci aby lepiej zobaczyc rezultat
 ggplot(Teachers, aes(reorder(GEO, PROCENT), PROCENT)) + 
-  #do parametru fill wykorzystujemy wiek nauczycieli i utworzone levels, aby kolejnosc byla taka jak chcemy
-  geom_bar(aes(fill=factor(AGE, levels(Teachers$AGE))), stat = "identity") +
+  #do parametru fill wykorzystujemy wiek nauczycieli i utworzone levels, aby kolejnosc byla taka jak chcemy, zmieniamy szerokosc kolumn
+  geom_bar(aes(fill=factor(AGE, levels(Teachers$AGE))), stat = "identity", width = 0.5) +
   #zamieniamy osie, aby wykres przypominał ten z artykułu
   coord_flip() +
   #nadajemy tytuł, podtytuł i usuwamy nazwy osi
