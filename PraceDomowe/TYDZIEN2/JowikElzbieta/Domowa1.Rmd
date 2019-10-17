@@ -78,9 +78,12 @@ ggplot(data = df, aes(x = factor(week_day, levels = proper_order), y =-month_wee
   theme(axis.ticks.y = element_blank(),
         axis.text.y = element_blank(),
         plot.caption=element_text(hjust=1, vjust=1.5, size = 13),
+        plot.title = element_text(size = 20, face = "bold"),
+        plot.subtitle = element_text(size = 16),
         plot.margin = unit(c(1.5,3.5,1.5,3.5), "cm"),
         legend.position = "top",
-        legend.title = element_blank()) + 
+        legend.title = element_blank(),
+        panel.background = element_blank()) + 
   scale_x_discrete(position = "top") + 
   annotate("text", x = 2, y = -2, label = "8 Oct", color = "white") + 
   annotate("text", x = 1, y = -3, label = "14 Oct", color = "white") + 
