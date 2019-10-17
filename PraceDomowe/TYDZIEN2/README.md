@@ -4,6 +4,6 @@ W gazecie lub na portalu informacyjnym znajdź artykuł opublikowany w paździer
 Następnie przedstaw te dane z użyciem pakietu `ggplot2`.
 
 W katalogu https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/PraceDomowe/TYDZIEN2
-umieść skrypt `knitr` z kodem R, linkiem do źródłowego artykułu (lub zdjęcie wersji papierowej), oraz skompilowany plik html z kodem R i z wynikowym wykresem.
+w katalogu o nazwie NazwiskoImie umieść skrypt `knitr` z kodem R (np. plik .Rmd), linkiem do źródłowego artykułu (lub zdjęcie wersji papierowej), oraz skompilowany plik html z kodem R i z wynikowym wykresem.
 
 Pracę domową należy wykonać indywidualnie.
