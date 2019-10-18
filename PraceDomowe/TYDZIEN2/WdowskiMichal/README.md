@@ -1,0 +1,1 @@
+[Link do artykułu](https://www.marketingcharts.com/digital/seo-110397 "About Half of Google Searches Now Result in No Clicks")

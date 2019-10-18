@@ -1,0 +1,67 @@
+---
+title: "Praca Domowa 1"
+author: "Dawid Przybyliński"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wybór wykresu
+
+Wykres znajduje się pod adresem: https://www.bbc.com/news/business-49987329.
+
+Odpowiadające dane można znaleźć pod adresem: https://www.bankofengland.co.uk/statistics/banknote.
+
+## Przygotowanie danych
+
+Dane przepisujemy z wyżej wymienionej strony.
+
+```{r}
+
+library(ggplot2)
+
+years <- c(2009:2018)
+all_notes <- c(572, 306, 387, 747, 705, 440, 251, 355, 476, 472) # wszytskie banknoty
+only20 <- c(544, 285, 257, 564, 435, 327, 174, 303, 400, 426) # tylko banknoty 20 funtów
+total <- c(all_notes, only20)
+sort <- rep(c(1,2),10)
+years <- rep(years,2)
+
+data <- as.data.frame(cbind(years, total, sort)) # ramka danych z potrzebnymi danymi
+
+```
+
+## Tworzenie wykresu
+
+```{r}
+
+ggplot(data=data, aes(x = years, y = total, group=sort)) +
+ geom_line(group = sort, color=rep(c("#960335","#22A4AB"),10), size=1.05) +
+ geom_point(x=2018, y=472, colour="#960335", size=3) +   # punkty na końcach
+ geom_point(x=2018, y=426, colour="#22A4AB",  size=3) +
+ coord_cartesian(ylim = c(0, 800)) +
+ geom_hline(yintercept = 0, size=1) +
+ scale_y_continuous(breaks = c(0,100,200,300,400,500,600,700,800), labels = c("0k","100k","200k","300k","400k","500k","600k","700k","800k")) +
+  
+theme(
+  panel.background = element_rect(fill = "white", size = 2, linetype = "solid"),
+  panel.grid.major.x = element_blank() ,
+  panel.grid.major.y = element_line( size=.1, colour="gray" ),
+  legend.position = "none",
+  axis.ticks = element_blank(),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  axis.text = element_text(size = 13.5),
+  plot.title = element_text(size = 18, face = "bold"),
+  plot.subtitle = element_text(size = 15)
+) +
+  
+ggtitle("Most banknote forgeries are £20 notes", subtitle = "Number of counterfeits discovered") + # dodajemy tytuł
+  
+annotate("text", x = 2017, y = 227, label = "£20 notes: 426k", colour = "#22A4AB", size = 5.5) + # podpisy przy końcu wykresu
+annotate("text", x = 2017.3, y = 572, label = "Total: 472k", colour = "#960335", size = 5.5)
+
+```
+
