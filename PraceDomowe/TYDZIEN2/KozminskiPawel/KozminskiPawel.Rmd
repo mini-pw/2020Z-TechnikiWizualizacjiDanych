@@ -1,0 +1,64 @@
+---
+title: "Prezentacja kopii wykresu zawartego w artykule na stronie BBC, stworzonej samodzielnie przy pomocy narzędzia ggplot2"
+author: "Paweł Koźmiński"
+date: "17 października 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wprowadzenie
+
+Tematem przygotowanego wykresu jest stanowisko mieszkańców Wielkiej Brytanii do opuszczenia przez kraj Unii Europejskiej. Respondenci zostali podzieleni na dwie grupy: głosujących "za" oraz "przeciwko" Brexitowi w 2016 roku. Dla każdej z tych grup przygotowano oddzielny histogram, które czytelnik może rozróżnić po kolorze. <br>
+Wykres dostępny jest pod linkiem: https://ichef.bbci.co.uk/news/624/cpsprodpb/1288B/production/_109251957_curtice_03_fin-nc.png <br>
+Pochodzi z artykułu znajdującego się pod adresem: https://www.bbc.com/news/uk-politics-50043549 <br>
+Przygotowanie danych powstało w sposób sztuczny, tak, aby skorzystanie z ramki danych choć w pewnym stopniu mogło przypominać sytuację twórców oryginalnej wersji ilustracji.
+```{r Przygotowanie danych, include = FALSE}
+Leave <- (c(rep("Remain in EU", 6), rep("Single market/ \n customs union", 17), rep("May deal", 14), rep("No deal", 51)))
+toLeave <- cbind(Leave, rep("Voted Leave in 2016", length(Leave)))
+Remain <- c(rep("Remain in EU", 67), rep("Single market/ \n customs union", 11), rep("May deal", 9), rep("No deal", 7))
+toRemain <- cbind(Remain, rep("Voted Remain in 2016", length(Remain)))
+Brexit <- as.data.frame(rbind(toLeave, toRemain))
+colnames(Brexit) <- c("Statement", "Vote")
+```
+
+## Wykres utworzony w `ggplot2`
+
+Oto moje wykonanie wykresu zawartego na witrynie brytyjskiej stacji:
+```{r Wykres}
+library(ggplot2)
+positions <- c("Remain in EU", "Single market/ \n customs union", "May deal", "No deal")
+
+ggplot(data = Brexit, aes(x = Statement, fill = factor(Vote, levels = rev(levels(Vote))))) +
+  #zamiana czynnikow aby przy kazdej kategorii pokazywaly sie w wlasciwej kolejnosci
+  geom_bar(position = position_dodge()) + #slupki kategorii pogrupowane wzgledem glosu i ulozone obok siebie
+  scale_fill_manual( values = c("#990000", "#007399")) + #kolory dla glosow
+  scale_x_discrete(limits = positions) + #ustalona kolejność prezentowanych kategorii (stanowiska)
+  scale_y_continuous(expand = c(0, 0)) + #dzieki tej modyfikacji, słupki "dotykają" osi
+  geom_text(aes(label = paste(..count.., "%", sep = "")), stat = 'count', position=position_dodge(0.9),
+            hjust = 1.3, color = "white", family = "Arial", size = 5) + 
+  #ustawienie wartosci na slupkach, wartosci dodano w taki sposob, ze wzgledu na 'imitacje' danych
+  coord_flip() + #prezentacja wykresu horyzontalnie
+  theme_bw() + #usuniecie szarego tła
+  labs(title = "Remainers' and Leavers' preferred scenario", #dodanie tytułu
+       x = element_blank(), #usunięcie nazwy osi "Statement"
+       caption = "BBC") +  # prawie jak w oryginale;)
+  theme(legend.position = c(0.12, 1.01),  # ustawienie legendy we właściwym miejscu
+        legend.direction = "horizontal", # kolejne wyjasnienia kolorow maja byc wyswietlone obok siebie
+        legend.title = element_blank(), # brak tytulu legendy
+        legend.text = element_text(size = 10, family = "Short"), #modyfikacja tekstu zawartego w legendzie
+        text = element_text(size = 14, family="Short"),#modyfikacja tekstu z lewej strony slupkow (kategorii)
+        panel.border = element_blank(),  
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), # usuniecie ramki oraz linii pomocniczych
+        plot.title = element_text(face = "bold", family = "Short", vjust = 2.5, hjust = 5),#modyfikacja tytulu
+        axis.line = element_line(colour = "black"), # ustawienie koloru osi z lewej strony
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.ticks.y = element_blank()) #calkowite usuniecie dolnej osi oraz zaznaczen na osi pionowej
+```
+
