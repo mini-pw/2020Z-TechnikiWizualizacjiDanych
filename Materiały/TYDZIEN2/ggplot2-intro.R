@@ -141,3 +141,7 @@ countries %>%
   ggplot(aes(x = continent, y = death.rate, color = has_p_letter)) +
   geom_quasirandom(method = "frowney")
 
+ggplot(countries, aes(x = continent, y = population)) +
+  geom_violin() +
+  scale_y_log10()
+
