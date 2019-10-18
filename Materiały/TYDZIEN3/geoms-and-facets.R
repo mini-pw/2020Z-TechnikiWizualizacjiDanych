@@ -2,6 +2,18 @@ library(ggplot2)
 library(SmarterPoland)
 library(dplyr)
 
+# Otwarte pytania
+
+set.seed(1410)
+dat <- data.frame(imie = c("Michal", "Michalina", "Michail"),
+                  losowa_liczba = sample(1L:100, 3))
+
+mutate(dat, imie = factor(imie, levels = rev(levels(imie)))) %>% 
+  ggplot(aes(x = imie, y = losowa_liczba, label = losowa_liczba)) +
+  geom_col() +
+  geom_text(aes(y = losowa_liczba*0.8), color = "white") +
+  scale_y_continuous(labels=scales::percent)
+
 # 1. Adekwatność geometrii ------------------------------ 
 # wykresy gestosci bywaja czytelniejsze niz punktowe w przypadku duzej liczby punktow
 ggplot(countries, aes(x = birth.rate, y = death.rate, color = continent)) +
