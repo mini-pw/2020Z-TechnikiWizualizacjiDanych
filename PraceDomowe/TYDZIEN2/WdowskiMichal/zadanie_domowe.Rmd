@@ -1,0 +1,45 @@
+---
+title: "Zadanie Domowe - Tydzień 2"
+author: "Michał Wdowski"
+output: html_document
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+
+data <- read.csv("data.csv", header = TRUE, stringsAsFactors = FALSE)
+
+data %>%
+    mutate(Value = as.double(Value)/100) -> data
+```
+
+[Link do artykułu](https://www.marketingcharts.com/digital/seo-110397 "About Half of Google Searches Now Result in No Clicks")
+
+```{r plot}
+ggplot(data = data, aes(x = Time, y=Value, fill=Type)) +
+    geom_bar(stat = "identity", width = 0.7) +
+    geom_text(aes(label = scales::percent(Value)), position = position_stack(vjust = 0.5), size = 2) +
+    coord_fixed(7) + 
+    labs(title = "US Google Click-Throughs and Zero-Clicks Searches\nQ1 2016 - Q2 2019", fill = element_blank()) +
+    scale_fill_discrete(labels = c("Zero-Clicks Searches", "Searches with Organic Clicks", "Searches with Ad Clicks")) +
+    scale_fill_manual(values = c("#E9557A", "#144777", "#B2EA41")) +
+    theme(text = element_text(family = "Courier", face = "bold"),
+          axis.text.y = element_blank(),
+          axis.line.y = element_blank(),
+          axis.ticks.y = element_blank(), 
+          axis.title = element_blank(),
+          axis.line.x = element_line(size = 0.25, color = "#CACACA"),
+          axis.text.x = element_text(size = 7.5),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.border = element_blank(),
+          panel.background = element_blank()
+    ) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_discrete(labels = c("Q1'16", "Q2'16", "Q3'16", "Q4'16",
+                                "Q1'17", "Q2'17", "Q3'17", "Q4'17",
+                                "Q1'18", "Q2'18", "Q3'18", "Q4'18",
+                                "Q1'19", "Q2'19", "June'19" ))
+```
