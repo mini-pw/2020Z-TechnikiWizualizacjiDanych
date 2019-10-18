@@ -4,6 +4,12 @@ library(dplyr)
 
 # Otwarte pytania
 
+library(latex2exp)
+
+ggplot() +
+  ggtitle(TeX("$\\degree ugabuga$"))
+
+
 set.seed(1410)
 dat <- data.frame(imie = c("Michal", "Michalina", "Michail"),
                   losowa_liczba = sample(1L:100, 3))
@@ -37,7 +43,7 @@ ggplot(countries, aes(x = birth.rate, y = death.rate, fill = continent)) +
 ggplot(countries, aes(x = continent)) + 
   geom_bar()
 
-ggplot(countries, aes(x = continent, y = birth.rate)) + 
+ggplot(countries, aes(x = continent, y = death.rate)) + 
   stat_summary(fun.y = "length", geom = "bar")
 
 ggplot(countries, aes(x = continent, y = birth.rate)) + 
@@ -80,7 +86,7 @@ ggplot(countries, aes(x = birth.rate, y = death.rate, fill = continent)) +
   facet_wrap(~ continent)
 
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
-  stat_density2d(aes(alpha = ..level..), color = "black", contour = TRUE, geom = "polygon") +
+  geom_density_2d() +
   facet_wrap(~ continent)
 
 set.seed(16182019)
@@ -97,15 +103,15 @@ p + facet_wrap(~ clarity, scales = "free_y")
 
 p + facet_wrap(~ clarity, scales = "free")
 
-p + facet_wrap(~ clarity + color)
+p + facet_wrap(~ clarity + color, drop = FALSE)
 
 p + facet_wrap(~ clarity + color, labeller = label_both)
 
-p + facet_wrap(~ clarity, nrow = 2)
+p + facet_wrap(~ clarity, nrow = 1)
 
 p + facet_grid(clarity ~ color)
 
-p + facet_grid(color ~ clarity)
+p + facet_grid(color ~ clarity, scales = "free_y")
 
 mutate(small_diamonds, troche_srednio = price > 10000) %>% 
   ggplot(aes(x = cut, y = price)) +
@@ -118,7 +124,28 @@ p + facet_grid(clarity ~ color, switch = "y")
 
 p + facet_grid(clarity ~ color, switch = "both")
 
-p + facet_grid(clarity ~ color, margins = "color")
+p + facet_grid(clarity ~ color, margins = c("clarity", "color"))
+
+as.symbol("x")
+
+lapply(list(list(mean, sd, "mean"), list(median, mad, "median")), function(ith_fun) {
+  lapply(c("birth.rate", "death.rate"), function(i) {
+    countries %>% 
+        select(-population, -country) %>% 
+        group_by(continent) %>% 
+        summarise(y = ith_fun[[1]](!!as.symbol(i), na.rm = TRUE), 
+                  disp = ith_fun[[2]](!!as.symbol(i), na.rm = TRUE)) %>% 
+        mutate(ymax = y + disp, ymin = y - disp,
+               type = ith_fun[[3]],
+               what = i)
+  }) %>% bind_rows()
+}) %>% bind_rows() %>% 
+  ggplot(aes(x = continent, y = y, 
+               ymax = ymax, ymin = ymin, color = type)) +
+    geom_point() +
+    geom_errorbar() +
+    facet_wrap(~ what)
+  
 
 # 4. Transformacje danych
 library(ggrepel)
