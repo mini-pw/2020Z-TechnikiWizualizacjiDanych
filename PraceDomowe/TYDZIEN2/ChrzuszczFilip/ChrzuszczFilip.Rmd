@@ -1,0 +1,56 @@
+---
+title: "Prezentacja kopii wykresu z poratalu Bankier.pl"
+author: "Filip Chrzuszcz"
+date: "17 października 2019"
+output: html_document
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+
+```
+
+## Wprowadzenie
+
+
+Artykuł dostępny jest na stronie https://www.bankier.pl/wiadomosc/MFW-W-2020-r-inflacja-w-Polsce-najwyzsza-w-UE-7757060.html
+Dane do mojej kopii wykresu zostały wzięte, tak samo jak w oryginale ze strony 
+MFW (https://www.imf.org/external/datamapper/PCPIPCH@WEO/OEMDC/ADVEC/WEOWORLD).
+
+
+```{r Przygotowanie danych}
+
+data <- readxl::read_excel("./imf-dm-export-20191017 (1).xls")
+data <- select(data,c('Inflation rate, average consumer prices (Annual percent change)','2020')) 
+data  <- slice(data,2:29) %>% rename('Inflacja' = 'Inflation rate, average consumer prices (Annual percent change)') %>% 
+  rename("Rok" = "2020")
+panstwa <- c("Austria","Belgia","Bułgaria","Chorwacja",'Cypr','Czechy',"Dania","Estonia","Finlandia","Francja","Niemcy","Grecja","Węgry",
+             "Irlandia","Włochy","Łotwa","Litwa","Luksemburg","Malta","Holandia","Polska","Portugalia","Rumunia","Słowacja","Słowenia","Hiszpania",
+             "Szwecja","UK")
+data$Inflacja <- panstwa
+
+data$fil <- with(data, ifelse(Inflacja=="Polska", 1,0))
+
+```
+
+
+##Wykres
+ 
+```{r wykres }
+p <- ggplot(data=data,aes(x=reorder(Inflacja,-Rok), y=Rok,fill=factor(fil)))+geom_bar(width = 0.5,stat='identity',position=position_dodge(width=0.9))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = c("0" = "dodgerblue1", "1" = "red"),guide='none') +
+  theme(panel.grid.major.x = element_blank() , panel.grid.major.y = element_line( size=.1, color="grey" ),
+        panel.background = element_rect(fill = "white",colour = "white"),plot.title = element_text(hjust = 0.5))+
+  labs(x="",y="")+ggtitle("Prognozowana inflacja w krajach UE w 2020r",)+ylim(0,4)
+
+  p
+```
+                                                                                                                                            
+  
+
+
