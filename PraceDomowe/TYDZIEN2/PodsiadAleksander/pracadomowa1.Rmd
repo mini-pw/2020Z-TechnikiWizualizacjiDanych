@@ -1,0 +1,110 @@
+---
+title: "Dominacja kurczaków w Ameryce"
+author: "Aleksander Podsiad"
+output: html_document
+---
+
+### *Techniki Wizualizacji Danych - praca domowa nr 1* 
+
+#### Setup:
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+library(ggrepel)
+```
+
+#### Dane do wykresu:
+
+Do tej pracy domowej postanowiłem stworzyć na nowo wykres przedstawiający dominację mięsa z kurczaka pod względem 
+ilościowego spożycia (w funtach) w Ameryce w porównaniu do wołowiny, wieprzowiny i mięsa z indyka.
+
+* Strona z wykresem: [CNN Business](https://edition.cnn.com/2019/10/11/business/costco-5-dollar-chicken/index.html)
+* Strona z danymi: [National Chicken Council](https://www.nationalchickencouncil.org/about-the-industry/statistics/per-capita-consumption-of-poultry-and-livestock-1965-to-estimated-2012-in-pounds/)
+
+#### Pobieranie danych:
+
+Skopiowałem tabelę ze strony NCC, a następnie przekonwertowałem ją z formatu `html_table` do formatu `.csv`.
+
+```{r}
+data <- read.csv(file="/home/aleksander/Pulpit/table.csv")
+
+```
+
+#### Przetwarzanie danych:
+
+Tworzę jedną tabelę z trzema zmiennymi:
+
+* year (określa z którego roku pochodzą dane);
+* value (liczba funtów spożycia mięsa na amerykanina);
+* type (rodzaj mięsa).
+
+```{r}
+# wybieram tylko interesujacy mnie przedzial czasowy
+data <- data %>% filter((Year != 1960) & (Year != "estimated 2020"))
+# tworze nowe ramki danych dla odpowiednich rodzajow mies i dodaje zmienna type
+data %>% select(Year, Beef) %>% 
+  add_column(type = "Beef") %>% rename(value = Beef)-> beef
+data %>% select(Year, Pork) %>%  
+  add_column(type = "Pork") %>% rename(value = Pork) -> pork
+data %>% select(Year, Total.Chicken) %>% 
+  add_column(type = "Chicken") %>% rename(value = Total.Chicken) -> chicken
+data %>% select(Year, Turkey) %>% 
+  add_column(type = "Turkey") %>% rename(value = Turkey) -> turkey
+# lacze powstale ramki danych po wierszach 
+data1 <- bind_rows(chicken, beef, pork, turkey)
+# dodaje faktoryzacje dla ulatwienia tworzenia odpowiedniej kolejnosci zmiennych w legendzie
+data1$type <- factor(data1$type, levels = c("Chicken", "Beef", "Pork", "Turkey"))
+# tworze dodatkowa ramke skrajnych punktow, ktore umieszcze oddzielnie na wykresie
+points <- data1 %>% filter((Year == 1965) | (Year == 2019))
+```
+
+#### Rysowanie wykresu:
+
+Wykres okazał się dość  specyficzny i wymagał dużo ręcznego ustawiania wartości poszczególnych komponentów.
+
+```{r}
+out <- ggplot() +
+  # tworze linie z kolorami odpowiadajacymi rodzajom mies
+  geom_line(data = data1, size = 1.1, aes(x = Year, y = value, group = type, color = type)) +
+  # definiuje kolory
+  scale_color_manual(values = c("#00c59e", "#fdc6ac", "#f1b6da", "#e1dfd8")) +
+  # tworze odpowiednie skale na obu osiach
+  scale_x_discrete(breaks = c(1965, seq(1970, 2010, by = 10), 2019)) +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, by = 20), expand = c(0,0)) +
+  # zmieniam kompozycje wykresu
+  theme_classic() +
+  # recznie ustawiam klopotliwe parametry
+  theme(axis.line.y = element_blank(), axis.ticks = element_blank(),
+        legend.title = element_blank(), axis.title = element_blank(),
+        panel.grid.major = element_line(size = 0.4, linetype = 'solid',
+        colour = "grey"), panel.grid.major.x = element_blank()) +
+  # ustawienia legendy i tytulow
+  theme(legend.position = c(0, 1), 
+        legend.justification = c(0, 0),
+        legend.direction = "horizontal", axis.text = element_text(colour = "darkgrey"),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(size = 8.75, colour = "darkgrey")) +
+  # tekst tytulow
+  labs(title = "Chicken is the most popular meat in America",
+       subtitle = "The average American eats about 95 pounds of chicken per year, more than twice the amount consumed per person in 1965. \n \n ") +
+  # dodanie skrajnych punktow
+  geom_point(data = points, aes(x = Year, y = value, group = type, color = type), show.legend = FALSE) +
+  # dodanie etykiet skrajnych punktow
+  geom_text_repel(data = points, aes(x = Year, y = value, label = round(value)), 
+        size = 3, show.legend = FALSE, nudge_y = 3.5)
+
+```
+
+#### Wykres:
+
+```{r, echo = FALSE}
+out
+```
+
+........................................................................
+  
+Link do samego wykresu wzorcowego: [WYKRES](https://ix.cnn.io/graphr/graphics/20191008-business-meat-1f37ab50-e9e7-11e9-b00a-4f6d1026efe3/index.html?initialWidth=930&childId=responsive-embed-20191008-business-meat-1f37ab50-e9e7-11e9-b00a-4f6d1026efe3&parentTitle=Costco%20is%20going%20to%20extremes%20to%20keep%20its%20rotisserie%20chickens%20at%20%244.99%20-%20CNN&parentUrl=https%3A%2F%2Fedition.cnn.com%2F2019%2F10%2F11%2Fbusiness%2Fcostco-5-dollar-chicken%2Findex.html)  
+
+........................................................................
