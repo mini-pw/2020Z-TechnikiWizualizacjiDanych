@@ -41,6 +41,14 @@ ggplot(countries, aes(x = continent, y = birth.rate)) +
   stat_summary(fun.y = "length", geom = "bar")
 
 ggplot(countries, aes(x = continent, y = birth.rate)) + 
+  stat_summary(fun.y = "length", geom = "point")
+
+library(ggbeeswarm)
+ggplot(countries, aes(x = continent, y = birth.rate)) + 
+  geom_quasirandom(method = "smiley") +
+  stat_summary(fun.y = "mean", geom = "point", color = "red", size = 6)
+
+ggplot(countries, aes(x = continent, y = birth.rate)) + 
   stat_summary(fun.y = "median", geom = "bar")
 
 ggplot(countries, aes(x = birth.rate)) + 
@@ -65,15 +73,6 @@ ggplot(countries, aes(x = birth.rate, y = death.rate, color = continent)) +
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   geom_point() + 
   geom_smooth(se = FALSE) 
-
-ggplot(countries, aes(x = birth.rate, y = death.rate)) +
-  geom_point() + 
-  geom_smooth(se = FALSE) 
-
-ggplot(countries, aes(x = birth.rate, y = death.rate)) +
-  geom_point() + 
-  stat_smooth(se = FALSE) 
-
 
 # 3. Panele (facets) ---------------------------------
 ggplot(countries, aes(x = birth.rate, y = death.rate, fill = continent)) +
