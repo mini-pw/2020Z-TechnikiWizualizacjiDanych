@@ -97,15 +97,20 @@ p + facet_wrap(~ clarity, scales = "free_y")
 
 p + facet_wrap(~ clarity, scales = "free")
 
-ggplot(small_diamonds, aes(x = carat, y = price)) +
-  geom_point() +
-  facet_wrap(~ clarity + color)
+p + facet_wrap(~ clarity + color)
 
 p + facet_wrap(~ clarity + color, labeller = label_both)
+
+p + facet_wrap(~ clarity, nrow = 2)
 
 p + facet_grid(clarity ~ color)
 
 p + facet_grid(color ~ clarity)
+
+mutate(small_diamonds, troche_srednio = price > 10000) %>% 
+  ggplot(aes(x = cut, y = price)) +
+  geom_boxplot() +
+  facet_grid(color ~ clarity + troche_srednio, drop = FALSE)
 
 p + facet_grid(clarity ~ color, switch = "x")
 
