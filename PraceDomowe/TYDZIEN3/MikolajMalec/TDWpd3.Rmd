@@ -1,0 +1,54 @@
+---
+title: "TWDpd3"
+author: "Miki-Mal"
+date: "10/18/2019"
+output: html_document
+---
+
+##Wykres z danych na październik ze strony https://www.accuweather.com/pl/pl/warsaw/274663/october-weather/274663
+```{r libraries, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+```{r setup, echo=FALSE, fig.align='center', fig.width=10, fig.height=7, message=FALSE}
+pogoda1 <- data.frame("Day"=c(1:31),
+                      "Temp_wys"=c(18,18,12,12,12,8,9,10,16,13,16,21,24,24,23,20,17,19,19,20,21,16,15,18,19,16,14,13,12,12,7),
+                      "Temp_nis"=c(10,9,7,6,5,1,3,0,8,8,7,12,12,12,12,10,8,10,11,12,11,7,8,9,8,7,6,5,5,5,2),
+                      "old"=c(rep(TRUE,17),rep(FALSE,14)), "new"=c(rep(FALSE,16),rep(TRUE,15)),
+                      "srednia_wys"=c(16,16,15,15,15,15,15,14,14,14,14,14,13,13,13,13,12,12,12,12,12,11,11,11,11,10,10,10,10,9,9),
+                      "srednia_nis"=c(7,7,7,7,7,6,6,6,6,6,6,6,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,3,3))
+ggplot(pogoda1, aes(x=Day)) +
+  ggtitle("Wykres temperatury w październiku 2019")+
+  geom_segment(aes(x = 1:31, y=-Inf, yend = 30, xend=1:31), color="darkgrey")+
+  geom_segment(aes(x = 0, y=0, xend = 31, yend=0), color="darkgrey")+
+  geom_segment(aes(x = 0, y=5, xend = 31, yend=5), color="darkgrey")+
+  geom_segment(aes(x = 0, y=10, xend = 31, yend=10), color="darkgrey")+
+  geom_segment(aes(x = 0, y=15, xend = 31, yend=15), color="darkgrey")+
+  geom_segment(aes(x = 0, y=20, xend = 31, yend=20), color="darkgrey")+
+  geom_segment(aes(x = 0, y=25, xend = 31, yend=25), color="darkgrey")+
+  
+  theme(plot.title = element_text(color="gray27", size=14, face="bold.italic", hjust=0.5))+
+  #lepsza linia przerywana
+  geom_line(data=filter(pogoda1, old),aes(y=Temp_wys, color="darkorange", linetype="solid",size="a"))+
+  geom_line(data=filter(pogoda1, new),aes(y=Temp_wys, color="darkorange", linetype="twoash",size="a"))+
+  geom_line(data=filter(pogoda1,old), aes(y=Temp_nis, color="blue", linetype="solid",size="a")) +
+  geom_line(data=filter(pogoda1, new),aes(y=Temp_nis, color="blue", linetype="twoash",size="a"))+
+  
+  geom_segment(aes(x = 17, y = -Inf, yend = 30, xend=17), color="grey60", size=1)+ #wiekszy wyrozniajacy sie segment
+  
+  #scale_linetype_manual(name="Temperatura",breaks=c("dashed", "solid"), values = c("solid","twoash"), labels=c("przewidywana", "zmierzona"))+
+  scale_x_discrete(limits=1:31,labels = abbreviate)+
+  theme(line=element_blank(), panel.background = element_blank()) + ylim(0,35) +
+  geom_text(mapping=aes(x=17, y=32, label="DZISIAJ"), size=5, vjust=1, hjust=0.5, color="darkgrey")+
+  geom_smooth(method="lm", aes(y=srednia_wys, size="b"), se=FALSE, color="darkorange")+
+  geom_smooth(method="lm", aes(y=srednia_nis, size="b"), se=FALSE, color="blue")+
+  theme(plot.margin=unit(c(1,1,3.5,1.2),"cm")) +
+  scale_colour_manual( name = "Temperatura", breaks = c("darkorange", "blue"), values = c("darkorange"="darkorange", "blue"="blue"), labels=c("najwyższa", "najniższa"))+
+  
+  scale_size_manual(breaks=c("a","b"), values=c(2, 0.5),name="Kiedy", labels=c("w tym roku", "średnia z lat poprzednich"))+
+  #przepraszam ale nie juestem wstanie poradzic sobie z tym problemem scale_linetype_manual ingeruje moocno już w powstały graf i jakalkolwiek zmiana powoduje bald lub zmiane grafu
+  #scale_linetype_manual(name="Temperatura",breaks=c("dashed", "solid"), values = c("solid","twoash"), labels=c("przewidywana", "zmierzona"))+
+
+  ylab("Temperatura [C]")+ #dodane nazwy labels
+  xlab("Dni")
+    ```
