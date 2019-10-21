@@ -1,0 +1,92 @@
+---
+title: 'Praca Domowa #1'
+author: "Bartosz Rożek"
+date: "12 października 2019"
+geometry: margin= 2cm
+output: html_document
+---
+
+## Kod Funkcji
+```{r setup, include=TRUE}
+library(ggradar)
+library(ggplot2)
+library("gridExtra")
+library(scales)
+library(tibble)
+options(stringsAsFactors=FALSE)
+#utworzenie ramki danych
+footballers <- data.frame(a = 1:5, b = 1:5, c = 1:5, d = 1:5,
+                           e = 1:5, f = 1:5, g = 1:5, h = 1:5)
+colnames(footballers) <- c("Player", "Defending", "Attacking", "Dribbling", 
+                           "Passing", "Key Passing", "Vision", "Ball \n progression")
+footballers[1,2:8] <- c(50, 37, 56, 91, 37, 42, 63)
+footballers[2,2:8] <- c(22, 20, 39, 81, 60, 26, 57)
+footballers[3,2:8] <- c(39, 39, 99, 95, 43, 43, 25)
+footballers[4,2:8] <- c(18, 61, 38, 80, 58, 57, 42)
+footballers[5,2:8] <- c(70, 18, 5, 99, 96, 50, 63)
+footballers[,1] <- c("Ruiz", "Sergi Roberto", "Frenkie de Jong", 
+                     "Arthur", "Sergio Busquets" )
+ 
+#Stworzenie wykresów
+plot1 <- ggradar(footballers[c(1,2),], grid.min = 0, grid.mid = 50, grid.max = 99,
+                values.radar = c("", "", ""),  legend.position = 1,
+                gridline.max.colour = "#13056b", gridline.mid.colour = "#13056b", 
+                gridline.min.colour = "#13056b",
+                grid.line.width = 0.5, gridline.mid.linetype = "longdash",
+                plot.title = "Sergi Roberto - 48", axis.label.size = 2.65,
+                background.circle.colour = "white", background.circle.transparency = 0, 
+                axis.line.colour = "#13056b",
+                group.point.size = 3, group.line.width = 1,
+                group.colours = c("#02d8db", "#f5255c"))+ 
+                theme(plot.title = element_text(size=13,hjust = 0.5))
+
+plot2 <- ggradar(footballers[c(1,3),], grid.min = 0, grid.mid = 50, grid.max = 99,
+                values.radar = c("", "", ""),  legend.position = 1,
+                gridline.max.colour = "#13056b", gridline.mid.colour = "#13056b", gridline.min.colour = "#13056b",
+                grid.line.width = 0.5, gridline.mid.linetype = "longdash",
+                plot.title = "Frenkie de Jong - 52", axis.label.size = 2.65,
+                background.circle.colour = "white", background.circle.transparency = 0, 
+                axis.line.colour = "#13056b", 
+                group.point.size = 3, group.line.width = 1,
+                group.colours = c("#f5255c", "#02d8db"))+ 
+                theme(plot.title = element_text(size=13,hjust = 0.5))
+
+plot3 <- ggradar(footballers[c(1,4),], grid.min = 0, grid.mid = 50, grid.max = 99,
+                 values.radar = c("", "", ""),  legend.position = 1,
+                 gridline.max.colour = "#13056b", gridline.mid.colour = "#13056b", 
+                 gridline.min.colour = "#13056b",
+                 grid.line.width = 0.5, gridline.mid.linetype = "longdash",
+                 plot.title = "Arthur - 56", axis.label.size = 2.65,
+                 background.circle.colour = "white", background.circle.transparency = 0, 
+                 axis.line.colour = "#13056b", 
+                 group.point.size = 3, group.line.width = 1,
+                 group.colours = c("#02d8db", "#f5255c"))+ 
+                 theme(plot.title = element_text(size=13,hjust = 0.5))
+
+plot4 <- ggradar(footballers[c(1,5),], grid.min = 0, grid.mid = 50, grid.max = 99,
+                 values.radar = c("", "", ""), legend.position = 1,
+                 gridline.max.colour = "#13056b", gridline.mid.colour = "#13056b", 
+                 gridline.min.colour = "#13056b",
+                 grid.line.width = 0.5, gridline.mid.linetype = "longdash",
+                 plot.title = "Sergio Busqets - 79", axis.label.size = 2.65,
+                 background.circle.colour = "white", background.circle.transparency = 0, 
+                     axis.line.colour = "#13056b",
+                 group.point.size = 3, group.line.width = 1,
+                 group.colours = c("#f5255c", "#02d8db")) + 
+                 theme(plot.title = element_text(size=13,hjust = 0.5))
+```
+## Wykres
+Wykres przedstawia porównanie statystyk gracza Napoli - Fabiana Ruiza i piłkarzy FC Barcelony. 
+
+
+<center><span style="color:#f5255c">**Barcelona players**</span></center>
+<center><span style="color:#02d8db">**Fabian Ruiz**</span></center>
+
+```{r, include=TRUE, echo=FALSE, fig.align="center"}
+#złożenie pojedyńczych wykresów w jedną wspólną grafikę
+grid.arrange(plot1, plot2, plot3, plot4, ncol=2)
+
+```
+
+## Uwagi
+W zadaniu skorzystałem z funkcji ggradar, która rozszerza funkcjonalność biblioteki ggplot2 o tworzenie wykresów radarowych. Użyłem innego typu wykresu (radar chart a nie spider), ponieważ nie znalazłem odpowiedniej funkcji, która rozszerzałaby pakiet ggplot. Mimo wszystko postarałem się upodobnić mój wykres do wykresu wyjściowego. Dane wziąłem "na oko" z wykresu wyjściowego - https://twitter.com/DatoBHJ/status/1179069223261196289.
