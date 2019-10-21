@@ -1,0 +1,90 @@
+---
+title: "Praca domowa nr 2"
+author: "Piotr Piątyszek"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T)
+```
+
+## Wykres źródłowy
+![](https://images.squarespace-cdn.com/content/v1/5c8ff8d7c46f6d39762e0da8/1571174094050-1B28R56X9IJB3LVVS566/ke17ZwdGBToddI8pDm48kMFiMyT1nneRMhnmfuSfpxZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0k8MW1YpTavFM7X5bAIj_ZFRi3EPRLL0haQvuMjsRqCqzvYDj1F6UE4DOgvXHZfTbA/ca46be7f-37c6-4301-839b-42dec4cdf60d?format=1000w)
+Pochodzi z artykułu https://inspurious.com/visuals/ca46be7f-37c6-4301-839b-42dec4cdf60d i przedstawia ile 5 najczęstszych przyczyn śmierci w Chicago w 1999 roku, powoduje zgonów w latach 1999-2017 w Chicago w przeliczeniu na 100 000 mieszkańców.
+
+## Odtworzenie wykresu przy użyciu biblioteki ggplot2
+```{r, warning=FALSE, fig.width=10, fig.height=8}
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+#Dane ze strony https://wonder.cdc.gov/mcd-icd10.html ładujemy i wstępnie obrabiamy
+deaths <- read.csv("./Multiple Cause of Death, 1999-2017.csv", sep="\t", stringsAsFactors=F) %>%
+  rename(Cause="UCD...ICD.10.113.Cause.List", Cause.Code="UCD...ICD.10.113.Cause.List.Code") %>%
+  mutate(Crude.Rate=as.numeric(as.character(Crude.Rate))) %>%
+  select(Year, Cause, Cause.Code, Crude.Rate)
+
+#Do interesujacych nas przyczyn zgonów ustawiamy ładne nazwy i odpowiednie kolory
+causes <- data.frame(
+  Cause.Code=c("GR113-019", "GR113-054", "GR113-070", "GR113-082", "GR113-112"), 
+  Name=c("Cancer", "Heart Disease", "Stroke", "Lower Resp. Diseases", "Accidents"), 
+  Color=c("#2196f3", "#f44336", "#4caf50", "#9c27b0", "#ff9800"), 
+  stringsAsFactors=F
+)
+
+#Sklejamy obie ramki, pozbywając się przy okazji reszty przyczyn
+deaths %>% inner_join(causes, by="Cause.Code") -> deaths
+#Tworzymy ramki z danymi tylko dla pierwszego i tylko dla ostatniego roku i doklejamy
+#im kolumnę z opisem jaki pojawi się przy tych punktach, odpowiednio zformatowaną wartością, 
+#oraz zformatowaną wartością i nazwą przyczyny zgonu
+deaths_1999 <- deaths %>% filter(Year==1999) %>% mutate(label=format(round(Crude.Rate, 1), nsmall=1))
+deaths_2017 <- deaths %>% filter(Year==2017) %>% mutate(label=paste(format(round(Crude.Rate, 1), nsmall=1), "  ", Name))
+
+ggplot(data=deaths, aes(x=Year, y=Crude.Rate, color=Color)) +
+  scale_colour_identity() + #wartość kolumny Color interpretuje dosłownie jako kolor
+  geom_line(size=2) +
+  #Dodajemy widoczne punkty na początku i końc
+  geom_point(data=deaths_1999, size=4) +
+  geom_point(data=deaths_2017, size=4) +
+  geom_text_repel(data=deaths_1999, 
+                  mapping=aes(label=label), 
+                  nudge_x=-3.5, #Przesunięcie na osi X
+                  size=7, 
+                  segment.color=NA) + #Nie rysujemy strzałki z opisu do punktu
+  geom_text_repel(data=deaths_2017, 
+                  mapping=aes(label=label), 
+                  hjust=0, 
+                  nudge_x=0.5, #Przesuniecie na osi X
+                  size=7, 
+                  xlim=c(2015, 2050), #Pozwalamy opisowi wyjśc w prawo poza wykres
+                  segment.color=NA) + #Nie rysujemy strzałki z opisu do punktu
+  scale_x_continuous(limits=c(1995, 2021), #Ustawiamy zakres osi X
+                     breaks=(1996 + 4*(0:6)), #Ustawiamy wartości na osi X
+                     expand=c(0, 0)) + #Zerujemy odstęp danych od końca wykresu
+  scale_y_continuous(limits=c(0, 280), #Ustawiamy zakres osi Y
+                     breaks=(50*(0:5)), #Ustawiamy wartości na osi Y
+                     expand=c(0.02, 0)) + #Ustawiamy bardzo mały odstęp danych od końca wykresu
+  coord_cartesian(clip='off') + #Nie ukrywamy opisów poza wykresem
+  ggtitle("Trends in the top causes of death in Chicago, IL") +
+  labs(subtitle="Death rate per 100, 000 persons for the top 5 causes of death from 1999\nin Cook County, IL") +
+  theme(legend.position="none", #Wyłączamy legendę
+        #Czarne tło
+        plot.background=element_rect(fill="black"), 
+        panel.background=element_rect(fill="black"), 
+        #Siatka
+        panel.grid.major.x=element_blank(), 
+        panel.grid.minor.x=element_blank(), 
+        panel.grid.minor.y=element_blank(), 
+        panel.grid.major.y= element_line(color="#506885", size=0.3), 
+        #Osie
+        axis.line=element_line(size=1, colour="#506885"), 
+        axis.text.x=element_text(angle=45, hjust=1.2, color="white", size=20), 
+        axis.text.y=element_text(color="white", size=20), 
+        axis.title=element_blank(), 
+        axis.ticks=element_line(color="#506885"), 
+        #Tytuły
+        plot.subtitle=element_text(color="#979797", size=18), 
+        plot.title=element_text(color="white", size=24, face="bold"), 
+        #Marginesy
+        plot.margin=margin(0.5, 8, 1, 1, "cm"))
+```
+
