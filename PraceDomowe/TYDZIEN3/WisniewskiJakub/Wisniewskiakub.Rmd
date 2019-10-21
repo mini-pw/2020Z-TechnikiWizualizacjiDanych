@@ -12,17 +12,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Poprawa wykresu:
 
-Zdecydowałem się przerobić wykres Kuby Kosterny.
-Kuba zrobił świetną robotę przekształcając wykres 1 do 1. Niestety w samym artykule jest on moim zdaniem nieczytelny. Największą jego wadą jest jego pozioma orientacja, która potrafi nabawić czytelnika bólu karku. Druga sprawa to jego czytelność, która pozostawia wiele do życzenia. Uważam, że patrząc na wykres musi od razu być wiadomo "o co w nim chodzi".
-
 Wykres pochodzi z: 
 https://www.parkiet.com/Analizy/310159957-WykresDnia-Zyskowne-sektory-z-SP-500.html
 
-Spójrzmy więc na wykres: 
+Spójrzmy więc na niego.: 
 
 
 ```{r,echo=FALSE}
-### KOD KUBY KOSTERNY 
+### KOD ORYGINALNY
 
 # Ręczne przepisanie liczb i nazw z wykresu
 firstWeekNumbers <-c(1.9, 1.6, 1.3, 1.0, 1.0, 1.0, 0.8, 0.7, -0.2, -0.6, -0.8, -1.4)
@@ -56,7 +53,7 @@ fullData$YTDValues <- factor(fullData$YTDValues,
 
 ```{r warning = FALSE, echo=FALSE}
 
-### KOD KUBY KOSTERNY 
+### KOD ORYGINALNY
 
 library(ggplot2) # główna biblioteka
 library(gridExtra) # pakiet umożliwiający umieszczenie dwóch wykresów jeden pod drugim
@@ -190,5 +187,5 @@ grid.arrange(plot1,plot2)
 
 # Więc co się zmieniło? 
 
-W pierwszej kolejności zmieniłem orientację, tak żeby była ona bardziej naturalna i czytelniejsza. Następnie zmieniłem kolory aby te czerwone symbolizowały spadek, a niebieskie zysk. Gradient ułatwia nam również odróżnienie wartości mniejszych od większych. Usunąłem jakiekolwiek linie, aby nie odwracały uwagi od danych. Powiększyłem czcionki, aby nie trzeba było się nadmiernie przypatrywać. Chciałem aby wszystko na tym wykresie było możliwe do intuicyjnego odczytania zaledwie po rzuceniu oka. W tym celu wartości znajdują się w słupkach, a nazwy znajdują się u ich podstaw. Nie musimy szukać więc informacji o tym co przedstawia słupek ani jaka jest jego wartość, wszystko jest podane "na tacy". 
+W pierwszej kolejności zmieniłem orientację, tak żeby była ona bardziej naturalna i czytelniejsza. Następnie zmieniłem kolory aby te czerwone symbolizowały spadek, a niebieskie zysk. Gradient ułatwia nam również odróżnienie wartości mniejszych od większych. Usunąłem jakiekolwiek linie, aby nie odwracały uwagi od danych. Powiększyłem czcionki, aby nie trzeba było się nadmiernie przypatrywać. Chciałem, aby wszystko na tym wykresie było możliwe do intuicyjnego odczytania zaledwie po rzuceniu okiem. W tym celu wartości znajdują się w słupkach, a nazwy znajdują się u ich podstaw. Nie musimy szukać więc informacji o tym co przedstawia słupek ani jaka jest jego wartość, wszystko jest podane "na tacy". 
 
