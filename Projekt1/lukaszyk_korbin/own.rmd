@@ -1,0 +1,97 @@
+---
+title: "Techniki wizualizacji danych - raport 1"
+author: "Marcin Łukaszyk, Marceli Korbin"
+date: "October 23, 2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
+```
+
+```{r dane, include=FALSE}
+pytania_1 <- readRDS("wykr1.rds")
+pytania_2 <- readRDS("wykr2.rds")
+pytania_3 <- readRDS("wykr3.rds")
+pytania_4 <- readRDS("wykr4.rds")
+library("tidyverse")
+library("haven")
+library("dplyr")
+library("ggplot2")
+```
+
+## Słowo wstępu
+
+Prezentacja dotyczy pierwszej pracy domowej z technik wizualizacji danych. Skupiamy się w niej na danych dotyczących badań PISA z 2015 roku. W tym raporcie przedstawiamy kilka wybranych i zbadanych przez nas statystyk, nad jedną z których poświęcimy więcej uwagi w późniejszej części projektu.
+
+## Jak często na lekcjach naukowych panuje hałas i nieporządek?
+
+Odpowiedzi udzielano w skali od 1 do 4, gdzie 1 oznaczało "na każdej lekcji", a 4 "nigdy".
+
+Procent odpowiedzi zbadaliśmy dla 6 krajów: Algierii, Finlandii, Gruzji, Nowej Zelandii, Kataru i Stanów Zjednoczonych.
+
+## Wykres 1
+
+```{r w1}
+ggplot(pytania_1, aes(x="", y=n, label=CNT, fill=ST097Q02TA)) +
+  geom_bar(stat="identity", position=position_fill()) +
+  coord_polar("y", start=0) +
+  facet_wrap(~CNT) +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid  = element_blank()) +
+  xlab("") +
+  ylab("")
+```
+
+## Czy korzystanie z portali społecznościowych i granie w gry wideo wpływają na spóźnianie się?
+
+Czy amerykańscy uczniowie, którzy przed wyjściem do szkoły korzystali z Facebooka, Twittera itp. lub grali w gry wideo, częściej się spóźniali na lekcje?
+
+## Wykres 2
+
+```{r w2}
+ggplot(pytania_2, aes(x=ST062Q03TA, y=n, fill=electronics)) +
+  geom_col() +
+  facet_wrap(~electronics)
+```
+
+## Jak różni się podejście do nauki względem płci?
+
+W jednym z pytań ankietowani mieli zaznaczyć, na ile (w skali od 1 - w ogóle nie, do 4 - bardzo) zgadzają się ze stwierdzeniami o swoim podejściu do nauki:  
+
+1. Chcę uzyskać najwyższe oceny na zajęciach.  
+2. Chcę móc wybierać spośród najlepszych możliwych okazji po ukończeniu szkoły.  
+3. Chcę być najlepszy w czymkolwiek, co robię.  
+4. Widzę siebie jako osobę ambitną.  
+5. Chcę być jednym z najlepszych uczniów w swojej klasie.
+
+## Wykres 3 (1 - dziewczyny, 2 - chłopaki)
+
+```{r w3}
+ggplot(pytania_3, aes(x=odpowiedz)) +
+  geom_line(aes(y=p1, color=rainbow(5)[1])) +
+  geom_line(aes(y=p2, color=rainbow(5)[2])) +
+  geom_line(aes(y=p3, color=rainbow(5)[3])) +
+  geom_line(aes(y=p4, color=rainbow(5)[4])) +
+  geom_line(aes(y=p5, color=rainbow(5)[5])) +
+  facet_grid(.~plec) +
+  scale_color_discrete(name = "numer pytania", labels = 1:5)
+```
+
+## Czy długość lekcji zależy od średnich dochodów rodziny?
+
+W czwartym wykresie porównujemy długość lekcji ze stanem gospodarki wszystkich krajów.
+
+Państwa porządkujemy malejąco według średnich dochodów rodzin ankietowanych, a następnie sprawdzamy ich zależność ze średnią długością lekcji i jej odchyleniami.
+
+## Wykres 4
+
+```{r w4}
+ggplot(pytania_4, aes(x=reorder(CNT, -wealth), group=1)) +
+  geom_line(aes(y=wealth)) +
+  geom_line(aes(y=mean)) +
+  geom_line(aes(y=mean-sd), color="#800000", linetype="dashed") +
+  geom_line(aes(y=mean+sd), color="#000080", linetype="dashed") +
+  theme(axis.text.x = element_text(angle = 90))
+```
