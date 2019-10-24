@@ -65,11 +65,12 @@ for (i in 1:nrow(special_events)){
 
 ggplot(data = df, aes(x = factor(week_day, levels = proper_order), y =-month_week, fill = value)) + 
   geom_tile(colour = "white", aes(fill = value)) +
-  scale_fill_continuous(breaks = c(-4, -8, -12, -16),
+  scale_fill_gradient(breaks = c(-4, -8, -12, -16),
                         labels = paste(events, "  "),
                         guide = guide_legend(
                           direction = "horizontal",
-                          name = "")) + 
+                          name = ""),
+                      low = "brown4") + 
   labs(x = "",
        y = "",
        title = "Brexit Calendar",
