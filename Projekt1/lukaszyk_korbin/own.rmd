@@ -13,7 +13,8 @@ knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 pytania_1 <- readRDS("wykr1.rds")
 pytania_2 <- readRDS("wykr2.rds")
 pytania_3 <- readRDS("wykr3.rds")
-pytania_4 <- readRDS("wykr4.rds")
+pytania_4 <- readRDS("wykr5a.rds")
+pytania_5 <- readRDS("wykr5b.rds")
 library("tidyverse")
 library("haven")
 library("dplyr")
@@ -44,16 +45,38 @@ ggplot(pytania_1, aes(x="", y=n, label=CNT, fill=ST097Q02TA)) +
   ylab("")
 ```
 
-## Czy korzystanie z portali społecznościowych i granie w gry wideo wpływają na spóźnianie się?
+## Która płeć jest lepsza?
 
-Czy amerykańscy uczniowie, którzy przed wyjściem do szkoły korzystali z Facebooka, Twittera itp. lub grali w gry wideo, częściej się spóźniali na lekcje?
+Badamy ilość punktów w każdym kraju po płci.
+
+Wykres ma jeszcze postać brudnopisową; możemy w przyszłości sprawdzić, czy np. koreluje on z wynikami badań na temat stanu równości płci, albo jak się rozkładają wyniki w poszczególnych krajach.
 
 ## Wykres 2
 
 ```{r w2}
+knitr::include_graphics("wykr6.png")
+```
+
+## Czy korzystanie z portali społecznościowych i granie w gry wideo wpływają na spóźnianie się?
+
+Czy amerykańscy uczniowie, którzy przed wyjściem do szkoły korzystali z Facebooka, Twittera itp. lub grali w gry wideo, częściej się spóźniali na lekcje?
+
+## Wykres 3
+
+```{r w3}
 ggplot(pytania_2, aes(x=ST062Q03TA, y=n, fill=electronics)) +
   geom_col() +
   facet_wrap(~electronics)
+```
+
+## Jak poszły uczniom testy w zależności od tego, kiedy zostali urodzeni?
+
+Względem miesiąca urodzenia można zbadać wiele zmiennych i sprawdzić między nimi podobieństwa (np. czy przedstawiciele "lepszych" miesięcy są częściej gnębieni). Na początek sprawdzamy powiązanie z wynikami testów PISA.
+
+## Wykres 4
+
+```{r w4}
+knitr::include_graphics("wykr7.png")
 ```
 
 ## Jak różni się podejście do nauki względem płci?
@@ -66,9 +89,9 @@ W jednym z pytań ankietowani mieli zaznaczyć, na ile (w skali od 1 - w ogóle 
 4. Widzę siebie jako osobę ambitną.  
 5. Chcę być jednym z najlepszych uczniów w swojej klasie.
 
-## Wykres 3 (1 - dziewczyny, 2 - chłopaki)
+## Wykres 5 (1 - dziewczyny, 2 - chłopaki)
 
-```{r w3}
+```{r w5}
 ggplot(pytania_3, aes(x=odpowiedz)) +
   geom_line(aes(y=p1, color=rainbow(5)[1])) +
   geom_line(aes(y=p2, color=rainbow(5)[2])) +
@@ -79,19 +102,20 @@ ggplot(pytania_3, aes(x=odpowiedz)) +
   scale_color_discrete(name = "numer pytania", labels = 1:5)
 ```
 
-## Czy długość lekcji zależy od średnich dochodów rodziny?
+## Czy imigranci lepiej czytają?
 
-W czwartym wykresie porównujemy długość lekcji ze stanem gospodarki wszystkich krajów.
+Sprawdzamy średni wynik zadań testu z czytania dla imigrantów i nieimigrantów.
 
-Państwa porządkujemy malejąco według średnich dochodów rodzin ankietowanych, a następnie sprawdzamy ich zależność ze średnią długością lekcji i jej odchyleniami.
+Następne dwa wykresy przedstawiają po 10 krajów, w których imigranci osiągnęli odpowiednio _najlepsze_ i _najgorsze_ (według państw) wyniki względem innych.
 
-## Wykres 4
+## Wykres 6: lepsi imigranci
 
-```{r w4}
-ggplot(pytania_4, aes(x=reorder(CNT, -wealth), group=1)) +
-  geom_line(aes(y=wealth)) +
-  geom_line(aes(y=mean)) +
-  geom_line(aes(y=mean-sd), color="#800000", linetype="dashed") +
-  geom_line(aes(y=mean+sd), color="#000080", linetype="dashed") +
-  theme(axis.text.x = element_text(angle = 90))
+```{r w6}
+ggplot(pytania_4, aes(x=reorder(CNT, -DIFF), y=DIFF)) + geom_col()
+```
+
+## Wykres 7: gorsi imigranci
+
+```{r w7}
+ggplot(pytania_5, aes(x=reorder(CNT, DIFF), y=-DIFF)) + geom_col()
 ```
