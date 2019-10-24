@@ -1,0 +1,132 @@
+---
+title: "Praca Domowa"
+author: "Paulina Przybyłek"
+date: "16 października 2019"
+output: html_document
+---
+
+```{r setup, message=FALSE, echo=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+```
+
+## Temat pracy
+
+Artykuł ze strony: 
+
+https://ec.europa.eu/eurostat/web/products-eurostat-news/-/EDN-20191004-1?inheritRedirect=true&fbclid=IwAR0NpQMq6E4lzLw0wpfYegYfLOIh6PKqwo4S95dzZejVUEotarxqUMkCeFg 
+
+ukazuje statystyki nauczycieli w krajach Unii Europejskiej. Dane faktyczne wykorzystywane w statystyce pochodzą z roku 2017. W swojej pracy zamierzam przedstawić dane na temat nauczycieli w wieku powyżej 50 r.ż. za pomocą *ggplot2()*.
+
+## Wczytanie danych i modyfikacja ich
+
+W artykule zawarto informacje, skąd pobrać wykorzystywane dane. Pobrany plik .csv został przeze mnie zmodyfikowany na potrzeby utworzenia wykresu. Poniżej zamieszczam kod.
+
+```{r data, message = FALSE, cache=TRUE}
+
+#wczytujemy dane z pliku i tworzymy ramkę danych dla data.table
+Data <- read.csv(file.path(getwd(), "educ_uoe_perp01_1_Data.csv"), stringsAsFactors = FALSE) %>% as.data.table()
+
+
+DataDS <- Data[
+                #wybieramy tylko dane z 2017 roku, a dla Danii też z 2014
+                TIME == "2017" | GEO=="Denmark",
+                ][
+                  #Dania nie ma danych z 2017 (są to braki danych (":")
+                  #z wyjątkiem gimnazjum, więc usuwamy wiersze z 2017, a przy gimnazjum (lower secondary education) z 2014
+                  Value!=":" & !(GEO=="Denmark" & TIME=="2014" & ISCED11=="Lower secondary education"), 
+                  #wybieramy potrzebne kolumny
+                  .(AGE, GEO, Value)]
+
+#zmieniamy typ wartości z kolumny Value z napisów na liczby
+DataDS$Value <- as.numeric(gsub(",", "", DataDS$Value))
+
+Dane <- DataDS[
+                #liczymy sumę nauczycieli dla poszczególnych przedziałów wiekowych
+                , .(SUM = sum(Value)), .(AGE, GEO)
+               ]
+
+#tworzymy dodatkowa ramke danych, aby polaczyc podzialy powyzej 60 w jeden
+Dane2 <- Dane[
+              #wybieramy wiek powyżej 60 i sumujemy
+              AGE == "65 years or over" | AGE == "From 60 to 64 years", .(SUM = sum(SUM)), .(GEO)
+             ][
+                #tworzymy kolumnę o potrzebnej nazwie pod wykres
+                , .(AGE = "60 and over", GEO, SUM)
+              ]
+
+#laczymy ze soba DF o nazwie Dane i Dane2
+#pamietamy ze z DF Dane wartosci powyzej 60 r.z. sa policzone w drugiej DF, wiec pomijamy te wiersze
+Teachers <- rbind(Dane[!(AGE == "65 years or over" | AGE == "From 60 to 64 years"), ], Dane2)
+
+#do wykresu potrzebujemy procentow ilosci nauczycieli
+setkey(Teachers, GEO)
+Teachers <- Teachers[AGE!="Total",][
+                                    #robimy z Total oddzielna kolumne aby policzyc pozniej procent,
+                                    #laczymy DF z kolumna Total do DF z reszta potrzebnych danych
+                                    Teachers[ AGE=="Total", .(GEO, TOTAL = SUM)], nomatch=0
+                                    ][
+                                      #liczymy procent
+                                      , .(PROCENT = SUM/TOTAL*100), .(AGE, GEO)
+                                    ]
+
+```
+
+## Tworzenie wykresu ukazującącego dane statystyczne
+
+Kod do wykresu jest zamieszczony niżej, a pod nim znajduje się jego wywołanie - oczekiwany wykres.
+
+```{r plot, dependson = c(data), message = FALSE, cache=TRUE}
+
+#zmieniamy nazwy na takie, jakie występują na wykresie
+Teachers$GEO <- ifelse(Teachers$GEO == "Germany (until 1990 former territory of the FRG)", "Germany", Teachers$GEO)
+Teachers$GEO <- ifelse(Teachers$GEO == "European Union - 28 countries", "EU", Teachers$GEO)
+
+#ustawiamy atrybut levels, przyda się potem przy tworzeniu barplot
+#zmieniamy kolejnosc aby przy przekreceniu wykresu wartosci ukazane odzworowywaly ten z artykulu
+levels(Teachers$AGE) <- unique(Teachers$AGE) %>% rev()
+
+#tworzymy wykres, nasz bedzie sie troche roznil od orginalu - ustawiamy panstwa w pewnej kolejnosci aby lepiej zobaczyc rezultat
+ggplot(Teachers, aes(reorder(GEO, PROCENT), PROCENT)) + 
+  #do parametru fill wykorzystujemy wiek nauczycieli i utworzone levels, aby kolejnosc byla taka jak chcemy, zmieniamy szerokosc kolumn
+  geom_bar(aes(fill=factor(AGE, levels(Teachers$AGE))), stat = "identity", width = 0.5) +
+  #zamieniamy osie, aby wykres przypominał ten z artykułu
+  coord_flip() +
+  #nadajemy tytuł, podtytuł i usuwamy nazwy osi
+  labs(title = "Primary to upper secondary school teachers by age",
+       subtitle = "% of total, 2017 data",
+       x = NULL,
+       y = NULL) +
+  #modyfikujemy os zawierajaca procenty - rozszerzamy jej podział oraz dodajemy znak procentu do wartosci, ustawiamy poczatek osi od (0,0)
+  scale_y_continuous(expand = c(0,0),
+                     breaks=seq(0, 60, 10),
+                     labels = paste0(seq(0, 60, 10), "%")) +
+  #nadajemy własne kolory do wypełnienia 
+  scale_fill_manual(values = c("#CC2A00", "#044BA5", "#E69F00")) +
+  #ustawiamy legende w odwrotnej kolejnosci (pamietamy ze wykres jest przekrecony,
+  #wiec zmiany odwracania kolejnosci sie powtarzaja)
+  guides(fill = guide_legend(reverse=TRUE)) +
+  #biae tlo wykresu
+  theme_bw() +
+  theme(#usuwamy tytul legendy
+        legend.title=element_blank(),
+        #zmieniamy polozenie legendy aby byla we wnetrzu wykresu
+        legend.justification=c(1,0),
+        legend.position=c(1,0.25),
+        #usuwamy tlo legendy
+        legend.background = element_blank(),
+        #zmieniamy linie na wykresie i osie w zgodzie z wykresem z artykulu
+        axis.line.y.left = element_line(colour = "black"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line(colour = "grey", linetype = 3),
+        panel.grid.major.y = element_blank(),
+        panel.border = element_blank())
+
+```
+
+UWAGI:
+
+* Wykres zawiera więcej zmiennych niż w orginale, nie wybierałam już państw, aby było tak samo
+* Zawsze można zrobić wykres tylko dla państw, które nas interesują, wybierając tylko je z DF (wtedy mniej danych spowoduje lepszą czytelność wykresu)

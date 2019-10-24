@@ -1,0 +1,67 @@
+---
+title: "BorowskiJan"
+author: "Jan Borowski"
+date: "October 17, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wczytywanie i przygotowanie danych z csv 
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+#Bilioteki wczytywane na bieżąco 
+data <- read.csv("dane.csv")
+library(reshape2)
+library("zoo")
+# przetwarzanie danych tak aby pasowały do ggplota2
+melted_data <- melt(data)
+melted_data$X <- paste(substr(melted_data$X,1,4),(substr(melted_data$X,6,7)),sep="/")
+
+melted_data$X <- as.Date(as.yearmon(melted_data$X,format="%Y/%m"))
+
+```
+
+## Tworzenie wykresu
+
+```{r pressure, echo=TRUE, message=FALSE, warning=FALSE, dependson=-1}
+# najpier podstawowy wykres z linią w 0 
+library(ggplot2)
+plot <- ggplot(melted_data,aes(x=X,y=value))+geom_col(aes(fill=variable))+
+  theme(panel.grid.major = element_blank(),panel.background = element_blank(),
+        axis.line.x.bottom =  element_line(color="black", size = 0.3,linetype="solid"))+
+        coord_cartesian( ylim = c(-2, 7))+geom_hline(yintercept=0)
+# tworzenie break point do osi X 
+break1 <- as.Date(c("2018-01-01","2018-04-01","2018-07-01","2018-10-01","2019-01-01","2019-04-01","2019-06-01"))
+#label do osi X
+pointer <- 1 
+label1 <- c(1:7)
+year <- c(rep("2018",4),rep("2019",3))
+for (i in c("Jan","Apr","Jul","Oct",
+           "Jan","Apr","Jun")){
+  label1[pointer] <- paste(i,year[pointer],sep="\n")
+  pointer = pointer + 1
+}
+# dodawanie opisu skali ośi oraz ustawieni opisu  i zmiana kolorów 
+library(RColorBrewer)
+
+plot<- plot+scale_y_continuous( breaks = c(-2:7),labels = c(-2:7),name = "")+
+  scale_x_date(breaks=break1,
+  labels = label1,name="")+scale_fill_brewer(name = "", 
+  labels = c("USA and CAN", "Euro area", "China",
+  "East Asia excluding China"," Other EMDEs",
+  "United Kingdom","Rest of world"),
+  palette="Set1")+theme(legend.position = "top")
+
+# dodawanie tytułu 
+plot<- plot+ggtitle("Figure 1.2. Contribution to Global Imports") + 
+  labs(subtitle="(Percent points,three-month moving average)")+
+  theme(plot.title = element_text(lineheight=.8, face="bold",color = "Blue"),
+        plot.subtitle =   element_text(lineheight=.8, face="bold",color = "Blue"))
+plot
+```
+
+
