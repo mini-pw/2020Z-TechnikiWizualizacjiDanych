@@ -1,0 +1,149 @@
+---
+title: "Praca domowa nr 1"
+author: "Agata Makarewicz"
+date: "18 października 2019"
+output: html_document
+--- 
+
+## Inspiracja
+
+Wykres pochodzi z artykułu znalezionego na stronie Europejskiego Urzędu Statystycznego. Pokazuje procentowy udział poszczególnych grup wiekowych w ogólnej liczbie nauczycieli w krajach Europy.
+
+Link do artykułu: 
+https://ec.europa.eu/eurostat/web/products-eurostat-news/-/EDN-20191004-1?inheritRedirect=true&redirect=%2Feurostat%2Fnews%2Fwhats-new
+
+Dane pobrane zostały ze strony: 
+https://appsso.eurostat.ec.europa.eu/nui/show.do?query=BOOKMARK_DS-548722_QID_-3AC6AFA6_UID_-3F171EB0&layout=AGE,L,X,0;ISCED11,L,X,1;GEO,L,Y,0;UNIT,L,Z,0;SEX,L,Z,1;TIME,C,Z,2;INDICATORS,C,Z,3;&zSelection=DS-548722TIME,2017;DS-548722SEX,T;DS-548722UNIT,NR;DS-548722INDICATORS,OBS_FLAG;&rankName1=UNIT_1_2_-1_2&rankName2=INDICATORS_1_2_-1_2&rankName3=TIME_1_0_0_0&rankName4=SEX_1_2_0_0&rankName5=AGE_1_2_0_0&rankName6=ISCED11_1_2_1_0&rankName7=GEO_1_2_0_1&rStp=&cStp=&rDCh=&cDCh=&rDM=true&cDM=true&footnes=false&empty=false&wai=false&time_mode=ROLLING&time_most_recent=true&lang=EN&cfo=%23%23%23%2C%23%23%23.%23%23%23
+
+Wykres:
+![](/home/agatkam/Desktop/wykres.png)
+
+## Wczytanie potrzebnych pakietów oraz danych
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+data <- read.csv('/home/agatkam/Downloads/educ_uoe_perp01/educ_uoe_perp01_1_Data.csv', dec=",")
+```
+
+## Opracowanie danych 
+
+```{r dane}
+
+# usuwamy niepotrzebne kolumny z data 
+# sortujemy alfabetycznie wg nazw państw
+# oraz wybieramy dane tylko z roku 2017 (wyjątek stanowi Dania - tam dane z 2014, bez lower secondary - te z 2017)
+data <- data %>%
+  select(-c(UNIT,SEX,Flag.and.Footnotes))%>%
+  arrange(GEO)%>%
+  filter(TIME=="2017"|GEO=="Denmark")%>%
+  filter(!(TIME=="2017" & GEO=="Denmark" & ISCED11!="Lower secondary education"))%>%
+  filter(!(TIME=="2014" & GEO=="Denmark" & ISCED11=="Lower secondary education"))
+
+# tam gdzie dane niedostępne, zmieniamy wartość na 0
+data[data$Value==":",5] <- "0"
+
+# dane wymagały drobnych korekt (przecinki itp.) aby można bylo je sformatowac do postaci numerycznej
+# dokonuje poprawek w pliku csv
+write.csv2(data["Value"],'only_value.csv', row.names = FALSE) 
+
+# korekty wykonane w pliku csv
+
+# wczytanie poprawionej csv
+value <- as.data.frame(read.csv('/home/agatkam/Desktop/TWD/only_value.csv',sep=";", dec=".", col.names = TRUE))
+
+# zamienienie kolumn (wstawienie tej poprawionej)
+data["Value"] <- value
+
+# sumuje liczbę nauczycieli dla każdego kraju, w obrębie kazdej kategorii wiekowej
+data_aggregated <- data%>%
+  group_by(GEO,AGE)%>%
+  summarise(Total_value = sum(Value))
+
+# otrzymujemy tabelę, dla kazdego państwa po 5 wierszy (kategorie wiekowe(4) + total)
+# tworzymy pomocniczą ramkę danych do obliczenia procentowego udziału grup wiekowych
+percentage <- data.frame()
+j <- 5
+for (i in (1:180)){
+  percentage[i,1] <- round((data_aggregated[i,3]*100/data_aggregated[j,3]),10)
+  if (i==j){
+    j <- j+5
+  }
+}
+
+# tworzymy listę z nazwami państw (+ Unia Europejska)
+countries <- unique(data_aggregated[,1])
+countries[9,1] <- "EU"
+countries[12,1] <- "Germany"
+colnames(countries) <- "Country"
+
+
+final_df <- data.frame()
+k <- 2
+for (i in (1:36)){
+    final_df[i,1] <- countries[i,1]
+    final_df[i,2] <- percentage[k,1]
+    final_df[i,3] <- percentage[k+1,1]
+    final_df[i,4] <- percentage[k+2,1]+percentage[k-1,1]
+    final_df[i,5] <- final_df[i,2]+final_df[i,3]+final_df[i,4] 
+    k <- k+5
+}
+colnames(final_df) <- c("Country","From 50 to 54 years","From 55 to 59 years","60 and over","Total")
+
+# ostateczna korekta tabeli tak aby nazwy panstw były w dokładnie takiej samej kolejności
+final_df <- final_df%>%
+  arrange(desc(Total))%>%
+  select(-Total)%>%
+  filter(!(Country=="Iceland" | Country=="Switzerland" | Country=="North Macedonia" | Country=="Norway"))
+
+final_df <- final_df[1:29,]
+Slovenia <- final_df[17,]  
+final_df[17,] <- final_df[19,]
+final_df[19,] <- Slovenia
+Romania <- final_df[22,]
+final_df[22,] <- final_df[24,]
+final_df[24,] <- Romania
+
+final_df <- final_df[29:1,]
+```
+
+## Wykres
+
+
+```{r wykres }
+
+# przygotowanie danych do wykresu
+final_df$Country <- factor(final_df$Country, levels = final_df$Country)
+
+years <- melt(final_df,id.vars ="Country")
+
+x_labels <- paste0(seq(0,50,10)," %")
+
+ggplot(data=years, aes(x = Country,y=value, fill=factor(variable, levels = c("60 and over","From 55 to 59 years","From 50 to 54 years"))))+
+  geom_bar(stat="identity",position="stack",width =0.4 )+
+  coord_flip()+
+  labs(x = "",
+       y = "",
+       title = "Primary to upper secondary school teachers by age",
+       subtitle = "(% of total, 2017 data)",
+       caption = "Source: Eurostat dataset educ_uoe_perp01")+
+  scale_y_continuous(breaks=seq(0,50,10), labels = x_labels)+
+  scale_fill_manual(name="",
+                    values=c("From 50 to 54 years" = "#FFCC00","From 55 to 59 years" = "#0000FF","60 and over" = "#FF0000"))+
+  theme_bw()+
+  theme(
+    panel.border=element_blank(),
+    panel.grid.major.y =  element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_line(linetype = "dashed")
+  )+
+  guides(fill=guide_legend(reverse = TRUE))
+  
+  
+
+```
+
