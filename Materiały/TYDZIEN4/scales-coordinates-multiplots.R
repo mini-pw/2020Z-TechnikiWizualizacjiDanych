@@ -66,7 +66,7 @@ mutate(countries_f, continent = factor(continent, levels = sapply(strsplit(cntr_
 # color brewer: http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3
 # alternatywnie library(RColorBrewer)
 
-p + scale_fill_manual(values = c("red", "grey", "black", "navyblue", "green"))
+p + scale_fill_manual(values = rainbow(5))
 # gradienty: przykladowo scale_fill_gradient()
 
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
@@ -84,6 +84,7 @@ p <- ggplot(data = countries, aes(x = continent)) +
 p + coord_flip()
 
 p + coord_flip() + scale_y_reverse()
+
 
 p + coord_polar()
 
@@ -116,10 +117,12 @@ main_plot <- ggplot(data = countries, aes(x = birth.rate, y = death.rate, color 
 density_death <- ggplot(data = na.omit(countries), aes(x = death.rate, fill = continent)) +
   geom_density(alpha = 0.2) +
   coord_flip() +
+  scale_y_reverse() +
   theme(legend.position = "none")
 
 density_birth <- ggplot(data = countries, aes(x = birth.rate, fill = continent)) +
   geom_density(alpha = 0.2) +
+  scale_y_reverse() +
   theme(legend.position = "none")
 
 library(gridExtra)
@@ -139,8 +142,6 @@ get_legend <- function(gg_plot) {
   grob_table[["grobs"]][[which(sapply(grob_table[["grobs"]], function(x) x[["name"]]) == "guide-box")]]
 }
 
-grid.arrange(density_death, main_plot + theme(legend.position = "none"), get_legend(main_plot), density_birth, 
-             ncol = 2, heights = c(0.7, 0.3), widths = c(0.3, 0.7))
 
 
 main_plot <- ggplot(data = countries, aes(x = birth.rate, y = death.rate, color = continent)) +
@@ -194,3 +195,24 @@ p1 / p2
 # rozklady brzegowe w patchwork
 density_death + main_plot + plot_spacer() + density_birth + 
   plot_layout(ncol = 2, heights = c(0.7, 0.3), widths = c(0.3, 0.7))
+
+plot1 <- countries %>%
+  group_by(continent) %>%
+  summarise(srednia = mean(birth.rate, na.rm = TRUE)) %>%
+  ggplot(aes(x = continent, y = srednia)) +
+  geom_col(aes(x = continent, y = srednia), fill = c('#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3')) +
+  coord_flip() +
+  scale_y_reverse()
+
+plot2 <- countries %>%
+  group_by(continent) %>%
+  summarise(srednia = mean(death.rate, na.rm = TRUE)) %>%
+  ggplot(aes(x = continent, y = srednia)) +
+  geom_col(aes(x = continent, y = srednia), fill = c('#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3')) +
+  coord_flip() +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())
+  
+plot1 + plot2
+  
