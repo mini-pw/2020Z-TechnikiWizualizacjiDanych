@@ -1,0 +1,280 @@
+---
+title: "praca_domowa_2"
+author: "Przemysław Chojecki"
+date: "24 10 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+## Oryginaly obrazek prezentujacy wyniki meczu w koszykowke
+```{r wczytanie_danych, echo = FALSE}
+theurl <- RCurl::getURL("https://rozgrywki.pzkosz.pl/mecz/96606/stk-czarni-slupsk-ks-ksiezak-lowicz.html",
+                 .opts =list(ssl.verifypeer = FALSE) )
+tables <- XML::readHTMLTable(theurl)
+tables <- rlist::list.clean(tables, fun = is.null, recursive = FALSE)
+kwarta1 <- tables[[3]]
+kwarta2 <- tables[[4]]
+kwarta3 <- tables[[5]]
+kwarta4 <- tables[[6]]
+colnames(kwarta1) <- c("STK Czarni Słupsk", "PunktyCzarni", "Zegar", "PunktyKsiężak", "KS Księżak Łowicz")
+colnames(kwarta2) <- c("STK Czarni Słupsk", "PunktyCzarni", "Zegar", "PunktyKsiężak", "KS Księżak Łowicz")
+colnames(kwarta3) <- c("STK Czarni Słupsk", "PunktyCzarni", "Zegar", "PunktyKsiężak", "KS Księżak Łowicz")
+colnames(kwarta4) <- c("STK Czarni Słupsk", "PunktyCzarni", "Zegar", "PunktyKsiężak", "KS Księżak Łowicz")
+```
+
+```{r Wykres_nr_1, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+
+#wziecie czasow w postaci minuty:sekundy
+kwarta1[,3] <- substr(kwarta1[,3], 0, 5)
+kwarta2[,3] <- substr(kwarta2[,3], 0, 5)
+kwarta3[,3] <- substr(kwarta3[,3], 0, 5)
+kwarta4[,3] <- substr(kwarta4[,3], 0, 5)
+
+#przeksztalcenie wszystkeigo na sekundy
+a <- strptime(kwarta1[,3], format = "%M:%S")
+time_in_seconds1 = 600 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta2[,3], format = "%M:%S")
+time_in_seconds2 = 1200 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta3[,3], format = "%M:%S")
+time_in_seconds3 = 1800 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta4[,3], format = "%M:%S")
+time_in_seconds4 = 2400 - (a$min * 60 + a$sec)
+
+kwarta1[,3] <- time_in_seconds1
+kwarta2[,3] <- time_in_seconds2
+kwarta3[,3] <- time_in_seconds3
+kwarta4[,3] <- time_in_seconds4
+
+mecz <- rbind(kwarta1,kwarta2,kwarta3,kwarta4)
+mecz <- mecz[,2:4]
+
+#zamienienie punktow z (character na numeric)
+mecz[,1] <- as.numeric(as.character(mecz[,1]))
+mecz[,3] <- as.numeric(as.character(mecz[,3]))
+
+#kilka akcji bylo w tej samej sekundzie dlatego beirzemy maksymalna wartosc dla kazdej sekundy, zeby wiedziec jaki najwyzszy wynik byl w danej sekundzie
+mecz <- mecz %>%
+  group_by(Zegar) %>%
+  summarise(A = max(PunktyCzarni, na.rm = TRUE),
+            B = max(PunktyKsiężak, na.rm = TRUE))
+
+#podzielenie calego meczu na sekundy
+all_seconds <- seq(0,2400)
+all_seconds <- as.data.frame(all_seconds)
+
+
+#laczymy sekundy w meczu z sekundami w ktorych sie cos dzialo
+mecz <- mecz %>%
+  right_join(all_seconds, by = c("Zegar" = "all_seconds") )
+mecz <- mecz[,c(2,1,3)]
+mecz[is.infinite(mecz %>%
+              pull(1)), 1] <- NA
+mecz[is.infinite(mecz %>%
+                   pull(3)), 3] <- NA
+
+## algorytmy zmieniajace ilsoc punktow z NA na prawidlowa dla druzyny A (czyli mielismy NA,NA,NA,0,NA,2,NA,NA,3 a chcemy to zmienic na 0,0,0,0,0,2,2,2,3)
+
+a <- all_seconds[!is.na(mecz[,1]),1] + 1
+b <- mecz[!is.na(mecz[,1]),1][[1]]
+if (b[1] == 0) {
+  j <- a[2] - 1
+  mecz[1:j,1] <- 0
+  j <- j+1
+  for (i in 2:length(a)-1) {
+    k <- a[i+1]
+    mecz[j:(k-1),1] <- b[i]
+    j <- k + 1
+  }
+} else {
+  j <- a[1] - 1
+  mecz[1:j,1] <- 0
+  j <- j+1
+  
+  for (i in 2:length(a)) {
+    
+    k <- a[i]
+    mecz[j:(k-1),1] <- b[i-1]
+    j <- k + 1
+  }
+}
+
+
+
+## algorytmy zmieniajace ilsoc punktow z NA na prawidlowa dla druzyny B
+a <- all_seconds[!is.na(mecz[,3]),1] + 1
+b <- mecz[!is.na(mecz[,3]),3][[1]]
+
+if (b[1] == 0) {
+  j <- a[2] - 1
+  mecz[1:j,3] <- 0
+  j <- j+1
+  for (i in 2:length(a)-1) {
+    k <- a[i+1]
+    mecz[j:(k-1),3] <- b[i]
+    j <- k + 1
+  }
+  
+} else {
+  j <- a[1] - 1
+  mecz[1:j,3] <- 0
+  j <- j+1
+  
+  for (i in 2:length(a)) {
+    
+    k <- a[i]
+    mecz[j:(k-1),3] <- b[i-1]
+    j <- k + 1
+  }
+}
+
+#zlaczenie obu ramek danych, dodanie danej jakosciowej i zmiana nazw kolumn
+meczA <- mecz[,1:2]
+meczA <- meczA %>%
+  mutate(team = "STK Czarni Słupsk") %>%
+  rename(points = A, czas_w_sekundach = Zegar)
+meczB <- mecz[,c(3,2)]
+meczB <- meczB %>%
+  mutate(team = "KS Księżak Łowicz") %>%
+  rename(points = B, czas_w_sekundach = Zegar)
+
+mecz <- rbind(meczA,meczB)
+
+
+
+#wykres
+ggplot(data = mecz, aes(x = czas_w_sekundach, y = points, color = team)) + 
+  geom_line() +
+  xlab("Czas meczu [s]") +
+  ylab("Punkty") + 
+  labs(color = "Drużyna") +
+  transition_reveal(czas_w_sekundach)
+```
+
+
+## Co jest do poprawienia
+1. Przede wszystkiem animacja jest fajnym feature'em, ale uniemozliwia przyjzenie sie ostatecznemu wynikowi meczu. Zaproponuje inne rozwiazanie zostawiajace animacje, ale juz jako dodatek, a nie glowna czesc obrazka.\
+2. Linie powinny byc grubsze, gdyz sa jedyna rzecza na obrazku i powinno sie na nie zwrocic uwage.\
+3. Przerwy w meczu powinny zostac zaznaczone, gdyz sa wazna czescia rozgrywki.\
+4. Czas powinien byc podany w minutach tak, jak to sie okresla przez komentatorow.\
+5. Zmienic tlo na mniej przeszkadzajace w odbiorze.\
+
+
+## Moja propozycja
+```{r moj_obrazek_1, echo=TRUE}
+ggplot(data = mecz, aes(x = czas_w_sekundach, y = points, color = team)) + 
+  scale_color_manual(values=c("#FF0000", "#000000")) +
+  geom_line(size=2) +
+  geom_vline(xintercept = c(600,1200,1800,2400), size = c(1, 1.5, 1, 1.5), 
+             color = "black", linetype = "dashed", alpha=0.5) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 2450), breaks=c(0,600, 1200, 1800, 2400),
+                     labels=c("0", "10", "20", "30", "40")) +
+  xlab("Czas meczu [min]") +
+  ylab("Punkty") + 
+  labs(color = "Drużyna") +
+  theme_bw()
+
+# przerobienie danych na roznice
+mecz_roznice <- mecz[1:2401,]
+mecz_roznice[,1] <- mecz_roznice[,1] - mecz[2402:4802,][,1]
+
+
+ggplot(data = mecz_roznice, aes(x = czas_w_sekundach, y = points, color = (points>=0))) + 
+  geom_line(aes(group=1)) +
+  scale_color_manual(values=c("#FF0000", "#000000"), labels = c("KS Ksiezak Lowicz", "STK Czarni Slupsk")) +
+  geom_vline(xintercept = c(600,1200,1800,2400), size = c(1, 1.5, 1, 1.5), 
+             color = "black", linetype = "dashed", alpha=0.5) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 2450), breaks=c(0,600, 1200, 1800, 2400),
+                     labels=c("0", "10", "20", "30", "40")) +
+  scale_y_continuous(limits = c(-4, 26), breaks=c(-2,0, 10, 20, 25),
+                     labels=c("-2", "0", "10", "20", "25")) +
+  xlab("Czas meczu [min]") +
+  ylab("Przewaga STK Czarni Slupsk") + 
+  labs(color = "Przewaga") +
+  transition_reveal(czas_w_sekundach)
+  
+
+
+```
+
+
+
+
+Probowalem polaczyc je w jeden za pomoca `ggarrange`, jednakze nie udalo mi sie to, bo nie wspolpracuje on z animacjami :(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
