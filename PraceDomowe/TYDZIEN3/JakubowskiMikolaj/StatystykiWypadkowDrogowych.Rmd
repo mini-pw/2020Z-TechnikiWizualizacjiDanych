@@ -1,0 +1,68 @@
+---
+author: "Mikołaj Jakubowski"
+date: "25/10/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## PIERWOWZÓR
+
+
+```{r, echo=FALSE}
+library(pdftools)
+library(ggplot2)
+path<-"./07102019.pdf"
+file_vector <- pdf_text(pdf = path)
+#file_vetor is one chunk, must be splited and spaces removed
+all<-trimws( strsplit(file_vector, "\n")[[1]])
+policeData<-data.frame(events<-all[ seq(8,18,2)],
+                       number_of_cases<-as.numeric( all[ seq(7,17,2)]))
+ggplot(data=policeData, aes(x=events, y=number_of_cases)) + 
+  geom_bar(stat="identity", fill="steelblue", width=0.7) +
+  #nubers on top of bars
+  geom_text(aes(label=number_of_cases), vjust=1.6, size=3.5)+
+  #remove of titles and labels rotacion
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 90))
+```
+
+## POPRAWIONY
+
+```{r, echo=TRUE}
+library(pdftools)
+library(ggplot2)
+path<-"./07102019.pdf"
+file_vector <- pdf_text(pdf = path)
+#file_vetor is one chunk, must be splited and spaces removed
+all<-trimws( strsplit(file_vector, "\n")[[1]])
+policeData <- data.frame(Event<-all[ seq(8,18,2)],
+                       Number<-as.numeric( all[ seq(7,17,2)]))
+policeData <- cbind(policeData, c(rep("Zatrzymania", 3), rep("Wypadki", 3)))
+colnames(policeData)[3] = "Type"
+policeData$Event = c("Zatrzymani\n na gorącym\n uczynku", "Zatrzymani\n poszukiwani", "Zatrzymani\n nietrzeźwi\n kierujący",
+                     "Wypadki\n drogowe", "Zabici w\n wypadkach", "Ranni w\n wypadkach")
+
+ggplot(data=policeData, aes(x = reorder(Event, -Number), y = Number, fill = Type)) + 
+  geom_bar(stat="identity", width=0.7) +
+  #nubers on top of bars
+  geom_text(aes(label=Number), vjust=1.6, size=3.5) +
+  theme_minimal() +
+  #remove of titles and labels rotacion
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 0)) +
+  ggtitle("INFORMACJA DZIENNA STATYSTYKA DNIA: 2019-10-07")
+```
+
+# Zmiany
+- pogrupowałem interwencje w kategorie wypadków i zatrzymań
+- wyświetliłem słupki w kolejności malejącej dla zwiększenia przejrzystości
+- zmieniłem podpisy pod słupkami na bardziej czytelne
+- liczb na słupkach nie ruszałem, bo są świetnym pomysłem w tym wypadku
+- zmieniłem kolor skórki, w moim prywatnym odczuciu wygląda nieco estetyczniej
+- dodałem tytuł
+
+http://policja.pl/pol/form/r5002806272,07102019.html
