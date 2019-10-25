@@ -1,0 +1,52 @@
+---
+title: "pd2"
+author: "Ada G¹ssowska"
+date: "24 paŸdziernika 2019"
+output: html_document
+---
+##Pierwowzór
+```{r, echo=FALSE}
+knitr::include_graphics("C:/Users/Ada/Desktop/wykres_pierw.png")
+knitr::include_graphics("C:/Users/Ada/Desktop/wykres_pierw2.png")
+
+```
+
+
+##Moja wersja
+
+
+```{r setup, fig.align='center', fig.height=6, fig.width=10, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(ggrepel)
+library(tidyverse)
+
+arrow = arrow(angle=10, type = "closed")
+match_data <- data.frame(Player=c("Kjaerbye","aizy", "JUGi", "gade", "mouz", "cajunb", "rallen","TaZ", "MINISE", "dycha"),
+                         Team = c(rep("North",4),"Aristocracy","North",rep("Aristocracy",4)), Kills=c(61,57,52,43,45,36,39,39,36,36),
+                         Deaths=c(34,37,40,43,50,42,47,50,48,54))
+match_data$ratio = match_data$Kills/match_data$Deaths
+
+
+
+ggplot(match_data, aes(y = Kills, x = Deaths, label = Player, color = Team, size = ratio)) +
+  geom_point() +
+  geom_text_repel(color = "white", size=4.5, hjust=1) + #zmieniam wyglad nazw graczy
+  ggtitle("North vs. Aristocracy - statystyki graczy")+ #dodaje tytu³
+  theme_dark()+ 
+  theme(plot.title = element_text(hjust=0.5, size=25, face="bold", color="goldenrod3"), #modyfikacja tytu³u
+        axis.title=element_text(size=22, color="gray"))+  #modyfikacja tytu³ów osi
+  xlab(expression(symbol('\254')~ "Deaths")) + ylab(expression("Kills" ~ symbol('\256')))+ #dodanie strza³ek
+  theme(axis.text.x = element_text(size = 14, angle=30), axis.text.y = element_text(size=14)) +
+  xlim(60,30) + ylim(30,62) +
+  theme(plot.background = element_rect(fill = "black"))+ #zmiana t³a
+  scale_color_manual(values=c("violetred4", "darkgreen"))+ #zmiana kolorów punktów
+  theme(plot.margin = unit(c(1,2,1,1), "cm")) + #dodanie wiekszego marginesu z prawej strony
+  theme(legend.text = element_text(size=12, color="white"),  
+        legend.title = element_text(size=13,face="bold" , color="white"), #zmiana wygl¹du legendy
+        legend.background = element_rect(fill="black"))+
+  guides(color=guide_legend("Dru¿yna"), size=guide_legend("Kill/Death Ratio"))
+```
+
+## Opis zmian
+
+Moim zdaniem nie potrzebne by³y dwa wykresy - drugi zawar³am w pierwszym obrazuj¹c Kill/Death ratio za pomoc¹ wielkoœci punktu na wykresie. Doda³am do wykresu tytu³, który wed³ug mnie by³ porzebny. Zmieni³am czcionki, poniewa¿ na pierwowzorze najpierw rzuca³y siê w oczy nazwy u¿ytkowników, a dopiero poŸniej nazwy osi. Równie¿ wartoœci na osiach by³y za ma³e. Zamieni³am oœ x z osi¹ y, tak jest wed³ug mnie czytelniej, chocia¿ to dosyæ mocno subiektywne. Doda³am równie¿ strza³ki aby od razu by³o widaæ w któr¹ stronê rosn¹ wartoœci na osiach, gdy¿ jest to nieintuicyjne. Zmieni³am kolorystykê ca³ego wykresu na bardziej charakterystyczn¹ - taka bardziej mi siê kojarzy z wykresami na stronach o grach komputerowych. 
