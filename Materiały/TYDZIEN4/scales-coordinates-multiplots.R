@@ -2,6 +2,10 @@ library(ggplot2)
 library(SmarterPoland)
 library(dplyr)
 
+ggplot(countries, aes(x = continent, label = paste(continent, 2, sep = "\n"))) +
+  geom_bar() +
+  geom_text(stat = "count")
+
 # 1. skale -----------------------------------------------------------------
 
 p <- ggplot(data = countries, aes(x = continent, fill = continent)) +
@@ -56,7 +60,6 @@ mutate(countries_f, continent = factor(continent, levels = continent_order, labe
   geom_point() +
   facet_wrap(~ continent)
 
-
 mutate(countries_f, continent = factor(continent, levels = sapply(strsplit(cntr_pop, " "), first), 
                                        labels = cntr_pop)) %>% 
   ggplot(aes(x = death.rate, y = birth.rate)) +
@@ -67,6 +70,9 @@ mutate(countries_f, continent = factor(continent, levels = sapply(strsplit(cntr_
 # alternatywnie library(RColorBrewer)
 
 p + scale_fill_manual(values = c("red", "grey", "black", "navyblue", "green"))
+
+p + scale_fill_manual(values = rainbow(5))
+
 # gradienty: przykladowo scale_fill_gradient()
 
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
@@ -110,16 +116,25 @@ grid.arrange(p + coord_cartesian(xlim = c(5, 10)) + ggtitle("coord_cartesian"),
              p + scale_x_continuous(limits = c(5, 10)) + ggtitle("scale_x_continuous - limits"),
              ncol = 1)
 
+grid.arrange(p + coord_cartesian(xlim = c(5, 10)) + ggtitle("coord_cartesian") + 
+               theme(legend.position = "none"),
+             p + scale_x_continuous(limits = c(5, 10)) + 
+               ggtitle("scale_x_continuous - limits") +
+               theme(legend.position = "bottom"),
+             ncol = 1, heights = c(0.45, 0.55))
+
 main_plot <- ggplot(data = countries, aes(x = birth.rate, y = death.rate, color = continent)) +
   geom_point() 
 
 density_death <- ggplot(data = na.omit(countries), aes(x = death.rate, fill = continent)) +
   geom_density(alpha = 0.2) +
   coord_flip() +
+  scale_y_reverse() +
   theme(legend.position = "none")
 
 density_birth <- ggplot(data = countries, aes(x = birth.rate, fill = continent)) +
   geom_density(alpha = 0.2) +
+  scale_y_reverse() +
   theme(legend.position = "none")
 
 library(gridExtra)
@@ -139,7 +154,8 @@ get_legend <- function(gg_plot) {
   grob_table[["grobs"]][[which(sapply(grob_table[["grobs"]], function(x) x[["name"]]) == "guide-box")]]
 }
 
-grid.arrange(density_death, main_plot + theme(legend.position = "none"), get_legend(main_plot), density_birth, 
+grid.arrange(density_death, main_plot + theme(legend.position = "none"), 
+             get_legend(main_plot), density_birth, 
              ncol = 2, heights = c(0.7, 0.3), widths = c(0.3, 0.7))
 
 
@@ -194,3 +210,14 @@ p1 / p2
 # rozklady brzegowe w patchwork
 density_death + main_plot + plot_spacer() + density_birth + 
   plot_layout(ncol = 2, heights = c(0.7, 0.3), widths = c(0.3, 0.7))
+
+p1 <- ggplot(countries, aes(x = continent, y = birth.rate)) +
+  stat_summary(fun.y = "mean", geom = "bar") +
+  scale_y_reverse() +
+  coord_flip()
+
+p2 <- ggplot(countries, aes(x = continent, y = death.rate)) +
+  stat_summary(fun.y = "mean", geom = "bar") +
+  coord_flip()
+
+p1 + p2
