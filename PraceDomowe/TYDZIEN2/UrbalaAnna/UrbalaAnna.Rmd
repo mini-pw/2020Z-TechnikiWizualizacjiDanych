@@ -1,0 +1,68 @@
+---
+title: "TWD Praca domowa 1"
+author: "Anna Urbala"
+date: "14 października 2019"
+output: html_document
+---
+
+```{r setup, message=FALSE, echo=FALSE}
+library(ggplot2)
+library(scales)
+library(dplyr)
+```
+
+# Dane źródłowe
+
+[BIG InfoMonitor](https://media.bik.pl/informacje-prasowe/464473/zaleglosci-mlodych-przekroczyly-1-mld-zl) - Finansowa sytuacja byłaby lepsza, gdyby nie rozrzutność i życie ponad stan
+
+Dane pokazują, jaką część dochodów ludzie w różnym wieku tracą przez rozrzutność. Mamy podaną frakcję osób z danej kategorii wiekowej, które dany procent dochodu przeznaczają na zbyt drogie rzeczy. Wybrałam wykres procentowy, gdyż dobrze widać, jak układają się procenty, m.in. można bez problemu określić, wśród których grup najmniej ludzi wydaje ponad 5% albo nic.
+
+### Wczytanie danych
+
+Dane do pliku `dane.csv` musiałam ręcznie przepisać ze strony.
+```{r read_data}
+data <- read.csv(
+  'dane.csv',
+  header = TRUE,
+  sep = ",")
+```
+
+### Dodatkowa kolumna do ustawiania pozycji etykiet
+
+```{r labels}
+data <- data %>%
+  group_by(age) %>%
+  arrange(age, factor(proc, levels = c("ponad 20%", "10-20%", "5-10%", "3-5%", "do 3%", "nic"))) %>%
+  mutate(lab_ypos = cumsum(value) - 0.5 * value) 
+```
+
+### Paleta kolorów
+
+```{r palette}
+palette <- c("#FF9999", "#FF6666", "#FF0000", "#CC0000", "#990000", "#660000")
+```
+
+### Generowanie wykresu
+
+```{r plot}
+ggplot(data,
+             aes(
+               y = value,
+               x = age,
+               fill = factor(
+                 proc,
+                 levels = # sortowanie po frakcji
+                   c("nic", "do 3%", "3-5%", "5-10%", "10-20%", "ponad 20%")))) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = palette) + # ustawienie palety
+  labs(
+    title = "Jaką część miesięcznych dochodów tracisz, kupując zbyt drogie rzeczy?",
+    fill = "Frakcja dochodów",
+    x = "Wiek",
+    y = "Frakcja osób") +
+  scale_y_continuous(labels = dollar_format(suffix = "%", prefix = "")) + # dodanie prefiksow do skali y
+  geom_text( # dodanie wartosci procentowych w srodku pol
+    aes(y = lab_ypos, label = paste(value, "%", sep = ""), group = age),
+    color = "white") 
+```
+

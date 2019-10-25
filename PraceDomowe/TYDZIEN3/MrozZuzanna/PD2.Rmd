@@ -1,0 +1,90 @@
+---
+title: "PD 2"
+author: "Zuzanna Mroz"
+date: "24.10.2019"
+output: html_document
+--- 
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+library(pdftools)
+policeData <- pdf_text(pdf = "07102019.pdf")
+policeData<-trimws( strsplit(policeData, "\n")[[1]])
+policeData<-data.frame(events=policeData[ seq(8,18,2)],
+                       number_of_cases=as.numeric( policeData[ seq(7,17,2)]))
+```
+
+## Wykres oryginalny
+
+```{r wykres oryg}
+
+ggplot(data=policeData, aes(x=events, y=number_of_cases)) + 
+  geom_bar(stat="identity", fill="steelblue", width=0.7) +
+  geom_text(aes(label=number_of_cases), vjust=1.6, size=3.5)+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 90)) -> plot
+
+```
+
+
+## Wykres polepszony
+
+
+```{r wykres +}
+
+ggplot(data = policeData, 
+       aes(x = reorder(events, number_of_cases), y = number_of_cases)) + 
+  geom_bar(stat = "identity", width = 0.66, fill="#1a1a1a") +     # barplot
+  
+  geom_text(aes(label = number_of_cases), hjust = -0.2, size = 3.5) +  # liczby przy kolumnach
+  
+  coord_flip() + expand_limits(y = c(0, 550)) +            # skale
+  scale_y_continuous(breaks = seq(0,550,50), expand = c(0.01, 0.02)) + 
+  
+  labs(title = "STATYSTYKA DNIA: ",      # oznaczenia
+       subtitle = "2019-10-07",
+       x = "Rodzaj przypadku",
+       y = "Ilosc przypadkow",
+       caption = "Zrodlo: http://policja.pl") +
+  
+   theme(
+    title = element_text(size = 12),
+    
+    axis.text.x = element_text(size = 9),
+    axis.text.y = element_text(size = 10),
+    
+    axis.line.x.bottom= element_line(color = "black", size = 0.5, linetype = "solid"),
+    axis.line.y.left = element_line(color = "black", size = 0.5, linetype = "solid"),
+    
+    panel.grid.major.x = element_line(color = "gray", size = 0.3, linetype = "solid"),
+    panel.grid.minor.x = element_line(color = "gray", size = 0.3, linetype = "dashed"),
+    
+    plot.caption = element_text(size = 9, face = "italic"),
+    
+    panel.background = element_blank(),   # biale tlo
+    aspect.ratio = 0.65 ) -> plot_lepszy
+
+
+```
+
+
+
+## Oryginal vs Przerobka
+
+
+```{r side1, echo=TRUE}
+plot
+
+```
+```{r side2, echo=TRUE}
+plot_lepszy
+
+```
+
+Na wykresie oryginalnym dane pokazane sa w dosyc nieprzystepny sposob, przede wszystkim os x na oryginalnym wykresie bardzo ciezko odczytac, co mozna latwo naprawic zmieniajac orientacje wykresu. Teraz da sie ta os przeczytac, a takze duzo lepiej widac proporcje miedzy kolumnami. Szczegolowe liczby ilosci przypadku wypchniete zostaly poza slupki bo ostatni przypadek z siedmioma przypadkami wychodzil poza wykres. Dodatkowo zostaly dodane opisy obu osi, tytul a takze zrodlo, oraz linie pomocnicze dla wiekszej szczegolowosci i ogolnej estetyki wykresu. Zostal takze zmieniony kolor wypelnienia glownie ze wzgledow czysto estetycznych bo domyslny wyblakly niebieski troche razil w oczy, a czarny (albo bardzo bardzo ciemny szary) jest minimalistyczny wiec daje sie skupic na danych i tematycznie pasuje bo wyglada troche jak czarno-biale pasy zlodzieja.
