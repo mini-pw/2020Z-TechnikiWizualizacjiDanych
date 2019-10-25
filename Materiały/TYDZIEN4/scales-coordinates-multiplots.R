@@ -106,13 +106,18 @@ p + coord_equal()
 
 # coord_cartesian nie usuwa punktów
 p + coord_cartesian(xlim = c(5, 15))
-p + scale_x_continuous(limits = c(5, 15))
+p + scale_x_continuous(limits = c(5, 15)) 
 
 # 3. wiele wykresow na jednym rysunku ---------------------------------------------------
 
 library(gridExtra)
 
 grid.arrange(p + coord_cartesian(xlim = c(5, 10)) + ggtitle("coord_cartesian"),
+             p + scale_x_continuous(limits = c(5, 10)) + ggtitle("scale_x_continuous - limits"),
+             ncol = 1)
+
+grid.arrange(p + coord_cartesian(xlim = c(5, 10)) + ggtitle("coord_cartesian") + 
+               theme(legend.position = "none"),
              p + scale_x_continuous(limits = c(5, 10)) + ggtitle("scale_x_continuous - limits"),
              ncol = 1)
 
@@ -141,6 +146,9 @@ library(gridExtra)
 library(grid)
 
 grid.arrange(density_death, main_plot, density_birth, 
+             ncol = 2)
+
+grid.arrange(density_death, main_plot, rectGrob(gp = gpar(fill = NA, col = NA)), density_birth, 
              ncol = 2)
 
 grid.arrange(density_death, main_plot, rectGrob(gp = gpar(fill = NA, col = NA)), density_birth, 
@@ -210,14 +218,3 @@ p1 / p2
 # rozklady brzegowe w patchwork
 density_death + main_plot + plot_spacer() + density_birth + 
   plot_layout(ncol = 2, heights = c(0.7, 0.3), widths = c(0.3, 0.7))
-
-p1 <- ggplot(countries, aes(x = continent, y = birth.rate)) +
-  stat_summary(fun.y = "mean", geom = "bar") +
-  scale_y_reverse() +
-  coord_flip()
-
-p2 <- ggplot(countries, aes(x = continent, y = death.rate)) +
-  stat_summary(fun.y = "mean", geom = "bar") +
-  coord_flip()
-
-p1 + p2
