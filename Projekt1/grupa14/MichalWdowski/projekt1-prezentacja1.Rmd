@@ -1,0 +1,97 @@
+---
+title: "Projekt1-prezentacja1"
+author: "Michał Wdowski"
+date: "October 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r pressure, echo=FALSE}
+
+# experimenting script
+
+library(ggplot2)
+library(dplyr)
+library(stringi)
+
+k_or_m <- function(s){
+    #funkcja zamienia K na nic i M na '000'
+    if(s == "K") return(FALSE)
+    else return(TRUE)
+}
+
+get_value <- function(s){
+    # Funckja przeksztalca napis typu E420M na 4200, E690K na 690, itp
+    x <- as.numeric(stri_c(stri_sub(s, from = 2, to = stri_length(s)-1)))
+    if(stri_sub(s, from = stri_length(s), length = 1 )=="M") x <- x*1000
+    return(x)
+}
+
+data <- read.csv(file = "data.csv", head = TRUE, stringsAsFactors = FALSE)
+leagues <- read.csv(file = "leagues.csv", head = TRUE, stringsAsFactors = FALSE)
+
+data %>%
+    select(-c(X, Photo, Flag, Club.Logo, Body.Type, Contract.Valid.Until, 
+              International.Reputation, Joined, Loaned.From, Real.Face, Release.Clause, Work.Rate,
+              LAM, LB, LCB, LCM, LDM, LF, LM, LS, LW, LWB, RAM, RB, RCB, RCM, RDM, RF, RM, RS, RW, RWB, CAM, CB, CDM, CF, CM, ST)) %>%
+    left_join(leagues, by = c("Club" = "Club")) -> data
+
+summarize(group_by(filter(data, League == "Bundesliga"), Club), n=n() )
+
+data$League[is.na(data$League)] <- "Other"
+data$Wage[is.na(data$Wage)] <- 0
+
+data %>%
+    mutate(Value = get_value(Value), Wage = get_value(Wage)) -> data
+data$League <- factor(data$League, levels = c("Primera Division", "Premier League", "Bundesliga", "Serie A", "Ligue 1", "Other"))
+#write.csv(data, file = "MyData.csv")
+
+# rozkład numerow na koszulkach (lub czegokolwiek innego) w zaleznosci od ligi
+ggplot(data = data, aes(x = League, y = Jersey.Number)) +
+    geom_boxplot()
+
+# zarobki pilkarza a jego overall
+ggplot(data = data, aes(x = Overall, y = Wage, color = League)) +
+    geom_point() +
+    facet_wrap(~League)
+
+# srednia overalla klubow
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = head(data2, 500), aes(x = Club, y = meanOverall-60, fill = League, width = 1)) +
+    geom_bar(stat = "identity") +
+    theme(
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank()
+    ) 
+
+# srednia overalla klubow a wydatki na pilkarzy
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    mutate(isOther = League == "Other") %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = data2, aes(x = meanOverall, y = Expences, color = isOther)) +
+    geom_point()
+
+# srednia overalla klubow a wydatki na pilkarzy w poszczegolnych ligach
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    mutate(isOther = League == "Other") %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = data2, aes(x = meanOverall, y = Expences, colors = Club)) +
+    geom_point() +
+    facet_wrap(~League)
+
+```
