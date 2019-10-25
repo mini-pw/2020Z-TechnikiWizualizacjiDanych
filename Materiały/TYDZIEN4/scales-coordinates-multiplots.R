@@ -1,5 +1,3 @@
-
-
 library(ggplot2)
 library(SmarterPoland)
 library(dplyr)
