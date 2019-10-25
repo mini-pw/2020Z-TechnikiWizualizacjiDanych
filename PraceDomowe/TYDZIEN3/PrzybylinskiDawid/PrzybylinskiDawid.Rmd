@@ -1,0 +1,47 @@
+---
+title: "Praca domowa 2"
+author: "Dawid Przybyliński"
+output: html_document
+---
+
+## Wykres oryginalny 
+Wykres znajduje się pod adresem: https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Fnicolemartin1%2Ffiles%2F2018%2F11%2FChart-of-unemployment-rates.jpg
+
+
+## Przerobienie wykresu:
+
+```{r, message=FALSE}
+library(ggplot2)
+library(ggrepel)
+
+# Dane:
+degree <- c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", 
+      "Associate's degree", "Some college, no degree", "High school diploma", "Less than a high school diploma")
+unemployment <- c(0.017, 0.015, 0.024, 0.028, 0.038, 0.050, 0.054, 0.080) 
+earning <- c(1623, 1730, 1341, 1137, 798, 738, 678, 493)
+
+data = as.data.frame(cbind(unemployment, earning))
+
+# Tworzenie wykresu punktowego:
+ggplot(data = data, aes(x=earning, y=unemployment)) +
+  geom_point(color = "#0099cc", size=4) +
+  geom_label_repel(aes(label=degree), size=3.5, vjust=-0.5, hjust=-0.1, fill = "#0099cc", color = 'white') + 
+  scale_x_continuous(breaks = seq(0,2000,400), labels = c("0$","400$","800$","1200$","1600$","2000$")) +
+  scale_y_continuous(breaks = seq(0,0.08, 0.02), labels = c("0%","2%","4%","6%","8%")) +
+  coord_cartesian(xlim = c(0, 2000), ylim = c(0, 0.09)) +
+  theme_minimal() +
+  ggtitle("Earning and unemployment rates by education level") +
+  xlab("Weekly earnings") + 
+  ylab("Unemployment rate") +
+  theme(
+    axis.text = element_text(size = 11),
+    panel.grid = element_line(size=.1, colour="lightgray" ),
+    plot.title = element_text(size = 18),
+    axis.title.x = element_text(size = 13.5),
+    axis.title.y = element_text(size = 13.5)
+  )
+```
+
+
+## Uzasadnienie:
+Moim głównym celem było podkreślenie korelacji pomiędzy zarobkami a bezrobociem w poszczególnych grupach, stąd wybór wykresu punktowego. Widoczna jest na nim zmiana obu tych wartości przy przechodzeniu między stopniami naukowymi.

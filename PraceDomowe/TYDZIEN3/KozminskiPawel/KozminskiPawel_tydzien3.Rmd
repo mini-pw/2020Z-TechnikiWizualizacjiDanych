@@ -1,0 +1,225 @@
+---
+title: "Praca Domowa - tydzień nr 3"
+author: "Paweł Koźmiński"
+date: "25 października 2019"
+output: html_document
+---
+
+## Wprowadzenie
+
+Zadaniem drugiej pracy domowej z Technik Wizualizacji Danych było wybranie jednego z projektów wykonanych na zeszłotygodniowe zajęcia oraz przedstawienie własnej, ulepszonej wizji wykresu. W moim odczucią jedną z ciekawszych prac było wykonanie animowanego GIFa przez Wojtka Szczypka, który w ten sposób chciał przedstawić przebieg pierwszoligowego spotkania koszykarskiego. Postanowiłem podjąc wyzwanie i zaprezentować w jaki sposób ja sobie wyobrażam taką wizualizację.
+
+### Wczytanie danych
+
+Na potrzeby realizacji projektu skorzystałem z kodu przygotowanego przez Wojtka. Do utworzonej ramki danych dodałem kilka modyfikacji, które były niezbędne do mojego podejścia - potrzebowałem między innymi na bieżąco obliczanej punktowej różnicy wyniku. Przyznaję jednak, że Wojtek wykonał kawał dobrej roboty przy wczytaniu danych z internetowej strony ligi. Dla urozmaicenia, wybrałem inny mecz z tych samych rozgrywek: GKS Tychy - Miasto Szkła Krosno z 19 października br.
+
+
+```{r wczytanie, include=FALSE}
+library(XML)
+library(RCurl)
+library(rlist)
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+options(stringsAsFactors = FALSE)
+library(png)
+
+krosno <- readPNG('miastoszkla.png')
+tychy <- readPNG('Tychy.png') #wczytanie herbow
+
+#Wczytanie danych - kod Wojtka Szczypka:
+
+theurl <- getURL("https://rozgrywki.pzkosz.pl/mecz/96620/gks-tychy---miasto-szkla-krosno.html",.opts = list(ssl.verifypeer = FALSE) )
+tables <- readHTMLTable(theurl)
+tables <- list.clean(tables, fun = is.null, recursive = FALSE)
+kwarta1 <- tables[[3]]
+kwarta2 <- tables[[4]]
+kwarta3 <- tables[[5]]
+kwarta4 <- tables[[6]]
+colnames(kwarta1) <- c("Home", "PunktyHome", "Zegar", "PunktyAway", "Away")
+colnames(kwarta2) <- c("Home", "PunktyHome", "Zegar", "PunktyAway", "Away")
+colnames(kwarta3) <- c("Home", "PunktyHome", "Zegar", "PunktyAway", "Away")
+colnames(kwarta4) <- c("Home", "PunktyHome", "Zegar", "PunktyAway", "Away")
+
+#wziecie czasow w postaci minuty:sekundy
+kwarta1[,3] <- substr(kwarta1[,3], 0, 5)
+kwarta2[,3] <- substr(kwarta2[,3], 0, 5)
+kwarta3[,3] <- substr(kwarta3[,3], 0, 5)
+kwarta4[,3] <- substr(kwarta4[,3], 0, 5)
+
+a <- strptime(kwarta1[,3], format = "%M:%S")
+time_in_seconds1 = 600 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta2[,3], format = "%M:%S")
+time_in_seconds2 = 1200 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta3[,3], format = "%M:%S")
+time_in_seconds3 = 1800 - (a$min * 60 + a$sec)
+
+a <- strptime(kwarta4[,3], format = "%M:%S")
+time_in_seconds4 = 2400 - (a$min * 60 + a$sec)
+
+kwarta1[,3] <- time_in_seconds1
+kwarta2[,3] <- time_in_seconds2
+kwarta3[,3] <- time_in_seconds3
+kwarta4[,3] <- time_in_seconds4
+
+mecz <- rbind(kwarta1,kwarta2,kwarta3,kwarta4)
+mecz <- mecz[,2:4]
+
+mecz[,1] <- as.numeric(mecz[,1])
+mecz[,3] <- as.numeric(mecz[,3])
+
+mecz <-  mecz %>%
+  group_by(Zegar) %>%
+  summarise(A = max(PunktyHome, na.rm = TRUE),
+            B = max(PunktyAway, na.rm = TRUE))
+
+all_seconds <- seq(0,2400)
+all_seconds <- as.data.frame(all_seconds)
+
+#laczymy sekundy w meczu z sekundami w ktorych sie cos dzialo
+mecz <- mecz %>%
+  right_join(all_seconds, by = c("Zegar" = "all_seconds") )
+mecz <- mecz[,c(2,1,3)]
+mecz[is.infinite(mecz %>%
+                   pull(1)), 1] <- NA
+mecz[is.infinite(mecz %>%
+                   pull(3)), 3] <- NA
+
+
+a <- all_seconds[!is.na(mecz[,1]),1] + 1
+b <- mecz[!is.na(mecz[,1]),1][[1]]
+if (b[1] == 0) {
+  j <- a[2] - 1
+  mecz[1:j,1] <- 0
+  j <- j+1
+  for (i in 2:length(a)-1) {
+    k <- a[i+1]
+    mecz[j:(k-1),1] <- b[i]
+    j <- k + 1
+  }
+} else {
+  j <- a[1] - 1
+  mecz[1:j,1] <- 0
+  j <- j+1
+  
+  for (i in 2:length(a)) {
+    
+    k <- a[i]
+    mecz[j:(k-1),1] <- b[i-1]
+    j <- k + 1
+  }
+}
+
+
+## algorytmy zmieniajace ilsoc punktow z NA na prawidlowa dla druzyny B
+a <- all_seconds[!is.na(mecz[,3]),1] + 1
+b <- mecz[!is.na(mecz[,3]),3][[1]]
+
+if (b[1] == 0) {
+  j <- a[2] - 1
+  mecz[1:j,3] <- 0
+  j <- j+1
+  for (i in 2:length(a)-1) {
+    k <- a[i+1]
+    mecz[j:(k-1),3] <- b[i]
+    j <- k + 1
+  }
+  
+} else {
+  j <- a[1] - 1
+  mecz[1:j,3] <- 0
+  j <- j+1
+  
+  for (i in 2:length(a)) {
+    
+    k <- a[i]
+    mecz[j:(k-1),3] <- b[i-1]
+    j <- k + 1
+  }
+}
+
+#zlaczenie obu ramek danych, dodanie danej jakosciowej i zmiana nazw kolumn
+meczA <- mecz[,1:2]
+meczA <- meczA %>%
+  mutate(team = "Home") %>%
+  rename(points = A, czas_w_sekundach = Zegar)
+meczB <- mecz[,c(3,2)]
+meczB <- meczB %>%
+  mutate(team = "Away") %>%
+  rename(points = B, czas_w_sekundach = Zegar)
+
+wojtek <- rbind(meczA,meczB)
+wojtek <- wojtek %>%
+  mutate(druzyna = ifelse(team=="Home", "GKS Tychy", "Miasto Szkła")) 
+  
+wojtek <- wojtek[,-3]
+
+
+# Modyfikacje kodu - Pawel Kozminski:
+
+mecz <- cbind(meczA,meczB)
+
+colnames(mecz)[c(1, 4)] <- c("pkt.Home", "pkt.Away")
+mecz <- mecz[,-5]
+
+# W celu wlasciwego wyswietlania wykresow area, zamiast 0 stosujemy symboliczna wartosc, niemal Epsilon, ktora
+# jest na wykresie niewidoczna, a bardzo pomocna
+
+mecz.home <- mecz %>%
+  mutate(pkt.diff = ifelse(pkt.Home - pkt.Away>0, pkt.Home-pkt.Away, 0.0001)) 
+
+mecz.away <- mecz %>%
+  mutate(pkt.diff = -ifelse(pkt.Home - pkt.Away<0, pkt.Away-pkt.Home, 0.0001))
+```
+
+### Oryginalny wykres
+
+Oto wykres zaproponowany przez Wojtka - dla nowowybranego spotkania:
+
+```{r oryginal, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = wojtek, aes(x = czas_w_sekundach, y = points, color = druzyna)) + 
+  geom_line() +
+  xlab("Czas meczu [s]") +
+  ylab("Punkty") + 
+  labs(color = "Drużyna") +
+  transition_reveal(czas_w_sekundach)
+```
+
+
+## Wizja oraz motywacje
+
+Moją wizją na prezentację wyniku meczu koszykarskiego było urozmaicenie oryginalnego wykresu, nie zachowując przy tym żadnych poprzednio zawartych informacji. Moja praca składa się głównie z trzech elementów: wykresu powierzchniowego reprezentującego różnicę punktów, liczb przedstawiających wynik punktowy zespołu w konkretnej chwili oraz dodatkowo herbów uczestniczących drużyn. W porównaniu z oryginalnym wykresem zdecydowałem się również na modyfikację prezentacji czasu: w moim przypadku zamist sekund, zaznaczone (przerywanymi liniami) są kwarty meczu koszykarskiego. Subtelne linie pomocnicze występują również w poziomie - co wartość 5 punktów w górę bądź dół. Oczywiście wyraźnie zaznaczona została graniczna linia y=0 - linia remisu. Zgadza się - w trzeciej części gry, kiedy odnosi się wrażenie, że gif już się zaciął, w rzeczywistości przez niemal połowę kwarty żadnemu z zespołów nie udało się zdobyć żadnego punktu - zawodnicy oddali 13 niecelnych rzutów z rzędu. <br>
+<br>
+
+
+```{r wykres, echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(, aes(x = czas_w_sekundach, y = pkt.diff)) +   #opuszczenie argumentu data, ktory bedzie wprowadzony pozniej
+  geom_area(data=mecz.home, fill="pink", color = "red") +
+  geom_area(data=mecz.away, fill="lightblue", color = "blue") +
+  geom_text(data = mecz.home, aes(label = pkt.Home), x = 2600, y = 1.5, size = 6) + #wynik spotkania
+  geom_text(data = mecz.away, aes(label = pkt.Away), x = 2600, y = -1.5, size = 6) +
+  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = seq(-50, 50, 5), alpha = 0.08, linetype = "dashed") +
+  geom_vline(xintercept = c(600, 1200, 1800, 2400), alpha = 0.2, linetype = "dashed") +
+  theme_classic() +
+  theme(axis.ticks.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
+  scale_y_continuous(name = "Różnica punktów", breaks = c(-5, 0, 5), label = c("5", "0", "5"), #nie deprecjonujmy gości dodając na minus
+                     limits = c(-max(mecz.home$pkt.diff, na.rm = T)*1.1, max(mecz.home$pkt.diff, na.rm = T)*1.1)) + 
+  scale_x_continuous(name = "Kwarta", limits = c(0, 2400),  breaks = c(300, 900, 1500, 2100),
+                     label = c("I", "II", "III", "IV"),
+                     expand = expand_scale(mult =  c(0, 0), add = c(0, 400))) +
+  annotation_raster(krosno, ymin = -8, ymax= -4, xmin = 2450, xmax = 2750) + # wczytanie herbów
+  annotation_raster(tychy, ymin = 4, ymax= 8, xmin = 2450, xmax = 2750) +
+  transition_reveal(czas_w_sekundach) #Forma GIF
+```
+<br>
+Wyróżniłem dwa aspekty, które najbardziej rzucały się w oczy w pracy oryginalnej: dynamika zdobywania punktów przez zespoły oraz bieżący wynik. Mój wykres czytelnie prezentuje te wartości poprzez swoją charakterystykę, dodatkowo dając możliwość porównania zespołów. Uważam, że jest to ciekawe rozwinięcie tematu zawodów sportowych. Spotkanie zakończyło się zwycięstwem drużyny przyjezdnych 62:69.
+
+### Źródła
+
+wikipasy.pl, plk.pl, stackoverflow.com, rdocumentation.org
