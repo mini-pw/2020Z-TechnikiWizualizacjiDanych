@@ -44,7 +44,7 @@ ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   geom_point() + 
-  geom_smooth() 
+  geom_smooth()
 
 ggplot(countries, aes(x = birth.rate, y = death.rate, color = continent)) +
   geom_point() + 
@@ -114,3 +114,9 @@ na.omit(countries) %>%
   ggplot(aes(x = birth.rate, y = death.rate, label = label_for_plot)) +
   geom_point() +
   geom_text_repel()
+
+na.omit(countries) %>%
+  mutate(urodzenia = birth.rate>=15) %>% 
+  ggplot(aes(x = urodzenia)) +
+  geom_bar() +
+  facet_wrap(~ continent + urodzenia)
