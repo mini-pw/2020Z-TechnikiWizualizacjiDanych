@@ -1,0 +1,262 @@
+---
+title: "PracaDomowa2"
+author: "Paulina Przybyłek"
+date: "25 października 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+### Używane biblioteki
+
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(extrafont) #czcionki do wykresu
+extrafont::font_import()
+
+```
+
+## Wstęp do pracy
+
+Wykres orginalny dotyczy akcji amerykańskich i skierowany jest do inwestorów. Artykuł ze strony:
+
+https://www.parkiet.com/Analizy/310159957-WykresDnia-Zyskowne-sektory-z-SP-500.html
+
+opisuje zmiany cen akcji od początku roku 2019. Jak można zauważyć są tam dwa wykresy przedstawiające dane po 1 tygodniu roku oraz po 7 pażdziernika. Jeśli interesuje nas dany sektor i jego zmiany to musimy szukać wartości na dwóch osiach, dodatkowo, tekst jest pionowo co utrudnia czytanie. Poniżej wykres zrobiony przez kolegę tydzień temu:
+
+```{r original_plot, cache=TRUE, message=FALSE, warning=FALSE, echo=FALSE}
+# Ręczne przepisanie liczb i nazw z wykresu
+firstWeekNumbers <-c(1.9, 1.6, 1.3, 1.0, 1.0, 1.0, 0.8, 0.7, -0.2, -0.6, -0.8, -1.4)
+firstWeekValues <- c('Materials', 'Industrials', 'Technology', 'Comm. Services',
+                     'Consumer', 'Discr.', 'Financials', 'S&P 500',
+                     'Health Care', 'Real Estage', 'Consumer Staples', 'Utitles')
+firstWeek <- cbind(firstWeekValues, firstWeekNumbers)
+
+YTDNumbers <- c(33.2, 29.3, 23.8, 22.8, 22.4, 22.4, 21.3, 20.4, 18.1, 15.5, 5.4, 3.8)
+YTDValues <- c("Technology", "Real Estate", "Utilities", "Comm. Services",
+               "Consumer Discr.", "Consumer Staples", "Industrials", "S&P 500",
+               "Financials", "Materials", "Health Care", "Energy")
+YTD <- cbind(YTDNumbers, YTDValues)
+
+# Złączenie wszystkich czterech wektorów w jeden i przedstawienie ich jako ramka danych
+fullData <- as.data.frame(cbind(firstWeek, YTD))
+
+# wektor liczb przekonwertujemy na numeryczny w celu wykonania przyszłych operacji
+fullData$firstWeekNumbers <- as.numeric(levels(
+  fullData$firstWeekNumbers))[fullData$firstWeekNumbers]
+fullData$YTDNumbers <- as.numeric(levels(
+  fullData$YTDNumbers))[fullData$YTDNumbers]
+
+# musimy także przedstawić nazwy jako "factor" - dzięki temu będziemy mieli ustaloną kolejność słupków
+fullData$firstWeekValues <- factor(fullData$firstWeekValues,
+  levels = fullData$firstWeekValues[rev(order(fullData$firstWeekNumbers))])
+fullData$YTDValues <- factor(fullData$YTDValues,
+  levels = fullData$YTDValues[rev(order(fullData$YTDNumbers))])
+
+library(ggplot2) # główna biblioteka
+library(gridExtra) # pakiet umożliwiający umieszczenie dwóch wykresów jeden pod drugim
+library(ggrepel) # biblioteka dająca możliwość umieszczania dodatkowego tekstu w dowolnym miejscu
+
+# Wykres górny - "1 week"
+plot1 <- ggplot(data = fullData, aes(x = firstWeekValues,
+                                     y = firstWeekNumbers)) + # wczytanie danych wejściowych
+  scale_y_continuous(limits = c(-2, 3), breaks = seq(-2, 3, by = 1)) + # ustalenie przedzialek
+  geom_col(stat = "identity", fill = "#3064d2") + # typ wykresu: columnowy, kolor: niebieski
+  geom_text(aes(label = firstWeekNumbers),
+    position = position_nudge(y = 0), vjust = 0.5, size = 3, angle = 90,
+    hjust = ifelse(firstWeekNumbers > 0, -0.5, 1.5)) +
+    # pozycja liczb na wykresie - nad kolumnami, jeżeli wartości
+    # są ujemne lub pod - w przeciwnym wypadku
+  geom_text(aes(y = 0, label = firstWeekValues),
+    position = position_nudge(y = 0), vjust = 0.5, size = 3, angle = 90,
+    hjust = ifelse(firstWeekNumbers < 0, -1, 1.5)) +
+    # pozycja liczb na wykresie - nad kolumnami, jeżeli wartości
+    # są ujemne lub pod - w przeciwnym wypadku
+  geom_hline(yintercept = 0) + # pozioma linia na wysokości 0
+  geom_text(x = 12.5, y = 0, label = "1 week", angle = 90) + # tytuł z prawej strony
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), # białe tło
+    axis.text.x = element_blank(), # usunięcie etykiet z osi X
+    axis.line.x = element_blank(), # usunięcie linii osi X
+    axis.ticks.x = element_blank(), # usunięcie przedziałek osi X
+    axis.title.x = element_blank()) + # usunięcie tytułu z osi X
+  ggtitle("S&P 500 SECTOR RETURNS") + # dodawanie tytułu w lewym górnym rogu
+  theme(plot.margin = unit(c(1.5, 0, 0, 0.25), "cm"), # ustalenie marginesów
+      axis.title = element_blank(), # usunięcie tytułu osi y z lewej strony
+      plot.title = element_text(hjust = -0.05, vjust = 2))
+      # ustalanie właściwej pozycji na tytuł w lewym górnym rogu
+
+# Wykres dolny - "YTD"
+plot2 <- ggplot(data = fullData, aes(x = YTDValues, y = YTDNumbers)) + # wczytanie danych wejściowych
+  scale_y_continuous(limits = c(-50, 50), breaks = seq(-50, 50, by = 25)) + # ustalenie przedzialek
+  geom_col(stat = "identity", fill = "#1a9524") + # typ wykresu: columnowy, kolor: zielony
+  geom_text(aes(label = YTDNumbers),
+    position = position_nudge(y = 1), vjust = 0.5, size = 3, angle = 90,
+    hjust = ifelse(YTDNumbers > 0, -0.5, 1.5)) +
+    # pozycja liczb na wykresie - nad kolumnami, jeżeli wartości
+    # są ujemne lub pod - w przeciwnym wypadku
+  geom_text(aes(y = 0, label = YTDValues),
+    position = position_nudge(y = 0), vjust = 0.5, size = 3, angle = 90,
+    hjust = ifelse(YTDNumbers < 0, -1, 1.5)) +
+    # pozycja liczb na wykresie - nad kolumnami, jeżeli wartości
+    # są ujemne lub pod - w przeciwnym wypadku
+  geom_hline(yintercept = 0) + # pozioma linia na wysokości 0
+  geom_text(x = 12.5, y = 0, label = "YTD", angle = 90) + # tytuł z prawej strony
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), # białe tło
+    axis.text.x = element_blank(), # usunięcie etykiet z osi X
+    axis.line.x = element_blank(), # usunięcie linii osi X
+    axis.ticks.x = element_blank(), # usunięcie przedziałek osi X
+    axis.title.x = element_blank()) + # usunięcie tytułu z osi X
+  theme(plot.margin = unit(c(0.5, 0, 0, 0.25), "cm"), # ustalenie marginesów
+      axis.title = element_blank()) # usunięcie tytułu osi y z lewej strony
+
+# Połączenie wykresów w jeden i narysowanie zestawienia
+grid.arrange(plot1, plot2, nrow = 2)
+```
+
+## Dlaczego ten wykres?
+
+* Wykres ma błędy powstałe przy wprowadzaniu sektorów akcyjnych (np. na pierwszym wykresie jeden sektor złożony z dwóch wyrazów, tworzy dwa oddzielne po jednym wyrazie) - oba wykresy zawierają te same dane, a przez błędy w pisowni tak nie jest (np. na pierwszym wykresie zapomniano o jednym sektorze, na drugim są błędnie napisane nazwy niektórych sektorów)
+
+* Podpisy na osiach i wartości są pionowo co utrudnia odczytanie
+
+* Niektórych nazw sektorów nie widać - zostały ucięte
+
+* Nazwy wykresrów nachodzą na osie
+
+* Niekoniecznie wiadomo o czym jest wykres
+
+## Co zostanie zmienione?
+
+Czytając artykuł ze strony dowiadujemy się że wykres jest skierowany do inwestorów, których interesuje informacja o zmianie akcji, w którą mogli zainwestować albo zainwestowali. Jak wynika z artykułu - interesuje nas zmiana akcji konkretnego sektoru, dlatego:
+
+* pierwszą zmianą jest naniesienie obu danych na jeden wykres - skoro inwestor chce wiedzieć jak się w ciągu 10 miesięcy zmieniła cena danej akcji to niech nie musi szukać jej na obu wykresach tylko niech spojrzy na jeden i już wie jaka to zmiana (dodatkowo na orginalnym wykresie nie wiedziałam na początku że oba dotyczą tych samych danych, dopóki się im lepiej nie przyjrzałam - tutaj wszystko jest w jednym miejscu)
+
+* zmieniamy orientację wykresu, aby czytelność była lepsza
+
+* dane ukazane są w procentach, czego na orginalnym wykresie nie widać - dodajemy tę informację
+
+* zachowujemy kolory - można je było zmienić, jednak w świecie reklam i przedsiębiorstwa (wedle danych z internetu) kolor zielony oznacza zysk, a niebieski stabilność, więc uznałam, że dla inwestorów są to idealne kolory
+
+* usuwamy osie - nikt nie patrzy na oś, kiedy liczby są podane obok danego słupka, dodatkowo wcześniej były dwa wykresy i osie były potrzebne aby zauważyć, że oba wykresy ukazują wartości w innej skali - teraz jest to na jednej skali i wartości mają zachowane orginalne wysokości
+
+* zostawiamy linię na wysokości zera aby dobrze oddzielić wartości poniżej jak i powyżej
+
+* nadajemy legendę z dokładnym opisem po jakim czasie jest podana dana zmiana ceny akcji
+
+* zmieniamy też tytuł, żeby od początku było wiadomo co przedstawia cały wykres
+
+* zmieniamy też czcionkę tekstu, aby wyróżnić tytuł, a legenda i wartości mają własną inną czcionkę dla oddzielenia tego od siebie i estetyki
+
+## Wprowadzenie danych
+
+```{r data, cache=TRUE, message=FALSE, warnings=FALSE}
+### Dane były uprzednio wprowadzone ręcznie - poniżej fragment kodu przekopiowany i delikatnie zmieniony, zawierający wprowadzenie danych
+
+# Ręczne przepisanie liczb i nazw z wykresu
+firstWeekNumbers <-c(1.9, 1.6, 1.3, 1.0, 1.0, 1.0, 0.8, 0.7, -0.2, -0.6, -0.8, -1.4)
+firstWeekValues <- c('Materials', 'Industrials', 'Technology', 'Comm. Services',
+                     'Consumer Discr.', 'Energy', 'Financials', 'S&P 500',
+                     'Health Care', 'Real Estate', 'Consumer Staples', 'Utilities')       #poprawiono wczytanie danych - wcześniej były błędy w pisowni                                                                                             #albo podano mniej niż powinno być danych, myśląc ze jest                                                                                                 #dobrze, rozbijajac inne dane na dwa rozne
+firstWeek <- cbind(firstWeekValues, firstWeekNumbers) %>% as.data.table()
+
+YTDNumbers <- c(33.2, 29.3, 23.8, 22.8, 22.4, 22.4, 21.3, 20.4, 18.1, 15.5, 5.4, 3.8)
+YTDValues <- c("Technology", "Real Estate", "Utilities", "Comm. Services",
+               "Consumer Discr.", "Consumer Staples", "Industrials", "S&P 500",
+               "Financials", "Materials", "Health Care", "Energy")                       #to samo co wyzej
+YTD <- cbind(YTDNumbers, YTDValues) %>% as.data.table()
+
+# Złączenie wszystkich danych
+setkey(YTD, YTDValues)
+setkey(firstWeek, firstWeekValues)
+data <- YTD[firstWeek]
+colnames(data) <- c("YTD", "names", "firstWeek")
+
+# Wektor liczb przekonwertujemy na numeryczny w celu wykonania przyszłych operacji
+data$YTD <- as.numeric(data$YTD)
+data$firstWeek <- as.numeric(data$firstWeek)
+
+# Tworzymy tabelę, na której lepiej będzie się pracować
+data <- melt(data, id.vars="names")
+
+```
+
+
+## Wykres
+
+```{r plot, dependson=c(-1), cache=TRUE, message=FALSE, warnings=FALSE}
+
+### DODATKOWE DANE
+
+# Robimy listę możliwych do wykorzystania czcionek
+font <- fonts()
+# Tworzymy liste do własciwego posortowania
+sort <- c("Technology", "Real Estate", "Utilities", "Comm. Services",
+       "Consumer Discr.", "Consumer Staples", "Industrials", "S&P 500",
+       "Financials", "Materials", "Health Care", "Energy")
+
+### WYKRES
+
+ggplot(data, aes(x = reorder(names, match(data$names, rev(sort))), y = value, fill = variable)) +
+  #chcemy zostawić barplot który dobrze ukazuje tego typu wartości, przedstwiamy je obok siebi
+  geom_bar(stat="identity", 
+           position="dodge") + 
+  #białe tło
+  theme_bw() +
+  theme(#usuwamy kreski na osiach
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        #usuwamy tytuł legendy
+        legend.title = element_blank(),
+        #zmieniamy wielkość tekstu nzw sektorow i czcionkę
+        axis.text.y = element_text(size = 10,
+                                   family = font[7]),
+        #uswamy oś
+        axis.text.x = element_blank(),
+        #zmieniamy tytuł i podtytuł - odległość, wielkość, kształ i czcionkę tekstu
+        plot.title = element_text(size = 14, 
+                                  face = "bold.italic", 
+                                  hjust = 2, 
+                                  family = font[7]),
+        plot.subtitle = element_text(size = 13, 
+                                     hjust = -0.5,
+                                     face = "italic",
+                                     family = font[190]),
+        #ustawiamy legednę pod wykresem na środku
+        legend.position = "bottom",
+        legend.justification = "center",
+        #zmienamy teskt legendy
+        legend.text = element_text(size = 9,
+                                   family = font[190]),
+        #dopracowujemy tło wykresu - linie, i ramkę
+        panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_line(colour = "grey", linetype = 4)) +
+  #usuniecie nazw osi - nazwy sektorów i wartości mówią same za siebie gdy tytuł i podtylów jasno określa temat wykresu
+  labs(x = NULL,
+       y = NULL,
+       title = "Changes in share prices since the beginning of the year",
+       subtitle = "Share increase / decrease in %") +
+  #zmiana zakresu osi 
+  scale_y_continuous(limits = c(-5, 40)) +
+  #dodajemy tekst przy słupkach - chcemy aby jasno określały wartości to że są procentami
+  #dodajemy tez im czcionkę
+  geom_text(aes(label = paste0(value, "%")),
+            hjust = ifelse(data$value < 0, 1.1, -0.2),
+            vjust = ifelse(data$variable == "YTD", 1.3, -0.3),
+            family = font[190],
+            size = 3) +
+  #nadanie lini na wysokości 0
+  geom_hline(yintercept = 0) +
+  #obrócenie wykresu abyuzyskać lepszą czytelność
+  coord_flip() +
+  #zmiana nazw w legendzie - aby bylo wiadomo po jakim czasie są to dane 
+  #ustawienie koloru
+  scale_fill_manual(labels = c(" after October 7 ", " after the first \n week of 2019"),
+                    values = c("#00802b","#2952a3")) +
+  #dopieszczenie legendy np. odwrócenie kolejności 
+  guides(fill = guide_legend(override.aes = list(size = 1), reverse = TRUE))
+
+```
