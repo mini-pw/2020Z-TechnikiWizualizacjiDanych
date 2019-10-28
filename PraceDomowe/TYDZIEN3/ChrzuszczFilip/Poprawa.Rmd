@@ -1,0 +1,79 @@
+---
+title: "Poprawa_wykresu"
+author: "Filip Chrzuszcz"
+date: "10/24/2019"
+output: html_document
+---
+---
+title: 'Praca domowa 1'
+author: "Ngoc Anh Nguyen"
+date: "10/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(plyr)
+options(stringsAsFactors = FALSE)
+```
+
+Ładowanie danych
+```{r}
+# wczytanie csv
+data <- read.csv("./ZAP_KSE_20191017_20191018080531.csv", sep=";")
+
+# ustawiamy kolumne z data i godzina
+godz <- paste(1:24, "00", sep=":")
+data[1] <- paste("2019-10-17", godz)
+# factory - inaczej posortuje stringi
+data$Data <- factor(data$Data, levels = data$Data)
+# stringi jako double - przecinek na kropke
+data$Rzeczywiste.zapotrzebowanie.KSE <- scan(text=data$Rzeczywiste.zapotrzebowanie.KSE, dec=",")
+
+data$roznica <- data$Rzeczywiste.zapotrzebowanie.KSE - data$Dobowa.prognoza.zapotrzebowania.KSE
+godz <- paste(1:24, "00", sep=":")
+data[1] <-godz
+data$Data <- factor(data$Data, levels = data$Data)
+data$flaga <- ifelse(data$roznica<0,"below","above")
+```
+
+Tutaj jest oryginalny wykres
+```{r}
+
+# wykres
+theme_set(theme_minimal())
+legenda <- c("red", "blue")
+
+ggplot(data = data, aes(x = Data, group=1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"), size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"), size = 1) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+
+Tutaj jest mój przrerobiony wykres. Przede wszystkim dodałem to o czym jest wykres, bo na pierwotnym wykresie nie było zamieszczone o czym on tak naprawdę jest. Zdecydowałem sie również skupić na godzinowych róznicach między prognozowanym zużyciem mocy, a tym rzeczywistym, gdyż uznałem iż to jest głowny cel pierwotnego wykresu, a jest on na nim stosunkowo słabo widoczny. Dodałem również opis osi oraz zamiesciłem w jakiej jednostce jest mierzona moc. Zmieniłem też kolor opisu osi z niebieskiego na czarny, tak by był on lepiej widoczny. Dodałem również ramkę, aby łatwiej skupić uwagę widza na prezentowanych danych.
+```{r}
+theme_set(theme_light())
+ggplot(data,aes(x=Data,y=roznica,fill=flaga))+
+  geom_bar(stat='identity', width = .5)+
+  scale_fill_manual(name="Zużycie mocy", 
+                    labels = c("Większe niz przewidywane", "Mniejsze niz przewidywane"), 
+                    values = c("below"="#00ba38", "above"="#f8766d"))+
+  labs(y="Różnice w zużyciu mocy w MW",x ="",
+       title="Zapotrzebowanie na moc PSE w dniu 17.10.2019")+
+  ylim(-1500,1500)+
+  theme(axis.title.x = element_text(size=12,color = "black",hjust = .5, vjust = 0.5, ),
+        axis.title =element_text(color = "black",hjust = .5, vjust = 0.5))+
+  coord_flip()
+  
+  
+  
+```
+
+
