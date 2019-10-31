@@ -1,0 +1,203 @@
+---
+title: "experimenting"
+author: "Michał Wdowski"
+date: "October 31, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+# experimenting script
+
+library(ggplot2)
+library(dplyr)
+library(stringi)
+
+k_or_m <- function(s){
+    #funkcja zamienia K na 000, nic na nic, i M na '000'
+    if(s == "K") return(FALSE)
+    else return(TRUE)
+}
+
+get_value <- function(s){
+    # Funckja przeksztalca napis typu E420M na 4200, E690K na 690, itp
+    x <- as.numeric(stri_c(stri_sub(s, from = 2, to = stri_length(s)-1)))
+    if(stri_sub(s, from = stri_length(s), length = 1 )=="M") x <- x*1000000
+    if(stri_sub(s, from = stri_length(s), length = 1 )=="K") x <- x*1000
+    return(x)
+}
+
+sapply(c("E420M", "T30K") , FUN = get_value)
+
+# przyporządkowuje kraj do regionu - West Europe, East Europe, Asia, Africa, North America, South America, Oceania
+w_europe <- c("Portugal", "Spain", "Belgium", "Germany", "France", "England", "Italy", "Denmark", "Wales", "Netherlands", "Austria", "Scotland", "Sweden",  "Finland", "Switzerland", "Norway", "Iceland",
+                  "Republic of Ireland", "Faroe Islands", "Northern Ireland", "Liechtenstein", "Luxembourg")
+regions <- rep("Western Europe", length(w_europe))
+coutries <- w_europe
+
+e_europe <- c("Croatia", "Slovenia", "Poland", "Bosnia Herzegovina", "Serbia", "Slovakia", "Montenegro", "Greece", "Czech Republic", "Ukraine", "Russia", "Albania", "Hungary", "Kosovo", "Romania",
+                  "FYR Macedonia", "Estonia", "Belarus", "Bulgaria", "Lithuania", "Cyprus", "Moldova", "Latvia")
+regions <- c(regions, rep("Eastern Europe", length(e_europe)))
+coutries <- c(coutries, e_europe)
+
+asia <- c("Armenia", "Korea Republic", "Japan", "Turkey", "Israel", "Syria", "Iran", "United Arab Emirates", "China PR", "Jordan", "Qatar", "Afghanistan", "Hong Kong", "Lebanon", "Georgia", "Palestine",
+              "Saudi Arabia", "Uzbekistan", "India", "Korea DPR", "Kuwait", "Azerbaijan", "Iraq", "Kazakhstan", "Philippines", "Oman", "Thailand")
+regions <- c(regions, rep("Asia", length(asia)))
+coutries <- c(coutries, asia)
+    
+africa <- c("Egypt", "Gabon", "Morocco", "Algeria", "Guinea", "Ghana", "Ivory Coast", "Central African Rep.", "DR Congo", "Cameroon", "Mali", "Nigeria", "Burkina Faso", "Angola", "Mozambique",
+                "Libya", "Rwanda", "Kenya", "Cape Verde", "Togo", "South Africa", "Zimbabwe", "Guinea Bissau", "Niger", "Mauritania", "Tunisia", "Benin", "Congo", "Sudan", "Ethiopia", "Tanzania",
+                "Gambia", "São Tomé & Príncipe", "Madagascar", "Eritrea", "Namibia", "Mauritius", "Chad", "Burundi", "Sierra Leone", "Zambia", "Liberia", "Comoros", "Uganda", "Equatorial Guinea")
+regions <- c(regions, rep("Africa", length(africa)))
+coutries <- c(coutries, africa)
+    
+n_america <- c("Costa Rica", "Jamaica", "Mexico", "United States", "Dominican Republic", "Trinidad & Tobago", "El Salvador", "Bermuda", "Puerto Rico", "Grenada", "St Lucia", "Barbados", "Honduras",
+                   "Canada", "Montserrat", "Nicaragua", "Guatemala", "Haiti", "Panama", "St Kitts Nevis", "Antigua & Barbuda")
+regions <- c(regions, rep("North America", length(n_america)))
+coutries <- c(coutries, n_america)
+    
+s_america <- c("Argentina", "Brazil", "Uruguay", "Colombia", "Senegal", "Chile", "Venezuela", "Ecuador", "Paraguay", "Peru", "Curacao", "Guyana", "Cuba", "Suriname", "Bolivia")
+regions <- c(regions, rep("South America", length(s_america)))
+coutries <- c(coutries, s_america)
+    
+oceania <- c("Australia", "New Zealand", "Fiji", "Guam", "New Caledonia")
+regions <- c(regions, rep("Oceania", length(oceania)))
+coutries <- c(coutries, oceania)
+
+world_regions <- data.frame("Nationality" = coutries, "Region" = regions)
+
+data <- read.csv(file = "data.csv", head = TRUE, stringsAsFactors = FALSE)
+leagues <- read.csv(file = "leagues.csv", head = TRUE, stringsAsFactors = FALSE)
+
+
+
+data %>%
+    select(-c(X, Photo, Flag, Club.Logo, Body.Type, Contract.Valid.Until, 
+              International.Reputation, Joined, Loaned.From, Real.Face, Release.Clause, Work.Rate,
+              LAM, LB, LCB, LCM, LDM, LF, LM, LS, LW, LWB, RAM, RB, RCB, RCM, RDM, RF, RM, RS, RW, RWB, CAM, CB, CDM, CF, CM, ST)) %>%
+    left_join(world_regions, by = c("Nationality" = "Nationality")) %>%
+    left_join(leagues, by = c("Club" = "Club")) -> data
+
+unique(data$Nationality)
+
+summarize(group_by(filter(data, League == "Bundesliga"), Club), n=n() )
+
+data$League[is.na(data$League)] <- "Other"
+data$Wage[is.na(data$Wage)] <- 0
+
+#data %>%
+#    mutate(Value = get_value(Value), Wage = get_value(Wage)) -> data
+data$Value <- sapply(data$Value, get_value)
+data$Wage <- sapply(data$Wage, get_value)
+data$League <- factor(data$League, levels = c("Primera Division", "Premier League", "Bundesliga", "Serie A", "Ligue 1", "Other"))
+#write.csv(data, file = "MyData.csv")
+
+summary(data)
+
+# rozkład numerow na koszulkach (lub czegokolwiek innego) w zaleznosci od ligi
+# Wage - Zarabiają najwięcej w premier league
+# Overall - Francuska odbiega
+# Aggression - angielska
+# Finishing - hiszpanska
+# GKDiving - widac bramkarzy
+# SlidingTackle - najgorzej niemcy
+ggplot(data = data, aes(x = League, y = Wage)) +
+    geom_boxplot()
+
+# rozklad rzcezy w zaleznosci od regionu
+# azjaci najgorsi w pilke
+ggplot(data = data, aes(x = Region, y = Overall)) +
+    geom_boxplot()
+
+# zarobki pilkarza a jego overall
+ggplot(data = data, aes(x = Overall, y = Wage, color = League)) +
+    geom_point() +
+    facet_wrap(~Region)
+
+# srednia overalla klubow
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = head(data2, 500), aes(x = Club, y = meanOverall-60, fill = League, width = 1)) +
+    geom_bar(stat = "identity") +
+    theme(
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank()
+    ) 
+
+# srednia overalla klubow a wydatki na pilkarzy
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    mutate(isOther = League == "Other") %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = data2, aes(x = meanOverall, y = Expences, color = isOther)) +
+    geom_point()
+
+# srednia overalla klubow a wydatki na pilkarzy w poszczegolnych ligach
+data %>%
+    group_by(League, Club) %>%
+    summarise(Expences = sum(Wage), meanOverall = mean(Overall)) %>%
+    mutate(isOther = League == "Other") %>%
+    arrange(desc(meanOverall)) -> data2
+data2$Club <- factor(data2$Club, levels = data2$Club[order(data2$meanOverall)])
+ggplot(data = data2, aes(x = meanOverall, y = Expences, colors = Club)) +
+    geom_point() +
+    facet_wrap(~League)
+
+# zarobki a poziom w zaleznosci od regionu
+data %>%
+    filter(League == "Serie A") %>%
+    ggplot(aes(x = Overall, y = Wage, color = Region)) +
+        geom_point()
+
+# poziom w przypadku lokalnych (bundesliga)
+data %>%
+    filter(League == "Bundesliga") %>%
+    mutate(isLocal = Nationality == "Germany") %>%
+    ggplot(aes(x = Overall, fill = isLocal)) +
+        geom_histogram(stat = "count")
+    
+# poziom w przypadku lokalnych (premier league)
+data %>%
+    filter(League == "Premier League") %>%
+    mutate(isLocal = Nationality == "England") %>%
+    ggplot(aes(x = Overall, fill = isLocal)) +
+    geom_histogram(stat = "count")
+
+# poziom w przypadku lokalnych (primera division)
+data %>%
+    filter(League == "Primera Division") %>%
+    mutate(isLocal = Nationality == "Spain") %>%
+    ggplot(aes(x = Overall, fill = isLocal)) +
+    geom_histogram(stat = "count")
+
+# poziom w przypadku lokalnych (serie A)
+data %>%
+    filter(League == "Serie A") %>%
+    mutate(isLocal = Nationality == "Italy") %>%
+    ggplot(aes(x = Overall, fill = isLocal)) +
+    geom_histogram(stat = "count")
+
+# poziom w przypadku lokalnych (ligue 1)
+data %>%
+    filter(League == "Ligue 1") %>%
+    mutate(isLocal = Nationality == "France") %>%
+    ggplot(aes(x = Overall, fill = isLocal)) +
+    geom_histogram(stat = "count")
+
+# value do wage
+data %>%
+    ggplot(aes(x = Value, y = Wage, color = Region)) +
+        geom_point()
+
+```
