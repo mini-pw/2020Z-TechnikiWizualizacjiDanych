@@ -161,6 +161,9 @@ mecz <- rbind(meczA,meczB)
 #wykres
 ggplot(data = mecz, aes(x = czas_w_sekundach, y = points, color = team)) + 
   geom_line() +
+  xlab("Czas meczu [s]") +
+  ylab("Punkty") + 
+  labs(color = "Drużyna") +
   transition_reveal(czas_w_sekundach)
 ```
 
@@ -199,6 +202,10 @@ teams <- rbind(team1,team2)
 
 #rysowanie wykresu
 ggplot(teams, aes(x = rebounds_assists, y = points, color = team, shape = team)) +
+  xlab("Asysty + zbiórki") +
+  ylab("Punkty") + 
+  labs(color = "Drużyna") +
+  labs(shape = "Drużyna") +
   geom_point(size = 6)
 ```
 
@@ -231,6 +238,9 @@ team2eval <- team2 %>%
 teamseval <- rbind(team1eval, team2eval)
 
 ggplot(teamseval, aes(x = team, y = eval, fill = team)) +
+  xlab("Drużyna") +
+  ylab("Punkty eval") + 
+  labs(fill = "Drużyna") +
   geom_boxplot()
 
 ```
