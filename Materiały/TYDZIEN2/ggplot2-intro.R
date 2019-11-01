@@ -62,10 +62,6 @@ ggplot(data = countries, aes(x = continent, y = death.rate)) +
   geom_point(position = "jitter") +
   geom_boxplot(outlier.color = NA) # w celu unikniecia dublowania outlierow z geom_point
 
-#cwiczenie samodzielne
-ggplot(data = countries, aes(x = continent, y = log(population, 10))) +
-  geom_violin()
-
 # wielowymiarowe i wielowarstwowe wykresy
 
 continents <- group_by(countries, continent) %>% 
