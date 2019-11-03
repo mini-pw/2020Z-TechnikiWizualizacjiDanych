@@ -7,7 +7,7 @@ output: html_document
 ##Przed
 ```{r, echo=FALSE}
 library(jpeg)
-jpg<-readJPEG("./20190327_1.jpg")
+jpg<-readJPEG("./before.jpg")
 plot(0:1,0:1,type="n",ann=FALSE,axes=FALSE)
 rasterImage(jpg,0,0,1,1)
 ```
