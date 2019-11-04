@@ -28,6 +28,12 @@ continent_order <- group_by(countries, continent) %>%
 
 p + scale_x_discrete(limits = continent_order)
 
+mutate(countries, 
+       country = factor(country, levels = countries[order(countries[["birth.rate"]]), "country"])) %>% 
+  filter(continent == "Europe") %>% 
+  ggplot(aes(x = country, y = birth.rate)) +
+  geom_col()
+
 countries_f <- mutate(countries, continent = factor(continent))
 
 ggplot(data = countries_f, aes(x = continent, fill = continent)) +
@@ -38,7 +44,8 @@ mutate(countries_f, continent = factor(continent, levels = continent_order)) %>%
   ggplot(aes(x = continent, fill = continent)) +
   geom_bar()
 
-ggplot(countries_f, aes(x = death.rate, y = birth.rate)) +
+mutate(countries_f, continent = factor(continent, levels = continent_order)) %>% 
+  ggplot(aes(x = death.rate, y = birth.rate)) +
   geom_point() +
   facet_wrap(~ continent)
 
@@ -55,7 +62,9 @@ cntr_pop <- group_by(countries, continent) %>%
   mutate(both = paste0(continent, " (", count, " countries)")) %>% 
   pull(both)
 
-mutate(countries_f, continent = factor(continent, levels = continent_order, labels = cntr_pop)) %>% 
+mutate(countries_f, continent = factor(continent, 
+                                       levels = continent_order, 
+                                       labels = cntr_pop)) %>% 
   ggplot(aes(x = death.rate, y = birth.rate)) +
   geom_point() +
   facet_wrap(~ continent)
@@ -79,6 +88,11 @@ ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   stat_density_2d(aes(fill = ..level..), color = "black", contour = TRUE, geom = "polygon") +
   scale_fill_gradient(low = "navyblue", high = "red")
 
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  stat_density_2d(aes(fill = ..level..), color = "black", contour = TRUE, geom = "polygon") +
+  scale_fill_gradient2(low = "navyblue", high = "red", mid = "white", 
+                       midpoint = 0.004)
+
 p + theme(legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 2))
 
@@ -93,6 +107,10 @@ p + coord_flip() + scale_y_reverse()
 
 p + coord_polar()
 
+ggplot(data = countries, aes(x = 1, fill = continent)) +
+  geom_bar(position = "stack") +
+  coord_polar()
+
 ggplot(countries, aes(x = death.rate, y = birth.rate)) +
   geom_point() +
   facet_wrap(~ continent) + 
@@ -102,7 +120,7 @@ p <- ggplot(data = countries, aes(x = birth.rate, y = death.rate, color = contin
   geom_point() +
   geom_smooth(se = FALSE)
 
-p + coord_equal()
+p + coord_equal() + facet_wrap(~ continent)
 
 # coord_cartesian nie usuwa punktów
 p + coord_cartesian(xlim = c(5, 15))
@@ -126,7 +144,7 @@ grid.arrange(p + coord_cartesian(xlim = c(5, 10)) + ggtitle("coord_cartesian") +
              p + scale_x_continuous(limits = c(5, 10)) + 
                ggtitle("scale_x_continuous - limits") +
                theme(legend.position = "bottom"),
-             ncol = 1, heights = c(0.45, 0.55))
+             ncol = 1)
 
 main_plot <- ggplot(data = countries, aes(x = birth.rate, y = death.rate, color = continent)) +
   geom_point() 
@@ -142,11 +160,11 @@ density_birth <- ggplot(data = countries, aes(x = birth.rate, fill = continent))
   scale_y_reverse() +
   theme(legend.position = "none")
 
-library(gridExtra)
-library(grid)
-
 grid.arrange(density_death, main_plot, density_birth, 
              ncol = 2)
+
+library(grid)
+
 
 grid.arrange(density_death, main_plot, rectGrob(gp = gpar(fill = NA, col = NA)), density_birth, 
              ncol = 2)
