@@ -16,7 +16,7 @@ library(tidyverse)
 
 #### Oryginalny wykres:
 
-![](/home/aleksander/Pulpit/wykres_oryginalny.jpg)
+![](/home/aleksander/Dokumenty/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/PodsiadAleksander/wykres_oryginalny.jpg)
 
 Żródło: [IGN](https://www.ign.com/articles/2019/04/05/poll-who-will-die-in-avengers-endgame). 
 Obecnie wykres jest już archiwalny i nie znajduje się na stronie.
