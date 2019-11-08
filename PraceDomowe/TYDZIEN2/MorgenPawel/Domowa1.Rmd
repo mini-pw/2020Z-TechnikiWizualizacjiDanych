@@ -1,0 +1,72 @@
+---
+title: "Praca Domowa 1"
+author: "Paweł Morgen"
+date: "12/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(stringi)
+options(stringsAsFactors = FALSE)
+```
+
+## Oryginalny wykres
+
+W artykule pod linkiem https://www.bbc.com/news/business-49806247 z dnia 01.10.2019 znajduje się wykres zależności PKB Chin, USA, UK i Japonii w zależności od roku. Dane do wykresu pobrałem ze strony Banku Światowego: https://data.worldbank.org/indicator/NY.GDP.MKTP.KD .
+
+## Wstępna obróbka danych
+
+```{r data_prep}
+read.csv(file.path("~/Downloads", "GDP.csv"), header=FALSE)->GDPs
+
+select(GDPs, -(2:4))%>%t()%>%as.data.frame()->GDPs
+colnames(GDPs)<-c("Year", GDPs[1,-1])
+GDPs[-1,]%>%
+  select(Year, China, Japan, "United States", "United Kingdom")%>%
+lapply(as.double)%>%as.data.frame()->cut_GDPs
+
+#liczby są podane w dolarach. Sprawmy, by były podane w trylionach $
+cut_GDPs[,-1] / (1e+12) -> cut_GDPs[,-1]
+
+```
+
+## Wykres
+
+```{r plot}
+#Ustalamy skalę i podziałkę na osiach zgodnie z oryginałem
+y_breaks<-seq(0,round(max(cut_GDPs[,1:4])), by=2)
+y_labels<-paste0("$", y_breaks)
+x_breaks<-seq(min(cut_GDPs$Year), 2020, by=10)
+
+ggplot(data=cut_GDPs, aes(x=Year)) +
+  #Dodajemy osobno linie z danymi z każdej kolumny
+  geom_line(aes(y=China, col="China")) +
+  geom_line(aes(y=Japan, col="Japan")) +
+  geom_line(aes(y=United.States, col="US")) +
+  geom_line(aes(y=United.Kingdom, col="UK")) +
+  #Podpisy. Zgodnie z orygniałem, czyścimy podpisy osi
+  labs(title="Gross Domestic Product",
+       subtitle="GDP in constant 2010 trillions of US$",
+       caption="Source: World Bank", y=NULL, x=NULL) +
+  #Ustawiamy kolory i legendę
+  scale_color_manual(name="",
+                     values=c("China"="purple",
+                              "Japan"="blue",
+                              "UK"="black",
+                              "US"="green")) +
+  scale_y_continuous(breaks = y_breaks,
+                     labels = y_labels) +
+  scale_x_continuous(breaks=x_breaks) +
+  #Ostatnie szlify. Białe tło, tylko linie poziome, brak obramowania
+  theme_bw() +
+  theme(legend.position = "top",
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(colour="grey"),
+        panel.border = element_blank())
+
+```
+
