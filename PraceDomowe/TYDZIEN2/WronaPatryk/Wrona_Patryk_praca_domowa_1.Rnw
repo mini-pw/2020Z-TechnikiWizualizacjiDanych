@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+
+\begin{document}
+
+\title{Techniki Wizualizacji Danych - Praca domowa 1}
+\author{Patryk Wrona}
+\maketitle
+
+
+
+{\centering W niniejszej pracy domowej 
+sporzadzilem wykres
+z artykulu internetowego dotyczacy 
+poparcia dla partii
+politycznych:}
+\begin{itemize}
+\item \textbf{Parti conservateur}
+\item \textbf{Parti liberal}
+\item \textbf{Nouveau parti democratique}
+\item \textbf{Bloc quebecois}
+\item \textbf{Parti vert du Canada}
+\item \textbf{Parti populaire du Canada}
+\item \textbf{Autre parti - inne partie}
+\end{itemize} 
+\newline
+\newline
+Dane zaczerpniete sa z sondaza poparcia
+politycznego w Kanadzie,
+opublikowanego w artykule internetowym
+dnia 15 pazdziernika 2019.
+W Kanadzie jest 338 miejsc w tamtejszym
+parlamencie.
+\newline
+\newline
+Link do artykulu:
+https://www.lesoleil.com/actualite/elections-2019/lecart-se-resserre-entre-les-liberaux-et-les-conservateurs-0aa883e0e73ff5beaed345ec29a8a546
+
+\newpage
+Kod generujacy wykres:
+<<echo=FALSE, warning=FALSE>>=
+library(ggplot2)
+@
+
+
+<<>>=
+rysujWykres <- function(){
+data <- data.frame(c("1)conservateur", "2)liberal", "3)NPD", 
+                     "4)Bloc quebecois", "5)vert", "6)populaire",
+                     "7)Autre parti"), 
+                   c(32,31,17,8,8,3,1))
+colnames(data) <- c("partia_polityczna", "poparcie")
+
+ggplot(data, aes(x = partia_polityczna, y = poparcie)) +
+  geom_bar(stat="identity")+
+  geom_text(vjust = -1, aes(label = poparcie))+
+  labs(x = "Nazwa partii politycznej",
+       y = "% poparcia",
+       title = "Sondaz poparcia politycznego przed wyborami 
+       w Kanadzie - pazdziernik 2019")+
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5))+
+  geom_label(
+    label="Liderzy z 2015", 
+    x=2.5,
+    y=30,
+    label.padding = unit(0.3, "lines"), # Rectangle size around label
+    label.size = 0.2,
+    color = "black",
+    fill="#7FFFD4"
+  )
+}
+rysujWykres()
+@
+
+\end{document}
