@@ -1,0 +1,127 @@
+---
+title: "Praca Domowa 2"
+author: "Ngoc Anh Nguyen"
+date: "10/25/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+library(ggplot2)
+library(patchwork)
+library(stringr)
+library(ggpubr)
+library(scales)
+
+#z braku łatwego dostępu do danych, na podstawie oryginalnego wykresu ręcznie stworzyłem odpowiadającą mu ramkę danych
+degree <- c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college, no degree", "High school diploma", "Less than a high school diploma")
+#wartosci "unemployment" z przedziału 0-1, później podawane w procentach
+unemployment <- c(0.017, 0.015, 0.024, 0.028, 0.038, 0.050, 0.054, 0.080) 
+median <- c(1623, 1730, 1341, 1137, 798, 738, 678, 493)
+
+dataset <- data.frame(degree, unemployment, median)
+dataset$degree <- factor(dataset$degree, levels = rev(c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college, no degree", "High school diploma", "Less than a high school diploma")))
+#podczas tworzenia ramki danych zapewnienie przy użyciu factorów pożądanej kolejności przedstawianych danych na wykresie
+
+```
+
+## Wykres do obróbki
+
+Wybrany wykres wygląda tak:
+
+```{r message = FALSE, fig.height=5, fig.width=8, warning = FALSE, echo = FALSE}
+
+
+plot1 <- ggplot(data = dataset, aes(x = degree, y = unemployment)) +
+  ggtitle("Unemployment rate(%)") +
+  geom_line() +
+  geom_hline(yintercept = 0.043, linetype = "dotted") +
+  geom_col(fill = "blue") +
+  coord_flip() +
+  scale_y_continuous(breaks = c(0, 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08), labels=scales::percent_format(accuracy = 1), limits = c(0, 0.08), expand = c(0, 0)) +
+  geom_text(aes(label = percent(unemployment, 0.1), y = 0.001), color = "white", position = position_dodge(1), hjust = "left", size = 3) +
+  theme_classic() + 
+  theme(axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.x = element_blank()) +
+  labs(y = "Average: 4,3%")
+
+plot2 <- ggplot(data = dataset, aes(x = degree, y = median)) +
+  ggtitle("Median usual weekly earnings($)") +
+  geom_line() +
+  geom_hline(yintercept = 860, linetype = "dotted") +
+  geom_col(fill = "darkgrey") +
+  geom_text(aes(label = median, y = 10), color = "white", position = position_dodge(1), hjust = "left", size = 3) +
+  coord_flip() +
+  scale_y_continuous(breaks = c(400, 800, 1200, 1600), labels = dollar(c(400, 800, 1200, 1600)), limits = c(0, 1800), expand = c(0, 0)) +
+  theme_classic() +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_blank()) +
+  labs(y = "Average: $860")
+
+ggarrange(plot1, plot2)
+
+```
+
+## Wykres - wersja po poprawkach
+
+Postaramy się 'stuningować' ten wykres by był lepszy i czytelniejszy.
+
+```{r, fig.height=8, fig.width=10, echo=TRUE}
+
+# kolory
+mycols <- c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF")
+
+# dodatkowe kolumny do labels
+dataset$labs1 <- paste(as.character(dataset$unemployment * 100), "%")
+dataset$labs2 <- paste(as.character(dataset$median), "$")
+
+# wykres z bezrobociem
+pe <- ggplot(dataset, aes(x = degree, y=unemployment, label = labs1, color = degree) ) +
+  theme_minimal() +
+  labs( y = "Unemployment rate") +
+  scale_y_reverse() +
+  geom_col(fill= rainbow(8)) +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        plot.title = element_text(size=20, face="bold")) +
+  geom_label() +
+    expand_limits( y = c(0, 0.1))
+
+
+# wykres median zarobkow
+pm <- ggplot(dataset, aes(x = degree, y=median, label = labs2, color = degree) ) +
+  labs(title = "Earnings and unemployment rates by education level, 2015",y="Median usual weekly earnings") +
+  theme_minimal() +
+  geom_col(fill= rainbow(8)) +
+  theme(legend.position = "none",
+        axis.title.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.text.x=element_text(face="bold"),
+        plot.title = element_text(size=17, face="bold")) +
+  geom_label() +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 17)) +
+  expand_limits( y = c(0, 2000))
+
+# patchwork
+pm / pe
+
+
+```
+
+## Co zmieniono i dlaczego
+
+- Odwracając oś Y dla wykresy bezrobocia i przyrównując do drugiego lepiej widzimy swego rodzaju trend, zależność zarobków i osetku bezrobotnych od poziomu wykształcenia.
+
+- Użyłam labeli, które od razu pokazują wartości - nie trzeba odczytywać ich z osi.
+
+- Lepsza kolorystyka 
