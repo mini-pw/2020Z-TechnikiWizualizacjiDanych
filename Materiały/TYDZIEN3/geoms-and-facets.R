@@ -145,7 +145,7 @@ lapply(list(list(mean, sd, "mean"), list(median, mad, "median")), function(ith_f
     geom_point() +
     geom_errorbar() +
     facet_wrap(~ what)
-
+  
 
 # 4. Transformacje danych
 library(ggrepel)
