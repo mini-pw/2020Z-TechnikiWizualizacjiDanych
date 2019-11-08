@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Techniki Wizualizacji Danych - Praca domowa 2}
+\author{Patryk Wrona}
+\maketitle
+
+
+W tej pracy domowej poprawiam wykres Nguyen Ngoc Anh :)
+\newline
+\newline
+\textbf{Wykres znaleziony w internecie przez Nguyen Ngoc Anh:}
+\newline
+\includegraphics[scale = 0.7]{wykres}
+\newline
+<<echo=FALSE, warning=FALSE, message=FALSE>>=
+library(ggplot2)
+library(dplyr)
+options(stringsAsFactors = FALSE)
+data <- read.csv("./dane.csv", sep = ";")
+aux <- list("2019-10-17 01:00",
+            "2019-10-17 02:00",
+            "2019-10-17 03:00",
+            "2019-10-17 04:00",
+            "2019-10-17 05:00",
+            "2019-10-17 06:00",
+            "2019-10-17 07:00",
+            "2019-10-17 08:00",
+            "2019-10-17 09:00",
+            "2019-10-17 10:00",
+            "2019-10-17 11:00",
+            "2019-10-17 12:00",
+            "2019-10-17 13:00",
+            "2019-10-17 14:00",
+            "2019-10-17 15:00",
+            "2019-10-17 16:00",
+            "2019-10-17 17:00",
+            "2019-10-17 18:00",
+            "2019-10-17 19:00",
+            "2019-10-17 20:00",
+            "2019-10-17 21:00",
+            "2019-10-17 22:00",
+            "2019-10-17 23:00",
+            "2019-10-17 24:00")
+data <- data %>% mutate(Data = unlist(aux))
+data <- data %>% mutate(indeks <- c(1:24))
+colnames(data) <- c("Dobowa.prognoza.zapotrzebowania.KSE",
+              "Rzeczywiste.zapotrzebowanie.KSE", "Data", "indeks")
+@
+\textbf{W drugim przypadku wykorzystuje interpolacje splajnami do wygladzenia wykresu:}
+<<>>=
+theme_set(theme_minimal())
+legenda <- c("Prognoza" = "crimson","Rzeczywiste" = "midnightblue")
+
+spline_int1 <- as.data.frame(spline(data$indeks,
+                                   data$Dobowa.prognoza.zapotrzebowania.KSE))
+spline_int2 <- as.data.frame(spline(data$indeks,
+                                    data$Rzeczywiste.zapotrzebowanie.KSE))
+spline_int <- spline_int1 %>% mutate(y2 =  spline_int2$y)
+@
+\newpage
+\textbf{Wykres Nguyen Ngoc Anh:}
+\newline
+<<echo=TRUE, fig.keep='none'>>=
+ggplot(data = data, aes(x = Data, group=1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"),
+            size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"),
+             size = 1) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+@
+\newline
+\includegraphics[scale=0.8]{wykres2}
+\newpage
+\textbf{I. Kod generujacy nowy wykres ( lepsze kolory, legenda oraz etykiety y):}
+<<>>=
+ggplot(data = data, aes(x = Data, group = 1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_smooth(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"),
+    size = 1.4,formula = y ~ s(x, k = 24), method = "gam", se = FALSE) +
+  geom_smooth( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Rzeczywiste"),
+    size = 1.4,formula = y ~ s(x, k = 24), method = "gam", se = FALSE) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#191970"),
+        axis.title = element_blank(), legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(colour="#191970", size=10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
+@
+\newpage
+\textbf{II. Wykres z wygładzonymi liniami, niestety etykietki osi x zgubiły się.}
+\newline
+\centerline{(Na osi x oznaczono godzinę dnia 2019-10-17.)}
+<<>>=
+# spline interpolation - ale etykietki osi X ( godziny) zgubily sie
+ggplot(data = spline_int, aes(x = x)) +
+  geom_line(data = spline_int, aes(x = x, y = y, color = "Prognoza")) +
+  geom_line(data = spline_int, aes(x = x, y = y2, color = "Rzeczywiste")) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(), legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(colour="#66CCFF", size=10)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
+@
+\end{document}
