@@ -1,3 +1,4 @@
+
 library(ggplot2)
 library(SmarterPoland)
 library(dplyr)
@@ -70,7 +71,7 @@ ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   geom_point() + 
-  geom_smooth()
+  geom_smooth() 
 
 ggplot(countries, aes(x = birth.rate, y = death.rate, color = continent)) +
   geom_point() + 
@@ -131,21 +132,21 @@ as.symbol("x")
 lapply(list(list(mean, sd, "mean"), list(median, mad, "median")), function(ith_fun) {
   lapply(c("birth.rate", "death.rate"), function(i) {
     countries %>% 
-        select(-population, -country) %>% 
-        group_by(continent) %>% 
-        summarise(y = ith_fun[[1]](!!as.symbol(i), na.rm = TRUE), 
-                  disp = ith_fun[[2]](!!as.symbol(i), na.rm = TRUE)) %>% 
-        mutate(ymax = y + disp, ymin = y - disp,
-               type = ith_fun[[3]],
-               what = i)
+      select(-population, -country) %>% 
+      group_by(continent) %>% 
+      summarise(y = ith_fun[[1]](!!as.symbol(i), na.rm = TRUE), 
+                disp = ith_fun[[2]](!!as.symbol(i), na.rm = TRUE)) %>% 
+      mutate(ymax = y + disp, ymin = y - disp,
+             type = ith_fun[[3]],
+             what = i)
   }) %>% bind_rows()
 }) %>% bind_rows() %>% 
   ggplot(aes(x = continent, y = y, 
-               ymax = ymax, ymin = ymin, color = type)) +
-    geom_point() +
-    geom_errorbar() +
-    facet_wrap(~ what)
-  
+             ymax = ymax, ymin = ymin, color = type)) +
+  geom_point() +
+  geom_errorbar() +
+  facet_wrap(~ what)
+
 
 # 4. Transformacje danych
 library(ggrepel)
@@ -157,9 +158,3 @@ na.omit(countries) %>%
   ggplot(aes(x = birth.rate, y = death.rate, label = label_for_plot)) +
   geom_point() +
   geom_text_repel()
-
-na.omit(countries) %>%
-  mutate(urodzenia = birth.rate>=15) %>% 
-  ggplot(aes(x = urodzenia)) +
-  geom_bar() +
-  facet_wrap(~ continent + urodzenia)
