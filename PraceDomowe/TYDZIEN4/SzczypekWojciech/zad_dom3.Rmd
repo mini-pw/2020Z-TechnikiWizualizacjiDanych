@@ -1,0 +1,68 @@
+---
+title: "Praca Domowa nr 3"
+author: "Wojciech Szczypek"
+date: "8 11 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+options(stringsAsFactors = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+<br/><br/>
+
+## 1. Przed
+
+<img src="C:/Users/Wojtek/Desktop/TWD/zad_dom3/costam.jpg" alt="drawing" width="500"/>
+
+Source = https://twitter.com/ActuallyFinance/status/1184814836263329794?s=19
+<br/><br/>
+
+## 2. Po
+```{r echo= FALSE}
+countries <- c("Italy","Australia","United States", "Netherlands", "Germany",
+               "Spain","France","UK","Belgium")
+values <- c(0.59,0.59,0.59,0.32,0.45,0.57,0.57,0.54,0.46)
+data <- as.data.frame(cbind(countries,values))
+data[,2] <- as.numeric(as.character(values))
+data <- data %>%
+  arrange((countries))
+p <- ggplot(data, aes(x = countries, y = values, fill = values)) +
+  coord_flip() +
+  geom_bar(stat="identity",width = 0.6) +
+  scale_fill_continuous(high = "steelblue", low = "white",limits=c(0, 0.6)) +
+  geom_text(aes(label = paste(values * 100, "%")), vjust=0.4, hjust=1.3, size=4.5, color = "white") +
+  labs(title = "Working into retirement", x = "Countries", y = "",
+       subtitle = "Percentage of employees who expect to keep earning money in retirement") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.text.y = element_text(color = "black", size = 14, margin = margin(15,0,5,5)),
+    plot.title = element_text(size=rel(2.5), hjust=0.5),
+    plot.subtitle = element_text(size=rel(1.1), margin = margin(5,5,20,5), hjust=0.5),
+    legend.position = "none"
+    ) + 
+  ylim(0,1) +
+  geom_hline(aes(yintercept = mean(values)), color = "red", size = 1.1, alpha = 0.7,lty="dashed") +
+  annotate("text",x=4,y=0.72,size=rel(3.5),label=c("Średnia wyników = 0.52%"), color = "red")
+p
+
+
+```
+
+## 3. Przemyślenia
+
+Wykres jest lepszy, bo:
+
+- na wykresie "Przed" użyty został wykres kołowy, który jest nieczytelny i przedstawia dane, które cieżko ze sobą porównać
+- na wykresie "Przed" dane nie sumowały się do 100% i było to bardzo mylące
+- na wykresie "Przed" dane wydają się jakby były w każdym państwe takie same
+- wykres "Po" bardziej informatywny - odcień kolorów mówi nam jak duży osetek jest takich ludzi w danym państwie
+- na wykresie "Po" alfabetycznie ułożone państwa - łatwo znaleźć to, które szukamy
+- na wykresie "Po" łatwiej porównać dane państwa ze sobą
+- na wykresie "PO" mamy dodatkową informację na temat średniej wszystkich wyników
+
