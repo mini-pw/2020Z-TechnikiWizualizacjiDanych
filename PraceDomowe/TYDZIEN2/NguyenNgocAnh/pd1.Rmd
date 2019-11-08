@@ -1,0 +1,61 @@
+---
+title: 'Praca domowa 1'
+author: "Ngoc Anh Nguyen"
+date: "10/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(plyr)
+options(stringsAsFactors = FALSE)
+```
+
+### Oryginalny wykres
+
+Wybrany przeze mnie wykres przedstawia dobowe rzeczywiste i prognozowane zapotrzebowanie mocy wg Krajowego Rejestru Energetycznego w dniu 17.10.2019.
+
+![](./kse1.png)
+
+Link do strony z wykresem i danymi znajduje się [tutaj](https://www.pse.pl/obszary-dzialalnosci/krajowy-system-elektroenergetyczny/zapotrzebowanie-kse?fbclid=IwAR35X_3inbwm5AIXX1O1DqBOKi3fGYvn1W3cYZmd5rQhO3c_MeNbHA7gRfQ). Plik *.csv* pobrałam również stamtąd.
+
+### Dane
+Załadujemy dane z pobranego pliku i wyświetlimy tabelke:
+```{r}
+# wczytanie csv
+data <- read.csv("ZAP_KSE_20191017_20191018080531.csv", sep=";")
+
+# ustawiamy kolumne z data i godzina
+godz <- paste(1:24, "00", sep=":")
+data[1] <- paste("2019-10-17", godz)
+# factory - inaczej posortuje stringi
+data$Data <- factor(data$Data, levels = data$Data)
+# stringi jako double - przecinek na kropke
+data$Rzeczywiste.zapotrzebowanie.KSE <- scan(text=data$Rzeczywiste.zapotrzebowanie.KSE, dec=",")
+
+# wywolanie tabelki
+knitr::kable(data[-2])
+```
+
+
+## Wykres odwzorujący
+Za pomocą **ggplot** i danych powyżej postaramy się jak najwierniej odtworzyć obraz ze strony [PSE](www.pse.pl).
+```{r}
+
+# wykres
+theme_set(theme_minimal())
+legenda <- c("red", "blue")
+
+ggplot(data = data, aes(x = Data, group=1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"), size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"), size = 1) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+
