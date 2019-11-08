@@ -1,0 +1,145 @@
+---
+title: "Praca domowa - tydzień 3"
+author: "Jakub Kosterna"
+date: "October 25, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, message=FALSE, echo=FALSE}
+library(ggplot2)
+```
+
+### Pierwotny wykres
+
+```{r, echo=FALSE}
+url <- "http://wwwold.pzh.gov.pl/oldpage/epimeld/grypa/Ryc_1.jpg"
+```
+
+<center><img src="`r url`"></center>
+
+### Wczytanie danych (robota Zuzi, swoją drogą bardzo dobra)
+
+```{r data}
+year=c(1975:2018)
+chor=c(376, 226, 174, 310, 45, 127, 20, 70, 110, 230, 226, 140, 115, 50, 270, 7, 197, 10, 250, 30, 105, 260, 130, 60, 224, 150, 49, 125, 24, 52, 21, 26, 20, 119, 48, 125, 140, 302, 300, 375, 415, 426, 500, 510)
+chor=chor*10000
+zgon=c(1420, 550, 402, 624, 100, 205, 60, 150, 210, 50, 150, 205, 50, 40, 55, 42, 43, 42, 70, 40, 45, 224, 222, 60, 410, 360, 30, 34, 60, 31, 38, 6, 8, 7, 55, 25, 59, 2, 69, 3, 9, 62, 44)
+A <- data.frame(cbind(year, chor))
+B <- data.frame(cbind(year, c(zgon, NA)))
+colnames(B)[2] <- "zgon"
+chorParzyste <- chor[seq(1, length(chor), 2)] # tu tylko bonus ode mnie - potrzebne do kolorowania wykresów na zmianę
+chorParzyste <- c(rbind(chorParzyste, rep(0, length(chor)/2)))
+```
+
+### Oryginalny kod i jego efekt
+
+```{r plot, warning=FALSE}
+
+ ggplot(data=A, aes(x = year)) + 
+   geom_col(aes(y=chor, fill="Liczba zachorowan / Number of cases")) +     #barplot
+   geom_line(data=B, aes(x= year, y = zgon*3750, color = "Liczba zgonow / Number of deaths"), size=1) +  #linie
+   geom_point(data=B, aes(x= year, y = zgon*3750, color="Liczba zgonow / Number of deaths"), size=1.5) + #kropki
+   
+   scale_y_continuous(sec.axis = sec_axis(~./3750, name="Liczba zgonow / Number of deaths",    #axis y po prawej
+                                           breaks=seq(0,1600,50), 
+                                           labels=c(0, rep("",3), "200 ", rep("",3), "400 ", rep("",3), "600 ",
+                                                    rep("",3), "800 ", rep("",3), "1 000 ", rep("",3), "1 200 ",
+                                                    rep("",3), "1 400 ", rep("",3), "1 600 ") ), 
+                      
+                       breaks = seq(0,6000000,250000), limits = c(0,6000000),              #axis y po lewj
+                       labels = c(0, rep("",3), " 1 000 000 ", rep("",3), " 2 000 000 ",  
+                                  rep("",3), " 3 000 000 ", rep("",3), " 4 000 000 ",
+                                  rep("",3), " 5 000 000 ", rep("",3), " 6 000 000 "),
+                       name = "Liczba zachorowan / Number of cases", expand = c(0, 0) ) +  
+   
+  scale_x_continuous(breaks=c(1975:2018), name = NULL, expand = c(0, 0) ) +      #axis x
+   
+  scale_color_manual(name="", values=c("Liczba zachorowan / Number of cases"="#07CBFC",  #legenda
+                                       "Liczba zgonow / Number of deaths"="red")) + 
+  scale_fill_manual(name="", values=c("Liczba zachorowan / Number of cases"= "#07CBFC",
+                                       "Liczba zgonow / Number of deaths"="red")) +
+   
+  theme(axis.text.x = element_text(size=8.5, angle = 65, vjust=0.55, face="bold"),
+        axis.text.y = element_text(size=9.2),
+        axis.title.y.right = element_text(margin = margin(3, 3, 3, 3, "pt"), 
+                                          size=9, face="bold", angle=90),
+        axis.title.y.left = element_text(margin = margin(3, 3, 3, 3, "pt"), 
+                                         size=9, face="bold" ),
+        
+        axis.line = element_line(color = "black", size = 0.5, linetype = "solid"), #czarna obwodka
+
+        panel.background = element_blank(),   #biale tlo
+        
+        legend.position = c(.73, .93),
+        legend.spacing.y = unit(-0.4,"cm"),
+        legend.text = element_text(size = 8.5, face="bold"),
+        legend.key = element_blank(),
+        legend.background = element_blank()
+
+                              )
+
+```
+
+### Mój zmodyfikowany kod
+
+```{r newPlot, warning=FALSE}
+
+ ggplot(data=A, aes(x = year)) + 
+   ggtitle("Liczba zachorowan i zgonow w latach 1975-2018\nNumber of cases and deaths in 1975-2018") + #tytuł
+   
+   geom_col(aes(y=chor, fill="Liczba zachorowan / Number of cases")) + #barplot
+   geom_col(aes(y=chorParzyste), fill = "#82e6ff") + #barplot co drugich wartości (jaśniejszy kolor)
+   geom_line(data=B, aes(x=year, y=zgon*3750, color = "Liczba zgonow / Number of deaths"), size=1) + #linie
+   geom_point(data=B, aes(x=year, y=zgon*3750, color="Liczba zgonow / Number of deaths"), size=1.5) + #kropki
+   
+   scale_y_continuous(sec.axis = sec_axis(~./3750, name="Liczba zgonow / Number of deaths", #axis y po prawej
+                                           breaks=seq(0,1600,50), 
+                                           labels=c(0, rep("",3), "200 ", rep("",3), "400 ", rep("",3), "600 ",
+                                                    rep("",3), "800 ", rep("",3), "1 000 ", rep("",3), "1 200 ",
+                                                    rep("",3), "1 400 ", rep("",3), "1 600 ") ), 
+                      
+                       breaks = seq(0,6000000,250000), limits = c(0,6000000), #axis y po lewej
+                       labels = c(0, rep("",3), " 1 000 000 ", rep("",3), " 2 000 000 ",  
+                                  rep("",3), " 3 000 000 ", rep("",3), " 4 000 000 ",
+                                  rep("",3), " 5 000 000 ", rep("",3), " 6 000 000 "),
+                       name = "Liczba zachorowan / Number of cases", expand = c(0, 0) ) +  
+  
+  scale_x_continuous(breaks=seq(1975,2018,by=3), name = NULL, expand = c(0, 0) ) + #axis x
+  
+  scale_color_manual(name="", values=c("Liczba zachorowan / Number of cases"="#07CBFC",  #legenda
+                                       "Liczba zgonow / Number of deaths"="red")) + 
+  scale_fill_manual(name="", values=c("Liczba zachorowan / Number of cases"= "#07CBFC",
+                                       "Liczba zgonow / Number of deaths"="red")) +
+  
+  geom_hline(yintercept=seq(1000000, 5000000, by=1000000), color="lightgrey", size=0.15) + #szare linie poziome
+   
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(size=10, angle = 45, vjust=0.55, face="bold"),
+        axis.text.y = element_text(size=9.2),
+        axis.title.y.right = element_text(margin = margin(3, 3, 3, 3, "pt"), 
+                                          size=11, face="bold", angle=90),
+        axis.title.y.left = element_text(margin = margin(3, 3, 3, 3, "pt"), 
+                                         size=11, face="bold" ),
+        
+        axis.line = element_line(color = "black", size = 0.5, linetype = "solid"), #czarna obwódka
+
+        panel.background = element_blank(), #białe tło
+        
+        legend.position = c(.73, .93),
+        legend.spacing.y = unit(-0.4,"cm"),
+        legend.text = element_text(size = 8.5, face="bold"),
+        legend.key = element_blank(),
+        legend.background = element_blank())
+```
+
+## Co zostało zmienione?
+1. Przedziałki lat ustaliłem na co 3. rok - dzięki temu wykres jest bardziej przejrzysty i na pierwszy rzut oka można prędzej wyłapać informację na temat danego okresu (nie ma efektu nadmiaru małych literek jedna na drugiej, co psuło wrażenie).
+2. Powiększyłem czcionkę dla lat (oś x), a także tytułów obu osi y - wcześniej były one boleśnie najmniejsze i wyczytanie ich wymagało szczególnej uwagi.
+3. Zmieniłem kąt etykiet na osi x - nie trzeba już nienaturalnie przechylać głowy, aby je odczytać.
+4. TODO: Dużo jednokolorowych słupków powodowało, że patrząc na te wysokie, ciężko było jednoznacznie stwierdzić, którego konkretnie roku one dotyczą. Postanowiłem więc kolorować je na zmianę dwoma odcieniami barwy niebieskiej.
+5. Z drugiej strony puste tło prowadziło do trudnego oszacowania samych wysokości niebieskich słupków - dlatego postanowiłem też dodać szare linie poziome co 1 000 000 liczb zachorowań pozwalające błyskawicznie oszacować konkretne liczby.
+6. Co to za wykres bez tytułu? Tak nie wolno! Oczywiście dodałem.
+
+... no i teraz wykres jest już chyba idealny! Alternatywnym rozwiązaniem na kolorowanie słupków dwoma kolorami mogłoby także być dodanie dodatkowych szarych osi y, albo i pisanie odpowiednich lat (co stały krok) przy nich. Stwierdziłem jednak, że pierwsze rozwiązanie bez drugiego dałoby podobny efekt przejrzystości, a gorszy wizualnie niż ten co zaprezentowałem; zaś drugi powodowałby już zbyt duży chaos na rysunku. W celu uproszczenia niegłupim rozwiązaniem byłoby także ograniczenie się tylko do jednego języka w tytule, legendzie i opisie osi pionowych - nie modyfikowałem jednak tego szczegółu, gdyż byłaby to ingerencja w zamysł autora zawierająca prawdopodobnie przemyślaną refleksję na temat grupy docelowej.

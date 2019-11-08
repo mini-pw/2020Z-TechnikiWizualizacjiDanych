@@ -1,0 +1,38 @@
+---
+title: "Praca Domowa 3"
+author: "Marcin Lukaszyk"
+date: "November 7, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+
+
+year<-c("2004","2007","2010","2013","2016")
+dead<-c(627,545,431,323,288)
+
+malaria<-data.frame(dead,year)
+```
+
+
+Uwazam ze wykres na którym sa przedstawiane wartosci jako kolejne mniejsze kwadraty o bokach reprezentujacych wartosc myli uzytkownika bo patrzy on na wielkosc czyli pole powierzchni które nie jest proporcjonalne do wartosci.
+Zamiast tego proponuje zwykly wykres kolumnowy z kolejnymi wartosciami zmniejszajacymi sie dzieki czemu zachowane jest ukazanie trendu który jest jasno widoczny na oryginalnym wykresie.
+
+
+```{r }
+ggplot(data=malaria)+
+  geom_col(aes(y = dead,x=year),fill = c("#33334d", "#006633","#00cc66","green","#77ff33")) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    ) +
+  labs(title = "Fewer Children Are Dying From Malaria",subtitle = "Thousands of deaths per year") +
+  scale_y_continuous(name = "Deaths")+
+  scale_x_discrete(name = "Year")
+```
+
+
+
+

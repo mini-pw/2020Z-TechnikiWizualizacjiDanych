@@ -1,0 +1,45 @@
+---
+title: "Praca domowa 3"
+author: "Dawid Przybyliński"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Co przedstawia wykres?
+Na wykresie pokazane są państwa, do których Polska eksportowała najwięcej mięsa drobiowego w pierwszym półroczu 2018 roku. Artykuł pochodzi z 13 stycznia 2019 roku, ze strony: http://www.agrofakt.pl/rynek-drobiu-w-polsce-beda-zmiany-w-2019/.
+
+## Co chcemy zmienić w wykresie?
+- zmienić geometrię, by pozbyć się nieczytelnego wykresu kołowego\n
+- zmienić kolorystykę, gdyż na oryginalnym wykresie kolory są ciemne i mętne
+- uporządkować państwa malejąco względem ilości mięsa, po nich - pozostałe kraje z i spoza Unii Europejskiej  
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+countries <- c("Niemcy", "Wielka Brytania", "Francja", "Holandia", "Czechy", "Hiszpania", "Pozostałe kraje UE" ,"Kraje spoza UE")
+values <- c(22,13,9,9,7,4,27,9)
+ord <- 1:8 # do zachowania odpowiedniej kolejności słupków zamiast alfabetycznej
+dane <- bind_cols("panstwa" = countries, "wartosci" = values, "ord" = ord)
+ggplot(dane, aes(x = reorder(countries, -ord), y = values)) +
+  geom_bar(stat="identity", fill="#e6ac00") +
+  coord_flip() +
+  theme_linedraw() +
+  scale_y_continuous(breaks = c(0,10,20), labels = c("0%", "10%", "20%")) +
+  ggtitle("Eksport mięsa drobiowego w I półroczu 2018 roku") +
+  xlab("Państwa") +
+  ylab("Część eksportowanego mięsa drobiowego") +
+  theme(
+    panel.background = element_rect(fill=NA),
+    panel.ontop = TRUE,
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(size=15),
+    axis.title.x = element_text(size=13),
+    axis.title.y = element_text(size=13),
+    axis.text.y = element_text(angle=30)
+  )
+
+```
