@@ -1,0 +1,88 @@
+---
+title: "PD_3"
+author: "Konrad Welkier"
+date: "24 października 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(plyr)
+options(stringsAsFactors = FALSE)
+```
+
+
+### Dane
+
+Ładowanie danych i obróbka tabelki w podobny sposób, co w oryginalnej pracy domowej (główne zmiany dotyczą przetwarzania na liczby ostatnią kolumnę, w której części dziesiętne oddzielone są przecinkami).
+
+```{r, echo = FALSE, warning=FALSE}
+data <- read.csv("ZAP_KSE_20191024_20191024182502.csv", sep=";")
+godz <- paste(1:24, "00", sep=":")
+data[1] <- paste("2019-10-17", godz)
+data$Data <- factor(data$Data, levels = data$Data)
+new_var <- as.numeric(substr(data$Rzeczywiste.zapotrzebowanie.KSE,7,9))
+new_var[is.na(new_var)] <- 0
+data$Rzeczywiste.zapotrzebowanie.KSE <- as.numeric(substr(data$Rzeczywiste.zapotrzebowanie.KSE,1,5)) + 0.001 * new_var
+data <- data[-2]
+knitr::kable(data)
+```
+
+
+### Wykres z pierwszej pracy domowej
+
+```{r, echo=FALSE, warning=FALSE}
+# wykres
+theme_set(theme_minimal())
+legenda <- c("red", "blue")
+ggplot(data = data, aes(x = Data, group=1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"), size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"), size = 1) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+
+### Dodatkowa obróbka ramki danych
+
+W tej części pracy zajmujemy się naniesieniem dodatkowych zmian do naszej ramki danych, aby na wykresie można było pokazać inne aspekty niż te, które widoczne są na wykresie oryginalnym.
+
+```{r, echo = FALSE}
+data <- data[1:20,]
+data[,3] <- data[,3] - data[,2]
+data <- data[-2]
+data[,3] <- rep(FALSE,20)
+colnames(data) <- c("Data", "Difference","IsPositive")
+data[data$Difference > 0,3] <- TRUE
+knitr::kable(data)
+```
+
+
+### Nowy wykres
+
+
+```{r, fig.width = 12, fig.height = 8, echo = FALSE}
+ theme_set(theme_minimal())
+ggplot(data = data, aes(x=Data, y = Difference, fill = IsPositive)) + 
+  geom_bar(stat="identity") + theme(axis.text.x = element_text(angle=45),
+                                    axis.text = element_text(colour = "black"),
+                                    axis.title = element_blank(),
+                                    legend.position = "bottom") + 
+  labs(title = "Czy zapotrzebowanie na moc w KSE okazało się być wyższe niż przewidywano?",
+       subtitle = "Wykres ukazuje wartość rzeczywistego zapotrzebowania minus wartość przewidywanego zapotrzebowania [MW]",x = "", y = "") +
+  theme(plot.title = element_text(size = 18, face="bold"),
+        plot.subtitle = element_text(size = 12, face = "italic")) +
+  scale_fill_discrete(name = element_blank(), labels = c("Nie", "Tak")) +
+  theme(legend.position = "top", legend.justification = c(0,0), legend.key = element_blank(), 
+        legend.text = element_text(size = 14)) +
+  coord_cartesian(ylim = c(-850, 500))
+```
+
+### Omówienie różnic
+
+Wykres przygotowany przeze mnie skupia się na innych aspektach wykorzystując do tego oczywiście ten sam zbiór danych. Stwierdziłem, że warto położyć nacisk na porównanie przewidywań ekspertów z Krajowej Sieci Energoelektrycznej z rzeczywistością i ukazać w ten sposób pewne trendy. W tym celu wziąłem tę część danych, dla których dostępne były również pomiary rzeczywiste, a więc do godziny 20. Następnie odpowiedziałem na pytanie, czy zapotrzebowanie na moc okazało się być wyższe niż podejrzewano. W tym celu na wykresie zaprezentowałem dla kolejnych godzin rozpatrywanej doby różnice pomiędzy rzeczywistym zapotrzebowaniem, a prognozą. Jak widać na podstawie legendy słupki w kolorze niebieskim wskazują na wyższe zapotrzebowanie niż się spodziewano, a słupki czerwone na sytuację odwrotną. Najciekawszym wnioskiem, natomiast, jaki można wysnuć z powyższego wykresu to fakt, że eksperci ze znaczącą nadwyżką oszacowali zapotrzebowanie w "godzinach szczytu", czyli wczesnym rankiem oraz w godzinach wieczornych, a w pozostałych godzinach, kiedy zapotrzebowanie jest trochę niższe (w ciągu reszty dnia) lub dużo niższe (w nocy) ich ocena okazała się być niedoszacowaniem, chociaż różnica między ich prognozami, a rzeczywistością (mówimy oczywiście o module z różnicy) była w tym czasie znacząco mniejsza niż podczas "godzin szczytu".
