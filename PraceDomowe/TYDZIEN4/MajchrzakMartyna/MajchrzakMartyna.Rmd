@@ -1,0 +1,44 @@
+---
+title: "Praca domowa 3"
+author: "Martyna Majchrzak"
+date: "8 11 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Oryginalny wykres
+Dane pochodzą ze strony: https://www.cityrating.com/crime-statistics/hawaii/honolulu.html
+
+Błedy:
+- Zastosowanie trapezów i trójkatóW zaburza odczyt wielkosci pól reprezentujących dane
+-w dwóch wykresach skale nie są takie same, przez co np. Robbery wygląda na większe od Burglary (ma ponad dwa razy większe pole), mimo że przedstawiona wartość jest ponad 4 krotnie mniejsza
+- wartości nie są uporządkowane rosnąco w układzie góra-dół
+- zastosowanie identycznej palety kolorów w wykreach sugeruje jakąś zależność między danymi reprezentowanymi tym samym kolorem, któej zwyczajnie tam nie ma.
+- brakuje opisu osi (co oznaczają te liczby?)
+
+## Wczytanie danych
+```{r}
+honolulu2016<-read.csv("C:/Users/marty/OneDrive/Dokumenty/TWD/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/MajchrzakMartyna/dane.csv", sep=";")%>%
+  slice(1:8)%>%
+  arrange(desc(Incidents))%>%
+  mutate(Type=c("Property", "Property", "Property", "Violent", "Property", "Violent", "Violent", "Violent"))
+colnames(honolulu2016)[1]<-"Crime"
+
+honolulu2016$Crime<-factor(honolulu2016$Crime, levels=sample(levels(honolulu2016$Crime)))
+order<-c("Larceny and Theft", "Motor Vehicle Theft", "Burglary", "Aggravated Assault", "Robbery", "Rape", "Arson", "Murder and Manslaughter" )
+```
+
+## Poprawa
+```{r}
+ggplot(honolulu2016, aes(x=Crime, y=Incidents, fill=Type))+
+  geom_col()+
+  coord_flip()+
+  scale_x_discrete(limits = order)+
+  geom_text(label=honolulu2016$Incidents, hjust=0)
+
+```
+
+Ponieważ mamy dostęp również do danych z 2019 roku, urozmaićmy wykres poprzed dodanie porównania.
