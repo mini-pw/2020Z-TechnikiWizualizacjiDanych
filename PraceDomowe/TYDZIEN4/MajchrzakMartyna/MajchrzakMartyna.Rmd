@@ -1,44 +1,124 @@
 ---
 title: "Praca domowa 3"
 author: "Martyna Majchrzak"
-date: "8 11 2019"
-output: pdf_document
+date: "9 11 2019"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("https://install-github.me/thomasp85/patchwork")
+library(patchwork)
+library(dplyr)
+library(ggplot2)
 ```
 
 ## Oryginalny wykres
-Dane pochodzą ze strony: https://www.cityrating.com/crime-statistics/hawaii/honolulu.html
+
+Dane oraz oba wykresy pochodzą ze strony: https://www.cityrating.com/crime-statistics/hawaii/honolulu.html
+
+Wykresy przedstawiają liczbę wystąpień różnego rodzaju przestępstw w Honululu z podziałem na dwie kategorie - jeden w 2016, a jeden z przewidywaniami na 2019.
 
 Błedy:
-- Zastosowanie trapezów i trójkatóW zaburza odczyt wielkosci pól reprezentujących dane
--w dwóch wykresach skale nie są takie same, przez co np. Robbery wygląda na większe od Burglary (ma ponad dwa razy większe pole), mimo że przedstawiona wartość jest ponad 4 krotnie mniejsza
+
+- Zastosowanie trapezów i trójkatóW utrudnia odczyt wielkosci pól reprezentujących dane
+
+- w dwóch wykresach skale nie są takie same, przez co np. wartośc dla Robbery wygląda na większą od Burglary (ma ponad dwa razy większe pole), mimo że przedstawiona wartość jest ponad 4 krotnie mniejsza
+
 - wartości nie są uporządkowane rosnąco w układzie góra-dół
-- zastosowanie identycznej palety kolorów w wykreach sugeruje jakąś zależność między danymi reprezentowanymi tym samym kolorem, któej zwyczajnie tam nie ma.
+
+- zastosowanie identycznej palety (nic swoją drogą nie oznaczających) kolorów na wykresach sugeruje jakąś zależność między danymi reprezentowanymi tym samym kolorem, której zwyczajnie tam nie ma.
+
 - brakuje opisu osi (co oznaczają te liczby?)
 
 ## Wczytanie danych
-```{r}
-honolulu2016<-read.csv("C:/Users/marty/OneDrive/Dokumenty/TWD/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/MajchrzakMartyna/dane.csv", sep=";")%>%
-  slice(1:8)%>%
-  arrange(desc(Incidents))%>%
-  mutate(Type=c("Property", "Property", "Property", "Violent", "Property", "Violent", "Violent", "Violent"))
-colnames(honolulu2016)[1]<-"Crime"
 
-honolulu2016$Crime<-factor(honolulu2016$Crime, levels=sample(levels(honolulu2016$Crime)))
-order<-c("Larceny and Theft", "Motor Vehicle Theft", "Burglary", "Aggravated Assault", "Robbery", "Rape", "Arson", "Murder and Manslaughter" )
+```{r, include=FALSE}
+honolulu<-read.csv("C:/Users/marty/OneDrive/Dokumenty/TWD/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/MajchrzakMartyna/dane.csv", sep=";")%>%
+  slice(1:8)%>%
+  arrange(desc(Incidents2016))%>%
+  mutate(Type=c("Property", "Property", "Property", "Violent", "Property", "Violent", "Violent", "Violent"))
+colnames(honolulu)[1]<-"Crime"
+
+
+order<-c("Larceny and Theft", "Motor Vehicle Theft", "Burglary", "Aggravated Assault", "Robbery", "Rape", "Arson", "Murder and Manslaughter")
 ```
 
-## Poprawa
+## Wykres 1
+
+Zaprezentujemy dane z obu wykresów na dwóch wykresach słupkowych, obok siebie.
+
 ```{r}
-ggplot(honolulu2016, aes(x=Crime, y=Incidents, fill=Type))+
+barplot2016<-ggplot(honolulu, aes(x=Crime, y=Incidents2016, fill=Type))+
   geom_col()+
   coord_flip()+
   scale_x_discrete(limits = order)+
-  geom_text(label=honolulu2016$Incidents, hjust=0)
+  geom_text(label=honolulu$Incidents2016, hjust=-0.1, aes(col=Type), fontface="bold", size=3.5)+
+  ylim(0, 26000)+
+  labs(title="Crime in Honululu", x="", y="", subtitle ="Number of incidents in 2016")+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "bottom")+
+  scale_fill_manual(labels = c("Property", "Violent"), 
+                     values = c("Property"="#7570b3", "Violent"="#d95f02"))+
+  scale_color_manual(labels = c("Property", "Violent"), 
+                     values = c("Property"="#7570b3", "Violent"="#d95f02"))
+
+barplot2019<-ggplot(honolulu, aes(x=Crime, y=Incidents2019, fill=Type))+
+  geom_col()+
+  coord_flip()+
+  scale_x_discrete(limits = order)+
+  geom_text(label=honolulu$Incidents2019, hjust=-0.1, aes(col=Type), fontface="bold", size=3.5)+
+  ylim(0, 25000)+
+  labs(title="", x="", y="", subtitle="Projected number of incidents in 2019")+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "none")+
+  scale_fill_manual(labels = c("Property", "Violent"), 
+                     values = c("Property"="#7570b3", "Violent"="#d95f02"))+
+  scale_color_manual(labels = c("Property", "Violent"), 
+                     values = c("Property"="#7570b3", "Violent"="#d95f02"))
+
+barplot2016+barplot2019
 
 ```
 
-Ponieważ mamy dostęp również do danych z 2019 roku, urozmaićmy wykres poprzed dodanie porównania.
+Dzięki zmianie geometrii różnice między wartościami są bardziej przejrzyste, a podział na kategorie przestępstw został zaznaczony kolorem. 
+
+## Wykres 2
+
+Proponuję też rozwiązanie bardziej pokazujące różnice między wartościami (spadki/wzrosty) z użyciem slope chartu. Niestety ze wzgledu na olbrzymie różnice w liczbie wystąpień pomijam dane o kradzieżach.
+
+```{r}
+honolulu<-slice(honolulu, 2:8)
+
+ggplot(honolulu) + 
+  geom_segment(aes(x=1, xend=2, y=Incidents2016, yend=Incidents2019), size=.75, show.legend=F)+
+  geom_point(aes(x=1, y=Incidents2016, colour=Type), size=4)+
+  geom_point(aes(x=2, y=Incidents2019, colour=Type), size=4)+
+  geom_vline(xintercept=1, linetype="dashed", size=.1) + 
+  geom_vline(xintercept=2, linetype="dashed", size=.1) +
+  scale_color_manual(labels = c("Property", "Violent"), 
+                     values = c("Property"="#7570b3", "Violent"="#d95f02"))+
+  labs(title="Honolulu - number of commited crime incidents", x="", y="")+
+  xlim(-1, 4) + 
+  ylim(0,(1.1*(max(honolulu$Incidents2016, honolulu$Incidents2019))))+
+  geom_text(label=paste(honolulu$Crime, honolulu$Incidents2016, sep=", "), aes(y=Incidents2016, x=rep(0.9, NROW(honolulu))), hjust=1, size=2.1)+
+  geom_text(label=paste(honolulu$Crime, honolulu$Incidents2019, sep=", "), aes(y=Incidents2019, x=rep(2.1, NROW(honolulu))), hjust=0, size=2.1)+
+  geom_text(label="2016", x=1, y=1.1*(max(honolulu$Incidents2016, honolulu$Incidents2019)), hjust=1.2, size=3.5)+
+  geom_text(label="2019 (Projected)", x=2, y=1.1*(max(honolulu$Incidents2016, honolulu$Incidents2019)), hjust=-0.2, size=3.5)+
+  theme(panel.background = element_blank(), 
+        panel.grid = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        panel.border = element_blank(),
+        plot.margin = unit(c(1,2,1,2), "cm"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position="bottom",
+        plot.title = element_text(hjust = 0.5))
+
+```
