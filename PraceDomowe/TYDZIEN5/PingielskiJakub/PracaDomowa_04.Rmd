@@ -1,0 +1,89 @@
+---
+title: "TWD Praca domowa 4"
+author: "Jakub Pingielski"
+date: "8/11/2019"
+output: html_document
+---
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(patchwork)
+
+fullData <- read.csv("data.csv")
+
+# Helper function
+zeroOrOne <- function(x){ 
+  if (x <0){return (0) }
+  else(return(1))
+  }
+
+```
+
+## 1 Original plot - red to blue
+#### Aesthetically pleasing, nice choice of colors, but does it provide new insights into our data?
+
+```{r plot}
+plot1 <- ggplot(data = fullData, aes(x = reorder(firstWeekValues, -firstWeekNumbers), y = firstWeekNumbers)) + 
+          geom_col(aes(fill = firstWeekNumbers), show.legend = FALSE) + 
+          coord_flip() +
+          theme_bw() + 
+          geom_abline(intercept = 0, slope = 0, color = "white", size = 1) + 
+          scale_fill_gradient2(low = "red", mid = "#262626", high = "#008fb3", midpoint = 0 ) + 
+          theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), # białe tło
+                axis.line.x = element_blank(),  # usunięcie linii osi X
+                axis.line.y = element_blank(), 
+                axis.text = element_blank(), 
+                axis.ticks = element_blank(),
+                axis.title = element_blank(),
+                plot.title = element_text(hjust = 0.5, face = 2)) +
+          scale_y_continuous(breaks = seq(-2,2,0.4) ) + 
+          ggtitle("S&P 500 SECTOR RETURNS")  + 
+          geom_text(aes(y = -0.04 * sign(firstWeekNumbers), label = firstWeekValues), 
+                position = position_dodge(width = 0.9), 
+                size = 4 , angle = 0, color = "black", hjust = sapply(fullData$firstWeekNumbers, zeroOrOne))  + 
+          geom_text(aes(y = firstWeekNumbers -0.1 * sign(firstWeekNumbers), label = firstWeekNumbers), 
+                position = position_dodge(width = 0.9), 
+                size = 4 , angle = 0, color = "white")
+
+plot1
+```
+
+## 2 Black to (almost) white
+#### Removing colors does not remove any information from the plot, shades of gray still represtents levels of intensity correctly. Drawback - almost white bars are harder to read on white background, color of labels should also be adjusted accordingly.
+
+```{r plot2}
+
+plot2 <- plot1 + scale_fill_gradient2(low = "black", mid = "gray40", high = "gray80", midpoint = 0 ) 
+
+plot2
+```
+
+## 3 All gray
+#### Removing gradient makes plot more clean and readable, all information is stil availalbe to the viewer.
+```{r plot3}
+
+plot3 <- plot1 + scale_fill_gradient2(low = "gray20", mid = "gray20", high = "gray20", midpoint = 0 ) 
+
+plot3
+```
+
+## 4 Red to green 
+#### Green is culturally connected with positive values and it may better suit this dataset.
+```{r plot4}
+
+plot4 <- plot1 + scale_fill_gradient2(low = "red", mid = "#262626", high = "green3", midpoint = 0 )
+
+plot4
+```
+
+
+## 5 Viridis 
+#### This color gradient is easier to read by people with colorblindness.
+```{r plot5}
+plot5 <- plot1 + scale_fill_gradient2(low = "#440154ff", mid = "#29AF7FFF", high = "#FDE725FF", midpoint = 0 )
+
+plot5
+```
