@@ -1,0 +1,75 @@
+---
+title: "PracaDomowa3"
+author: "Renata Rólkiewicz"
+date: "08/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# wczytanie danych
+data1 <- data.frame(sources=c("Tuition","After school \n care","  Annual \n Giving","Endowment","Other"), per=c(78,2,16,2,2))
+data2 <- data.frame(uses=c("  Faculty \n & Staff"," Buildings \n & Grounds", "General \n & Administrative", "Improvements", " Studdent \n Programs"), per=c(73,9,3,7,8))
+```
+
+### Poprawiane wykresy
+Dane dotyczące źródeł funduszy i ich wykorzystania pewnej szkoły.
+
+![](C:/Users/acer/Desktop/PoprawianyWykres.png)
+
+
+### Co jest nie tak z powyższymi wykresami?
+Wycinki koła bez względu na wynik procentowy są identyczne - dla 2% i 78% są równej wielkości co wprowadza czytelnika w błąd
+i utrudnia szybkie odczytanie i zrozumienie wykresu.
+
+
+### Moje wykresy
+1. Zamiana wykresu kołowego na słupkowy - prosty do odczytu, intuincyjny oraz wiarygodne odwzorowywuje wielkości danych.
+2. Sortowanie wyników (od najmniejszego do największego) - poprawa czytelności wykresu.
+3. Przecięcie osi w (0,0) - usuwamy niepotrzebne wolne miejsce pod słupkami wykresu.
+4. Poprawa wygladu wykresu - kolory, skala procentowa y, zmiana siatki wykresu, dodanie podpisów nad słupkami.  
+
+
+```{r warning=FALSE,message=FALSE}
+library(ggplot2)
+library(ggthemes)
+
+# Rysowanie wykresu 1
+ggplot(data1,aes(x=reorder(sources,per), y=per, fill = per, label=paste0(per,"%")))+
+  geom_bar(position = 'dodge', stat = "identity", width=0.8)+
+  scale_y_continuous(expand = c(0,0), limits = c(0,85), breaks = seq(0,80,20), labels=paste0(seq(0,80,20),"%"))+
+  labs(x="",y="",title="SOURCES OF FUNDS")+
+  scale_fill_gradient(low = "orangered", high = "red3")+
+  geom_text(aes(label = per), position = position_dodge(width = 1),
+            size = 6 , vjust= -0.3, hjust= 0.5, color = "black")+
+  theme_economist() + 
+  scale_color_economist()+
+  theme(legend.title = element_blank(), legend.position = "",axis.ticks.x = element_blank(),
+        plot.title = element_text(size=26,family="mono"), axis.line = element_line(size = 0.5, linetype = "solid",colour = "white"))
+
+  
+# Rysowanie wykresu 2
+ggplot(data2,aes(x=reorder(uses,per), y=per, fill = per))+
+  geom_bar(position = 'dodge', stat = "identity", width=0.8)+
+  scale_y_continuous(expand = c(0,0), limits = c(0,85), breaks = seq(0,80,20),labels=paste0(seq(0,80,20),"%"))+
+  labs(x="",y="",title="USES OF FUNDS")+
+  scale_fill_gradient(low = "orangered", high = "red3")+
+  geom_text(aes(y = per, label = per), position = position_dodge(width = 1),
+            size = 6 , vjust= -0.3, hjust= 0.5, color = "black")+
+  theme_economist() + 
+  scale_color_economist()+
+  theme(legend.title = element_blank(), legend.position = "",axis.ticks.x = element_blank(),
+        plot.title = element_text(size=26,family="mono"), axis.line = element_line(size = 0.5, linetype = "solid",colour = "white"))
+  
+```
+
+
+
+
+
+
