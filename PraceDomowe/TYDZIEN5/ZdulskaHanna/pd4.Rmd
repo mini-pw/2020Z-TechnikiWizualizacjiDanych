@@ -1,0 +1,60 @@
+---
+title: "PD4"
+author: "Hanna Zdulska"
+date: "11/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+```
+
+# Wykres oryginalny
+
+```{r}
+wyniki <- read.csv('/home/hania/studia/twd/origin/PraceDomowe/TYDZIEN4/PodsiadAleksander/IGN_wyniki.csv')
+
+# reorganizacja danych
+staff <- wyniki %>% select(HERO, IGN_STAFF) %>% mutate(TYPE = "IGN STAFF") %>% rename(VALUE = IGN_STAFF)
+comm <- wyniki %>% select(HERO, IGN_COMMUNITY) %>% mutate(TYPE = "IGN COMMUNITY") %>% rename(VALUE = IGN_COMMUNITY)
+data <- staff %>% bind_rows(comm)
+# dla poprawnej kolejnosci zmiennych w legendzie
+data$HERO <- factor(data$HERO, levels = c("Captain America", "Iron Man", "Nebula", "Hulk", "Hawkeye", "Happy Hogan"))
+
+p <- ggplot(data, aes(fill= TYPE, y=VALUE, x=HERO)) + 
+  # geom_bar dodge
+  geom_bar(position=position_dodge(), stat="identity") +
+  
+  # zmiana palety kolorow
+  scale_fill_manual(values = c("#b941e1", "#09a3ed")) +
+  
+  theme_classic() +
+  
+  # dodanie tekstu z liczbami i procentami
+  geom_text(aes(label = sprintf("        %s%%", VALUE)), 
+            position = position_dodge(width = 1), size = 3.4) +
+  
+  # zmiana pozycji legendy
+  theme(legend.position = "top") +
+  
+  # odwrocenie wykresu
+  coord_flip() +
+  
+  # pozbywam sie niepotrzebnych danych na osiach
+  theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
+      legend.title = element_blank(), axis.title = element_blank(), plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(face = "bold"), legend.text = element_text(face = "bold")) +
+  
+  # dodanie tytulu
+  labs(title = "POLL RESULTS \nWHO WILL DIE IN AVENGERS: ENDGAME?")
+p
+```
+# Wykres poprawiony
+
+![](./poll_result.svg)
+
+# Zmiany
+
+Przede wszystkim zmiany, które zaszły w wykresie, to dodanie 8 grafik, które są powiązane z tematyką wykresu - sylwetki bohaterów oraz oryginalny tytuł filmu. Dzięki temu czytelnik patrząc na oś Y będzie w stanie szybciej powiązać imię z postacią oraz jest w stanie szybciej go zrozumieć - przez kolumny z 0% łatwo było się pomylić się czyja jest konkretna kolumna. Teraz dzięki ikonom obok od razu wiadomo do kogo odnoszą się konkretne kolumny.  Ponadto zmieniony jest też kolor tła na gradient. Umieszczanie obrazków na osi byłoby znacznie bardziej czasochłonne w R niż w Inkscapie, jak również customowe tworzenie gradientów(w tym zmiana ich osi, kąta, itp).
