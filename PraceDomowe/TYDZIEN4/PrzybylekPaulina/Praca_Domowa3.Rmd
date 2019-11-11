@@ -1,0 +1,139 @@
+---
+title: "Praca Domowa 3"
+author: "Paulina Przybyłek"
+date: "8 listopada 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(extrafont) #czcionki do wykresu
+library(scales)
+library(png)
+
+# Robimy listę możliwych do wykorzystania czcionek
+font <- fonts()
+```
+
+## Wybór wykresu
+
+Wykres pochodzi ze strony https://viz.wtf/post/182504087404/it-boggles-my-mind-because-whatever-graph-software i przedstawia budżet ślubny. Aspektem wprowadzającym w błąd jest zła wysokość/długość słupków (np. 1 i 2 są prawie tej samej wysokości). Oszukuje to osobę, która ogląda wykres, zacierają się prawdziwe wartości.
+
+Do sortowania nie mam uwag, bo jest to zamierzone, że ostatnia wartość mimo większej wartości od wcześniejszych znajduje się na końcu - są to dodatkowe koszty, więc ich umieszczenie po wyliczeniu innych kosztów z nazwy ma sens. Osobiście przeszkadza mi to, że napis nachodzi na jedną z kolumn - źle to wygląda. 
+
+```{r original, message = FALSE, cache=TRUE, echo = FALSE}
+
+knitr::include_graphics(file.path(getwd(), 'original.jpg'))
+
+```
+
+
+## Wprowadzenie danych
+
+Do wykresu nie było załączonych danych, więc wprowadzamy je ręcznie:
+
+```{r data, message = FALSE, cache=TRUE}
+#najpierw przepisujemy wartosci z wykresu, gdyz nie ma do nich danych
+var <- c(39, 12, 9, 8, 8, 8, 3, 2, 2, 2, 1, 1, 1, 1, 1, 2)
+#sum(var) #sumuje się do 100, czyli chociaż to jest dobrze
+labels <- c("CATERING", "PHOTOGRAPHY & VIDEOGRAPHY", "CEREMONY & RECEPTION VENUE",
+            "FLOVERS", "MUSIC (CEREMONY & RECEPTION)", "WEDDING DRESS", 
+            "INVITATIONS", "CAKE", "WEDDING RINGS", "WEDDING PLANNER",
+            "TRANSPORTATION", "FAVORS & GIFTS", "OFFICIANT",
+            "HAIR, MAKE UP & BEAUTY", "GROOM'S TUXEDO", "ADDL COSTS")
+#tworzymy ramke danych i zmeinaimy typy zmiennych
+data <- cbind(var, labels) %>% as.data.table()
+data$var <- data$var %>% as.numeric()
+#data <- data[order(var, decreasing = TRUE)]
+#nadajemy tzw. levels, aby narysowac potem wykres w odpowiedniej kolejnosci
+levels(data$labels) <- data$labels 
+```
+
+## Wykres
+
+- Poprawiona wysokość słupków
+
+- Napisy są nad słupakami, aby żaden nie zachodził na niego (mogły być też zwykłymi podpisami na osiach, ale wtedy wykres był bardzo szeroki, co mi się nie podobało)
+
+- Dodano oś i linie na wykresie, aby każdy mógł porównywać sobie daną wartość
+
+- Wykorzystano kolory zgodnie z modą ślubną 2019 (biały, liliowy i lawendowy [lawenda jest przyciemniona, aby się nie zlał wykres])
+
+- Zachowano sortowanie z orginalnego wykresu - niech koszty dodatkowe są ostatnie
+
+Kod do wykresu:
+
+```{r plot, dependson = c(data), message = FALSE, cache=TRUE}
+
+ggplot(data,
+       aes(x = factor(labels, rev(levels(data$labels))), y = var)) +
+  #slupki z wartosciami
+  geom_bar(stat = "identity",
+           width = 0.5,
+           alpha = 0.9,
+           fill = "#dd9ecd") +
+  #nazwy slupkow
+  geom_text(y = 0.1,
+            aes(label =  factor(labels, rev(levels(data$labels)))),
+            size = 3,
+            family = font[196],
+            hjust = "left",
+            nudge_x = 0.5,
+            nudge_y = -1,
+            fontface = "bold.italic",
+            color = "white") +
+  #odwrocenie wykresu
+  coord_flip() +
+  #tytuly
+  labs(title = NULL,
+       x = NULL,
+       y = "Total of %") +
+  #dopracowanie wykresu - linii, osi, tekstu, pola wykresu, marginesow
+  theme(axis.ticks = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line("#efebf9",
+                                          size = 0.3,
+                                          linetype = 3),
+        panel.grid.minor.x = element_line("#efebf9",
+                                          size = 0.3, 
+                                          linetype = 3),
+        axis.text.y = element_blank(),
+        plot.title = element_text(size = 30, 
+                                  face = "bold.italic", 
+                                  hjust = 0.9, 
+                                  family = font[196],
+                                  color = "white"),
+        plot.background = element_rect(fill =  "#6e4566"),
+        panel.background = element_blank(),
+        axis.line.x = element_line("white",
+                                   arrow=arrow(angle=10, type = "closed")),
+        axis.text.x = element_text(size = 11,
+                                   family = font[196],
+                                   color = "white"),
+        axis.title.x.bottom = element_text(size = 13, 
+                                           face = "bold.italic",
+                                           family = font[7],
+                                           color = "white",
+                                           margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.margin = margin(0.5,1,0.5,1, "cm")) +
+  #okreslenie wygladu osi y i x
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0, 45), 
+                     labels = paste0(seq(0, 40, 10), rep("%", 5))) +
+  scale_x_discrete(expand = c(0.05, 0.05)) +
+  #dodanie procentow do slupkow
+  geom_text(aes(label = paste0(data$var, "%")),
+            hjust = 1, family = font[196],
+            size = 3,
+            fontface = "bold",
+            color = "#6e4566") +
+  #umieszczenie tytulu na wykresie (wewnatrz pola)
+    geom_text(aes(y = 44, x = "TRANSPORTATION", 
+                label = "Wedding\nbudget\nbreakdown"), 
+            colour = "white", hjust = "right", size = 14, fontface = "bold.italic",family = font[196])
+
+```
