@@ -1,0 +1,40 @@
+---
+title: "PD4"
+author: "Elżbieta Jowik"
+date: "13/10/2019"
+output: html_document
+---
+  
+## 1. Przed  
+
+```{r data, include = FALSE}
+library(ggplot2)
+
+gracz <- c("Kane Williamson\n(Nowa Zelandia)", "Rohit Sharma\n(Indie)",
+           "Shakib Al Hasan\n(Bangladesz)", "David Warner\n(Australia)",
+           "Babar Azam\n(Pakistan)", "Faf Du Plessis\n(RPA)",
+           "Nicholas Pooran\n(kraje Karaibskie)", "Joe Root\n(Anglia)",
+           "Kusal Perera\n(Sri Lanka)", "Rahmat Shah\n(Afganistan)")
+procent <- c(30.23, 29.05, 28.25, 25.02, 24.51, 21.06, 20.01, 19.07, 18.16, 14.8)
+dataf <- as.data.frame(cbind(as.character(gracz), as.double(procent)))
+```
+
+```{r graph, fig.align='center', fig.width=9, fig.height=7}
+ggplot(data=dataf, aes(x=reorder(gracz, procent), y=procent, label=paste(procent, "%", sep=""))) +
+  geom_col(fill="#004080", width=5/6) +
+  geom_text(color="#e0e0e0", size=4, hjust=1) + 
+  coord_flip() + 
+  labs(x="gracz (i reprezentacja)", y="procent punktów zdobytych dla drużyny",
+       title="Najlepsi z najlepszych...", subtitle="...graczy krykieta w swoich reprezentacjach")
+```  
+
+##  2.1. Po  
+
+
+![](./edit.svg)
+
+## 2.2  Dlaczego wersja poprawiona jest lepsza?  
+Wersja po poprawkach jest atrakcyjniejsza wizualnie. Odpowiednio dobrana grafika tła, stanowi jawne odniesienie do tematu wykresu. 
+Dodanie zdjęć zawodników urozmaica kompozycję i sprawia, że potencjalni odbiorcy, będący mogli natychmiast skojarzyć zawodnika. 
+Wszystkie modygikacje zrobione zostały w Inkscape. 
+Gdybym musiała dokonywać tego typu poprawek programatywnie, problemem byłoby np. rozsunięcie słupków na odpowiednie szerokości, tak aby wprowadzenie zdjęć na lewym marginesie nie wprowadzało haosu. Ponadto, nie wiedziałabym w jaki sposób umieścić podpisy do zdjęć zawodników tuż pod nimi. Dzięki wykorzystanemu narzędziu, zabiegi te można było wykonać w sposób intuicyjny. 
