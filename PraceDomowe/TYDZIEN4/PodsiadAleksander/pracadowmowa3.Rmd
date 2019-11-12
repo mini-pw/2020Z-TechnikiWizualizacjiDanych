@@ -1,0 +1,84 @@
+---
+title: "Praca domowa"
+author: "Aleksander Podsiad"
+output: html_document
+---
+
+### *Techniki Wizualizacji Danych - PD3* 
+
+#### Setup:
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+
+#### Oryginalny wykres:
+
+![](/home/aleksander/Dokumenty/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/PodsiadAleksander/wykres_oryginalny.jpg)
+
+Żródło: [IGN](https://www.ign.com/articles/2019/04/05/poll-who-will-die-in-avengers-endgame). 
+Obecnie wykres jest już archiwalny i nie znajduje się na stronie.
+
+#### Wczytanie danych:
+
+```{r}
+wyniki <- read.csv('/home/aleksander/Dokumenty/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN4/PodsiadAleksander/IGN_wyniki.csv')
+```
+
+
+#### Modyfikacja danych:
+
+```{r}
+# reorganizacja danych
+staff <- wyniki %>% select(HERO, IGN_STAFF) %>% mutate(TYPE = "IGN STAFF") %>% rename(VALUE = IGN_STAFF)
+comm <- wyniki %>% select(HERO, IGN_COMMUNITY) %>% mutate(TYPE = "IGN COMMUNITY") %>% rename(VALUE = IGN_COMMUNITY)
+data <- staff %>% bind_rows(comm)
+# dla poprawnej kolejnosci zmiennych w legendzie
+data$HERO <- factor(data$HERO, levels = c("Captain America", "Iron Man", "Nebula", "Hulk", "Hawkeye", "Happy Hogan"))
+```
+
+
+#### Modyfikacja wykresu:
+
+Poprawa czytelności danych poprzez zastosowanie poprawnej skali w wykresie oraz `geom_bar` z `position_dodge`. Kolory pozostawiam oryginalne. Odwracam wykres dla łatwego odczytania imion bohaterów.
+
+
+```{r}
+ggplot(data, aes(fill= TYPE, y=VALUE, x=HERO)) + 
+  # geom_bar dodge
+  geom_bar(position=position_dodge(), stat="identity") +
+  
+  # zmiana palety kolorow
+  scale_fill_manual(values = c("#b941e1", "#09a3ed")) +
+  
+  theme_classic() +
+  
+  # dodanie tekstu z liczbami i procentami
+  geom_text(aes(label = sprintf("        %s%%", VALUE)), 
+            position = position_dodge(width = 1), size = 3.4) +
+  
+  # zmiana pozycji legendy
+  theme(legend.position = "top") +
+  
+  # odwrocenie wykresu
+  coord_flip() +
+  
+  # pozbywam sie niepotrzebnych danych na osiach
+  theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
+      legend.title = element_blank(), axis.title = element_blank(), plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(face = "bold"), legend.text = element_text(face = "bold")) +
+  
+  # dodanie tytulu
+  labs(title = "POLL RESULTS \nWHO WILL DIE IN AVENGERS: ENDGAME?")
+```
+
+
+
+
+
+
+
+
+
