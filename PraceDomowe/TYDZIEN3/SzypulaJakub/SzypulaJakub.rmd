@@ -1,0 +1,97 @@
+---
+title: "Praca domowa nr 2 z Technik Wizualizacji Danych"
+author: "Jakub Szypuła"
+date: "25/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# poniewaz na moim komputerze ustawiony jest jezyk angielski,
+# zeby na wykresach wystepowaly polskie znaki musialem ustawic
+# locale na polskie w ramach tego projektu
+Sys.setlocale("LC_CTYPE", "polish_pol")
+```
+W poniższym dokumencie zamieszczam moje rozwiązanie zadania nr 2 z TWD, które polegało na poprawieniu wykresu przygotowanego przez inną osobę.
+
+## Oryginalny wykres
+
+Poniżej prezentuję wykres, który zamierzam poprawić, który przedstawia wybrane statystyki z dnia 10.07.2019 ze strony polskiej Policji.
+
+```{r oryginalnywykres, echo=FALSE, warning=FALSE}
+library(ggplot2)
+dane <- read.csv("dane.csv", fileEncoding = "UTF-8")
+ggplot(data=dane, aes(x=Typ, y=Ilosc)) + 
+  geom_bar(stat="identity", fill="steelblue", width=0.7) +
+  #nubers on top of bars
+  geom_text(aes(label=Ilosc), vjust=1.6, size=3.5)+
+  #remove of titles and labels rotacion
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 90))
+```
+
+Dane ze strony [http://policja.pl/pol/form/r5002806272,07102019.html](http://policja.pl/pol/form/r5002806272,07102019.html)
+
+## Moja wersja
+
+Tutaj zaś znajduje się moja wersja powyższego wykresu, po zmianach.
+
+```{r nowywykres, fig.width = 7.5, fig.height=6.2, echo=FALSE, warning=FALSE}
+library(ggplot2)
+library(ggimage)
+podpisy <- c("Zatrzymani na\ngor\u0105cym\nuczynku",
+             "Zatrzymani\nposzukiwani",
+             "Zatrzymani\nnietrzeźwi\nkieruj\u0105cy",
+             "Ranni w\nwypadkach",
+             "Wypadki\ndrogowe",
+             "Zabici w\nwypadkach")
+Encoding(podpisy) <- "UTF-8"
+dane <- read.csv("dane.csv", fileEncoding = "UTF-8")
+dane$icon <- c("md-heart-half", 
+               "md-car", 
+               "md-close-circle-outline", 
+               "md-hand",
+               "md-beer",
+               "md-today")
+p <- ggplot(dane, aes(x = reorder(Typ, -Ilosc), y = Ilosc)) +
+  geom_bar(stat = "identity", fill = "#0E244A") + 
+  geom_icon(aes(y = Ilosc+40, image=icon), size=0.1) +
+  geom_image(aes(x = "Wypadki drogowe", y = 504, image = "policja.png"), size = 0.7) +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_line( size=.2, color="black"),
+        panel.grid.minor.y = element_blank(),
+        axis.title.y = element_text(size=15),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = "15"),
+        axis.text.x = element_text(size = "12"),
+        plot.title = element_text(face="bold", 
+                                  size = "30", 
+                                  hjust = 0.5,
+                                  colour = "#0E244A")
+        ) +
+  scale_x_discrete(labels=podpisy) +
+  scale_y_continuous(name = "Liczba przypadków", breaks = c(200, 400)) +
+  coord_cartesian(ylim=c(0, 620)) +
+  geom_text(aes(label=Ilosc), vjust=-3.6, size=6) +
+  ggtitle("Statystyka dnia: 2019-10-07") +
+  labs(caption = "Źródło: policja.pl (strona Policji)")
+p
+```
+
+## Uzasadnienie
+
+Poniżej przedstawiam listę usprawnień, które w mojej opnii powodują, że moja wersja wykresu jest lepsza:
+
+* podpisy osi X: umieszczenie napisów w poziomie oraz zwiększenie rozmiaru czcionki poprawia czytelność wykresu.
+* usunięcie wszystkich elementów siatki z wyłączeniem linii poziomych na wysokości 200 i 400: linie pionowe nie są potrzebne w przypadku tak prostego histogramu, pomniejsze linie poziome są zbędne, ponieważ przy każdej kolumnie znajduje się liczba z dokładną jej wartością (linie na poziomie 200 i 400 pozwalają łatwiej rozdzielić wartości na te występujące znacznie częściej i znacznie rzadziej). Zmiana koloru na czarny ułatwia zauważenie jej
+* przeniesienie liczby ponad kolumnę, na szarym tle jest lepszy kontrast, dzięki czemu łatwiej ją odczytać; zwiększenie rozmiaru czcionki tej liczby, żeby była lepiej widoczna
+* dodanie ikon nad kolumnami, co pozwala na pierwszy rzut oka przypomnieć, co reprezentuje dana kolumna.
+* dodanie podpisu osi pionowej
+* dodanie loga Policji w pustym miejscu na wykresie, co informuje o pochodzeniu danych i wypełnia puste miejsce na wykresie
+* zmiana koloru kolumn na ciemniejszy, jednolity z logiem Policji
+* dodanie źródła na dole wykresu
+* dodanie tytułu
+* zmiana kolejności kolumn z alfabetycznej na malejącą po wartości
+

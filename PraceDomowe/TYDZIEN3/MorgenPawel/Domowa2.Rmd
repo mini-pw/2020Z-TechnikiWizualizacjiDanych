@@ -1,0 +1,91 @@
+---
+title: "Praca domowa 2"
+author: "Paweł Morgen"
+date: "21/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(treemapify)
+library(ggfittext)
+```
+
+## INFORMACJA DZIENNA STATYSTYKA DNIA: 2019-10-07
+
+### Załadowanie danych
+
+```{r data_load}
+policeData <- data.frame(Count = c(106, 86, 7, 514, 206, 278),
+                         CaseType = c("Ranni w wypadkach",
+                                      "Wypadki drogowe",
+                                      "Zabici w wypadkach",
+                                      "Zatrzymani na gorącym uczynku",
+                                      "Zatrzymani nietrzeźwi kierujący",
+                                      "Zatrzymani poszukiwani"))
+```
+
+### Oryginalny wykres
+
+```{r original, echo=FALSE}
+ggplot(data=policeData, aes(x=CaseType, y=Count)) + 
+  geom_bar(stat="identity", fill="steelblue", width=0.7) +
+  #nubers on top of bars
+  geom_text(aes(label=Count), vjust=1.6, size=3.5)+
+  #remove of titles and labels rotacion
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 90))
+```
+
+### Propozycje przeróbek
+
+* Po pierwsze, dodajemy tytuł do wykresu. 
+* Po drugie, przydałoby się dane uporządkować - są nieposortowane i przez to mniej czytelne.
+* Po trzecie (najciekawsze) proponuję zmianę geometrii. Uważam, że naszym celem jest przekazać informacje o proporcjach ilości występowania określonych zgłoszeń do wszystkich. Pomocny w rysowaniu tego będzie wykres typu *Waffle chart* . 
+
+### Przerobiony wykres
+
+```{r new_plot}
+# Musimy ręcznie ustawić koordynaty kwadracików i ich przypisanie do kategorii - 
+# u nas do typu wezwania. Zrobimy planszę 10x10
+
+# Koordynaty: 
+
+nrows <- 10
+board <- expand.grid(y = 1:nrows, x = 1:nrows)
+
+# Ustawiamy, ile kwadracików odpowiada danej kategorii
+
+mutate(policeData, TileCount = round(Count / sum(Count) * 100)) %>%
+  arrange(desc(Count))-> policeData
+
+# Łączymy z tablicą koordynatów - przypisujemy kwadracikom kategorie
+
+mutate(board, CaseType = factor(rep(policeData[["CaseType"]],
+                                    policeData[["TileCount"]]),
+                                ordered = TRUE)) -> board  
+
+ggplot(board, aes(x = x, y = y, fill = CaseType)) +
+  geom_tile(color = "black", size = 0.5) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_brewer(palette = "Set1") +
+  guides(fill = guide_legend(title = "Typ sprawy")) +
+  labs(title="Kronika policyjna",
+       subtitle="7.10.2019") +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        panel.background = element_rect(color = "black"))
+```
+
+### Dyskusja
+
+Nowy wykres lepiej pokazuje zależności między rozmiarami poszczególnych grup. Przekazuje tę informację szybciej i sprawniej, korzystając z kilku estetyk naraz (rozmiaru oraz koloru).  Ponadto dzięki tytułowi nie trzeba się domyślać, co wykres przedstawia. Podpisy kategorii nie są już pionowe, tylko poziome, co również zwiększa czytelność.
+
+Wadą tego typu wykresu jest brak możliwości odczytania dokładnych danych oraz konieczność dopasowania koloru do kategorii.
+
+

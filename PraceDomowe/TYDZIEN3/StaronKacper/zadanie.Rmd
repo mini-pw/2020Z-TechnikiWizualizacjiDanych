@@ -1,0 +1,99 @@
+---
+title: "TWD Zadanie Tydzień 3."
+author: "Kacper Staroń"
+output: html_document
+---
+  
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Pierwowzór
+
+![Oryginalny wykres odtworzony przez innego studenta](C:/Users/staro/Desktop/Semestr 3/Techniki Wizualizacji Danych/zad_dom_workspace/wykres.png)
+
+Link do wykresu odtwarzanego ze strony https://www.bbc.com/news/business-49806247 na podstawie danych z  https://data.worldbank.org/indicator/NY.GDP.MKTP.KD .
+
+## Ładowanie używanych bibliotek
+
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+library(ggplot2)
+library(dplyr)
+library(scales) #udostępniające działanie na wartościach procentowych i jednostkach - dolarach
+
+```
+
+## Ładowanie danych
+
+```{r message = FALSE, echo = TRUE}
+
+data0 <- read.csv("C:/Users/staro/Desktop/Semestr 3/Techniki Wizualizacji Danych/zad_dom_workspace/data_csv/data0.csv", header = TRUE, stringsAsFactors = FALSE)
+
+data1 <- filter(data0, Country.Name %in% c("China", "Japan", "United States", "United Kingdom"))
+data1 <- select(data1, -Country.Name, -Country.Code, -Indicator.Code, -Indicator.Name, -X)
+#wybor interesujacego nas podzbioru danych
+data1 <- data1*(10e-13)
+#sprowadzenie danych liczbowych do formatu, w jakim beda podane na wykresie (biliony dolarów)
+data1 <- rbind(data1, c(1960:2018))
+rownames(data1) = c("China", "UK", "Japan", "US", "Year")
+data1 <- as.data.frame(t(data1))
+#transpozycja macierzy dla ulatwienia jej obslugi przez ggplot2
+
+```
+
+## Generowanie wykresu
+
+```{r warning = FALSE, message = FALSE}
+
+plot <- ggplot(data = data1, aes(x = Year)) +
+  geom_line(aes(y = China, colour = "China"), size = 1.1) +
+  geom_line(aes(y = US, colour = "US"), size = 1.1) +
+  geom_line(aes(y = Japan, colour = "Japan"), size = 1.1) +
+  geom_line(aes(y = UK, colour = "UK"), size = 1.1) +
+  scale_color_manual(name="",
+                     values=c("China" = "steelblue", 
+                              "US" = "darkgoldenrod1",
+                              "Japan" = "purple",
+                              "UK" = "brown")) +
+  scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2019), 
+                     limits = c(1955, 2020), expand = c(0, 0)) +
+  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10, 12, 14, 16, 18),
+                     labels = dollar(c(0, 2, 4, 6, 8, 10, 12, 14, 16, 18)), limits = c(0, 18), expand = c(0, 0))+
+  labs(title = "Gross Domestic Product",
+       subtitle = "GDP in constant 2010 trillions of US$\n\n",
+       caption = "Source: World Bank", y = "", x = "") +
+  theme_classic() +
+  theme(legend.position = c(0.25, 1.1),
+        legend.direction = "horizontal",
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(colour="grey"),
+        panel.border = element_blank(),
+        plot.caption = element_text(hjust = -0.15),
+        plot.title = element_text(hjust = -0.17, face = "bold"),
+        plot.subtitle = element_text(hjust = -0.2))
+
+
+```
+
+![Wykres poprawiony](C:/Users/staro/Desktop/Semestr 3/Techniki Wizualizacji Danych/zad_dom_workspace/Rplot01.png)
+
+##Trzy słowa komentarza
+
+Odtwarzany wykres ze strony internetowej został poprawiony względem pierwszej próby odtworzenia wykresu na kilka sposobów, głównie dotyczących strony estetycznej i precyzji odwzorowania:
+
+* formatowanie napisów (pogrubienie)
+* położenie napisóW na wykresie
+* usunięcie pozostawionych na osiach wskaźników pomocniczych przy wartościach (jakkolwiek się nazywają po polsku, w każdym razie chodzi o "ticks")
+* kolory linii na wykresie
+* grubość linii na wykresie
+* dodadnie z powrotem graficznie osi OX
+* położenie legendy na wykresie
+* zmodyfikowanie skali i opisanych wartości na osi OX
+
+
+  
