@@ -1,0 +1,58 @@
+---
+title: "TWD Praca domowa 3"
+author: "Jakub Pingielski"
+date: "8/11/2019"
+output: html_document
+---
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(reshape2)
+library(ggthemes)
+```
+
+```{r plot, fig.show='hide'}
+# Preparing data
+community <- c(2, 3, 0, 3, 30, 57)
+staff <- c(0, 4, 5, 8, 15, 60)
+heroes <- c("Hapy Hogan", "HawkEye", "Hulk", "Nebula", "Iron Man", "Captain America")
+ign <- data.frame(staff, community, heroes)
+ign <- melt(ign, variable.name = "ign", value.name = "predictions")
+
+ggplot(ign, aes(x = heroes, y = predictions, fill = ign, label = paste0(predictions, "%"))) +
+    geom_bar(stat="identity", position=position_dodge()) +
+    scale_fill_manual(values=c("#07B0EE", "#8B28CE")) +
+    geom_text(position = position_dodge(width = .9),   
+              vjust = -0.5,  
+              size = 4,
+              color = "#374560") + 
+    scale_x_discrete(limits = heroes) +
+    labs(fill = '',  x = "Heroes", y = "Predictions", 
+         title = 'WHO WILL DIE IN AVENGERS: ENDGAME?', 
+         subtitle = "POLL RESULTS: IGN STAFF VS IGN COMMUNITY") +
+    theme_tufte() + 
+    theme(title = element_text(size = 16, face = "bold", family = "Decima WE", color = "#374560"),
+          axis.ticks.x = element_blank(), 
+          axis.text.x = element_text(face = "bold", size = 10, vjust = 7),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank())
+
+ggsave("improved_plot.png")
+```
+
+## Original plot
+![](./original_plot.png) 
+
+## Improved plot
+![](./improved_plot.png){ width=75% }
+
+## What was wrong with original plot?
+* bars on top of each other, with highlighted differences, but not in all cases? Can't tell really what's going on.
+* bars not in scale, hard to compare
+
+## Improvements made
+* grouped bars instead of stacked - easier to compare values withing the group
+* bars in correct scale
+* show 0% values in some cases

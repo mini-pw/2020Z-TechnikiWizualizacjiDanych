@@ -1,0 +1,90 @@
+---
+title: "PD3 z Technik Wizualizacji Danych"
+author: "Jakub Szypuła"
+date: "08/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggimage)
+library(dplyr)
+library(reshape2)
+library(ggtextures)
+#setwd("PraceDomowe/TYDZIEN4/SzypulaJakub/")
+```
+
+## Oryginalny wykres
+
+Poniższy wykres został umieszczony na mediach społecznościowych IGN, popularnego serwisu na temat gier i filmów. Przedstawia on wyniki sondażu przeprowadzonego wśród pracowników IGN oraz społeczności, na temat tego, kto umrze w filmie Avengers: Endgame (informację o tym, kto umarł postanawiam pominąć, bo może komuś popsuć zabawę).
+
+![Oryginalny wykres](original_plot.png)
+
+Niestety, w tym wykresie pojawia się kilka problemów.
+
+* 2% przy Happy Hoganie jest wyższe, niż 3% dla Hawkeye'a
+* dziwny sposób nakładania na siebie tych wartości, który nie reprezentuje ani sumy, ani wartości osobno elementów
+* chociaż Iron Man miał tylko 15% i 30% głosów odpowiednio w obu grupach, jego słupek jest takiej samej wysokości jak słupek Kapitana Ameryki, który zdobył odpowiednio 60% i 57%
+
+## Poprawiona wersja
+
+Poniżej znajduje się poprawiona przeze mnie wersja, z poprawnymi wysokościami kolumn oraz zachowanym stylem, w którym został wykonany oryginalny wykres.
+
+```{r nowywykres, fig.width = 7.17, fig.height=6.5, warning=FALSE}
+library(ggplot2)
+library(ggimage)
+library(dplyr)
+library(reshape2)
+library(ggtextures)
+#devtools::install_github("clauswilke/ggtextures")
+character <- c("Happy Hogan", "Hawkeye", "Hulk", "Nebula", "Iron Man", "Captain America")
+staff <- c(0, 4, 5, 8, 15, 60) # wynik sondazu w ekipie z IGN
+community <- c(2, 3, 0, 3, 30, 57) # wynik sondazu wsrod spolecznosci IGN
+graph_data <- data.frame(character, staff, community)  %>%
+  arrange(staff) %>% melt(id.vars = c("character"))
+
+p <- ggplot(data = graph_data, aes(x = character, y = value, fill = variable)) +
+  geom_image(aes(x = "Hulk", y = 34.2,image = "thanos_background.png"), size = 1.1, by = "height", nudge_x = 0.45) +
+  ggtextures::geom_textured_bar(stat = "identity", position = "dodge",
+                                image = c(rep("happyhogan.png", 2),
+                                      c("hawkeyer.png", "hawkeyel.png"),
+                                      rep("hulk.png", 2),
+                                      c("nebular.png", "nebulal.png"),
+                                      c("iron_man2.png","iron_man1.png"),
+                                      c("captainr.png", "captainl.png")),
+                                width = 0.7) +
+  scale_fill_manual(label = c("staff" = "IGN Staff", "community" = "IGN Community"),
+                    values = c("staff" = "#20ABD1", "community" = "#B252D4")) +
+  geom_bar(stat = "identity",position = "dodge", alpha = 0.75, width = 0.7, color = "black") +
+  scale_x_discrete(limits = c("Happy Hogan", "Hawkeye", "Hulk", "Nebula", "Iron Man", "Captain America")) +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.background = element_rect(fill = "#000000"),
+        legend.position = c(0.85, 0.9),
+        legend.background = element_rect(fill = "transparent"),
+        legend.key = element_rect(colour = "transparent", fill = "black"),
+        legend.text = element_text(colour = "#E7D64F", 
+                                   size = 13, face= "bold"),
+        legend.box.background = element_rect(fill = "transparent", colour = "transparent"),
+        legend.title = element_text(colour = "#E7D64F", face ="bold")) +
+  ylim(0, 75) + guides(fill = guide_legend("According to: ")) +
+  geom_text(aes(x = character, y = rep(1, 12), label = character), size = 5,
+            angle = 270, nudge_x = 0.5, nudge_y = -1, colour = "#E7D64F", 
+            hjust = 1, fontface="bold") +
+  geom_text(aes(x = character, y = value+2, label = paste(value, "%", sep="")), position = position_dodge(width = 0.8), 
+            colour = "white", size = 4.8, hjust = 0.45) +
+  geom_text(aes(x = "Hulk", y = 30, label = "Poll Results"), colour = "#E7D64F", size = 5, fontface = "bold") +
+  geom_text(aes(x = "Hulk", y = 24, 
+                label = "Who will die \n in Avengers: Endgame?"), 
+            colour = "white", size = 8)
+p
+```
+
+Zmieniłem także niezrozumiały sposób, w jaki kolumny były stackowane, na prostszy do zrozumienia dogded barplot. Wybór stacked barplot byłby, w mojej opinii, nieodpowiedni, ponieważ kolumny dla ekipy IGN i społeczności IGN są wartościami niezależnymi od siebie, dodatkowo, utrudniłoby to porównwanie wartości między badaniami.
