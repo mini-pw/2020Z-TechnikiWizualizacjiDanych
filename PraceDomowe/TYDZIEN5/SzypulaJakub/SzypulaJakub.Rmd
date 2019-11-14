@@ -18,6 +18,7 @@ library(grid)
 
 Tutaj znajduje się oryginalny wykres, który poprawiam:
 
+
 ```{r starywykres, echo=FALSE}
 library(ggplot2)
 #install.packages("png") # if not installed
