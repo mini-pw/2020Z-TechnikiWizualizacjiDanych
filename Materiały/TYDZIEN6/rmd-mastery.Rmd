@@ -39,6 +39,7 @@ datatable(iris)
 ## Tabelka DT
 
 ```{r}
+# https://datatables.net/reference/option/dom
 library(DT)
 datatable(iris, extensions = 'Buttons', 
           filter = "top", rownames = FALSE, style = "bootstrap",
