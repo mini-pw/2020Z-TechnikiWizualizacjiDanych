@@ -1,0 +1,124 @@
+---
+title: "Temparatury w październiku"
+author: "Martyna Majchrzak"
+date: "18 10 2019"
+output: html_document
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+```
+
+### Przygotowanie danych
+Sposób przygotowania danych taki sam jak w pracy oryginalnej.
+```{r}
+pogoda <- data.frame("Day"=c(1:31),
+                      "Temp_wys"=c(18,18,12,12,12,8,9,10,16,13,16,21,24,24,23,20,17,19,19,20,21,16,15,18,19,16,14,13,12,12,7),
+                      "Temp_nis"=c(10,9,7,6,5,1,3,0,8,8,7,12,12,12,12,10,8,10,11,12,11,7,8,9,8,7,6,5,5,5,2),
+                      "old"=c(rep(TRUE,17),rep(FALSE,14)), "new"=c(rep(FALSE,16),rep(TRUE,15)),
+                      "srednia_wys"=c(16,16,15,15,15,15,15,14,14,14,14,14,13,13,13,13,12,12,12,12,12,11,11,11,11,10,10,10,10,9,9),
+                      "srednia_nis"=c(7,7,7,7,7,6,6,6,6,6,6,6,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,3,3))
+
+```
+
+### Oryginał
+```{r}
+ggplot(pogoda, aes(x=Day)) +
+  ggtitle("Wykres temperatury w paŸdzierniku 2019")+
+  theme(plot.title = element_text(color="gray27", size=14, face="bold.italic", hjust=0.5))+
+  geom_line(data=filter(pogoda, old),aes(y=Temp_wys, color="darkorange", linetype="solid",size="a"))+
+  geom_line(data=filter(pogoda, new),aes(y=Temp_wys, color="darkorange", linetype="dashed",size="a"))+
+  geom_line(data=filter(pogoda,old), aes(y=Temp_nis, color="blue", linetype="solid",size="a")) +
+  geom_line(data=filter(pogoda, new),aes(y=Temp_nis, color="blue", linetype="dashed",size="a"))+
+  geom_segment(aes(x = 17, y = -Inf, yend = 30, xend=17), color="darkgrey")+
+  scale_x_discrete(limits=c(1:31))+
+  theme(line=element_blank(), panel.background = element_blank()) + ylim(0,35)+
+  geom_text(mapping=aes(x=17, y=32, label="DZISIAJ"), size=5, vjust=-0.4, hjust=0.5, color="darkgrey")+
+  geom_smooth(method="lm", aes(y=srednia_wys, size="b"), se=FALSE, color="darkorange")+
+  geom_smooth(method="lm", aes(y=srednia_nis, size="b"), se=FALSE, color="blue") + xlab("") + ylab("")+
+  theme(plot.margin=unit(c(1,1,3.5,1.2),"cm")) +
+  scale_colour_manual( name = "Temperatura", breaks = c("darkorange", "blue"),
+                    values = c("darkorange"="darkorange", "blue"="blue"), labels=c("najwy¿sza", "najni¿sza"))+
+  scale_linetype_manual(name="Temperatura",breaks=c("dashed", "solid"), values = c("dotted","solid"), labels=c("przewidywana", "zmierzona"))+
+  scale_size_manual(breaks=c("a","b"), values=c(2, 0.5),name="Kiedy", labels=c("w tym roku", "œrednia z lat poprzednich"))
+```
+### Przygotowanie wykresu
+```{r}
+ggplot(pogoda, aes(x=Day))+
+  geom_line(data=filter(pogoda, old),aes(y=Temp_wys, color="wys", linetype="zmierzona", size="ten_rok"))+
+  geom_line(data=filter(pogoda, new),aes(y=Temp_wys, color="wys", linetype="przewidywana",size="ten_rok"))+
+  geom_line(data=filter(pogoda,old), aes(y=Temp_nis, color="nis", linetype="zmierzona",size="ten_rok")) +
+  geom_line(data=filter(pogoda, new),aes(y=Temp_nis, color="nis", linetype="przewidywana",size="ten_rok"))+
+  geom_segment(aes(x = 17, y = -Inf, yend = 30, xend=17), color="darkgrey", size=1)+
+  theme(legend.position = "bottom")+
+    geom_text(mapping=aes(x=18, y=31, label="Dzisiaj"), color= "darkgrey", size=4, hjust=0.7, vjust=0.6)+
+  geom_smooth(method="lm", aes(y=srednia_wys, size="srednia"), color="#CC3333", se=FALSE)+
+  geom_smooth(method="lm", aes(y=srednia_nis, size="srednia"), color="#336699", se=FALSE)+
+    scale_colour_manual(breaks = c("wys", "nis"),
+                    values = c("wys"="#CC3333", "nis"="#336699"), labels=c("najwyższa", "najniższa"))+
+  scale_linetype_manual(breaks=c("przewidywana", "zmierzona"), values = c("twodash","solid"), labels=c("przewidywana", "zmierzona"))+
+  scale_size_manual(breaks=c("ten_rok","srednia"), values=c(1, 2), labels=c("w tym roku", "średnia"))+
+  scale_x_discrete(limits=1:31, expand=c(0,0))+
+  scale_y_discrete(limit=seq(0,30,5))+
+  theme_light()+
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(face="bold", hjust=0.5))+
+  ggtitle("Temperatury w październiku 2019")+
+  xlab("")+
+  ylab("Temperatura [st. Celsjusza]")
+
+```
+
+### Uzasadnienie
+
+Dodanie pionowych i poziomych linii ułatwia orientację na wykresie - dzięki temu łatwiej odczytać temperaturę w danym dniu. Umieszczenie legendy na dole i poszerzenie wykresu sprawia, że numery dni nie zachodzą na siebie i są bardziej czytelne. Zmieniona została również kolorystyka - według mnie mniej razi w oczy i lepiej obrazuje wysoką i niską temperaturę. Zmieniłam też rodzaj linii dla temperatur przewidywanych tak, aby była bardziej "ciągła". Napis "Dzisiaj" został umieszczony bliżej linii której odpowiada, na oryginalnym wykresie możnaby go pomylić z podtytułem, dodałam też informację, że temperatury podane są w stopniach Celsjusza.
+
+Próbowałam również zmodyfikować legendę, tak aby pokazywała połaczone estetyki i była bardziej podoba do tej ze strony https://www.accuweather.com/pl/pl/warsaw/274663/october-weather/274663.  Udało się to, ale niestety efekt graficzny nie jest zadowalający - keyboxy są niestety mało czytelne, bo ggplot nakłada na siebie oznaczenia zamiast je łączyć, odpada również możliwość zastosowania geom_smooth więc linia srednich staje się mniej elegancka.
+
+### Przygotowanie wykresu 2
+```{r}
+
+## Przerobimy ją tak żeby łatwiej było dodać ładną legendę
+evaluate<-function(temp,age){
+  case_when(
+    age ~ temp
+  )
+}
+pogoda2<-pogoda%>%
+  mutate(Temp_wys_old=evaluate(Temp_wys, old),
+         Temp_wys_new=evaluate(Temp_wys, new),
+         Temp_nis_old=evaluate(Temp_nis, old),
+         Temp_nis_new=evaluate(Temp_nis, new))%>%
+  select(Day, Temp_wys_old, Temp_wys_new, Temp_nis_old, Temp_nis_new, srednia_nis, srednia_wys)
+
+pogoda2<-melt(data=pogoda2, id.vars="Day", na.rm=TRUE)
+colnames(pogoda2)<-c("Day", "Type", "Temp")
+
+ggplot(pogoda2, aes(x=Day, y=Temp, linetype=Type, col=Type, size=Type))+
+  geom_line()+
+  geom_segment(aes(x = 17, y = -Inf, yend = 30, xend=17), color="darkgrey", size=1)+
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
+        )+
+    geom_text(mapping=aes(x=18, y=31, label="Dzisiaj"), color= "darkgrey", size=4, hjust=0.7, vjust=0.6)+
+    scale_colour_manual(limits=c("srednia_wys", "Temp_wys_old", "Temp_wys_new", "srednia_nis", "Temp_nis_old", "Temp_nis_new"),values = c(rep("#CC3333",3), rep("#336699",3)))+
+  scale_linetype_manual(limits=c("srednia_wys", "Temp_wys_old", "Temp_wys_new", "srednia_nis", "Temp_nis_old", "Temp_nis_new"), values = c("solid", "solid", "twodash", "solid", "solid", "twodash"))+
+  scale_size_manual(limits=c("srednia_wys", "Temp_wys_old", "Temp_wys_new", "srednia_nis", "Temp_nis_old", "Temp_nis_new"), values=c(1, 2, 2, 1, 2, 2))+
+  scale_x_discrete(limits=1:31, expand=c(0,0))+
+  scale_y_discrete(limit=seq(0,30,5))+
+  theme_light()+
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(face="bold", hjust=0.5))+
+  ggtitle("Temperatury w październiku 2019")+
+  xlab("")+
+  ylab("Temperatura [st. Celsjusza]")+
+  guides(labels=c("średnia wys.", "rzeczywista wys.", "przewidywana wys.", "średnia nis.", "rzeczywista nis.", "przewidywana nis."))
+
+```
