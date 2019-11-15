@@ -1,0 +1,62 @@
+---
+title: "Praca Domowa 3"
+author: "Piotr Sieńko"
+output: html_document
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+<br/><br/>
+
+## 1. Oryginalny Wykres
+Wykres można pobrać wraz z danymi ze strony: https://www.idc.com/promo/smartphone-market-share/os.  
+Przedstawia on przewidywany udział systemów operacyjnych na rynku urządzeń mobilnych. Jego główną wadą jest skala osi Y, która zaczyna się od 75%. Z tego powodu, na pierwszy rzut oka wydaje się, iż iOS ma większy udział w rynku niż Android. W rzeczywistości Android jest ponad 5-krotnie bardziej popularny aniżeli iOS.
+<br/><br/>
+![](/home/piotr/Pobrane/wykresik.jpg)
+<br/><br/>
+<br/><br/>
+
+## 2. Wykres poprawiony
+Zmiana skali osi Y pozwoliła pokazać prawdziwą różnicę udziałów różnych systemów operacyjnych. Dodatkowo, dzięki dokładnym wartościom, możemy wychwycić każdą zmianę wyników. Kolory zostały tak dobrane, aby kojarzyły się z poszczególnymi markami.
+<br/><br/>
+
+```{r pressure, echo=TRUE, fig.height = 5, fig.width=10}
+
+library(ggplot2)
+library(stringi)
+
+# Wczytanie Danych (plik CSV stworzony ręcznie poprzez skopiowanie danych z https://www.idc.com/promo/smartphone-market-share/os)
+Op_Systems <- read.csv("/home/piotr/Dokumenty/TWD/PraceDomowe/Operating_System.csv", stringsAsFactors = FALSE, sep = ";") 
+
+# Usunięcie znaku procenta i zamiana ze Stringów na Numeric
+Op_Systems$Percentage <- stri_replace_all(Op_Systems$Percentage, replacement = "", regex = "%")
+Op_Systems$Percentage <- as.numeric(Op_Systems$Percentage)
+
+# Aby słupki rysowały się w odpowiednim porządku, zmieniam wektor "Systems" na factor i ustawiam levele w zadanej kolejności
+Op_Systems$System <- factor(Op_Systems$System, levels = c("Android", "iOS", "Others"))
+
+ggplot(Op_Systems, aes(Year, Percentage, fill = System, label = Percentage)) +
+  geom_col(width = 0.9, position = position_dodge2(preserve = "single", padding = 0.2)) +
+  geom_text(aes(y = Percentage + 2, label = scales::percent(Percentage/100)), position = position_dodge2(width = 0.9), size = 3) +
+  labs(title = "Worldwide Smartphone Shipment OS Market \nShare Forecast") +
+  theme(plot.title =  element_text(size = 18, face = "bold"),
+        plot.background = element_blank(),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.ticks.length.x = unit(0, "mm"),
+        axis.ticks.length.y =  unit(3, "mm"),
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(size = 12, vjust = 0),
+        axis.title = element_blank(),
+        axis.line = element_line(colour = "black", size = 0.1, linetype = 1),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major.y = element_line(color = "grey20", linetype = 2, size = 0.5)) +
+  scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(-0.1, 92), breaks = seq(20, 90, 20), expand = c(0.0001, 0.0001)) +
+  scale_x_discrete(limits = c(2017, 2018, 2019, 2020, 2021, 2022, 2023)) +
+  scale_fill_manual(values = c("#33cc33", "#999999", "#ffcc00"))
+
+```
+
