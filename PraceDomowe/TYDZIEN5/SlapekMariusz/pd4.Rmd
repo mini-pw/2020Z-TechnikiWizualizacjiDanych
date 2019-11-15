@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Wstęp
 
-Wykres, który wybrałem jest autorstwa Agaty Makierewicz. Wykres ten jest dobrze wykonany, lecz widzę w nim potencjał do zmian w programie *Inkscape*.
+Wykres, który wybrałem jest autorstwa Agaty Makarewicz. Wykres ten jest dobrze wykonany, lecz widzę w nim potencjał do zmian w programie *Inkscape*.
 
 ### Dlaczego akurat takie zmiany? 
 
