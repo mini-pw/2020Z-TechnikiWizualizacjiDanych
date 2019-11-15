@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+author: "Michał Burdukiewicz"
+date: "145-11-2019"
+output: html_document
+---
+
+# Obrazek
+
+```{r,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,message=FALSE,warning=FALSE,error=FALSE}
+library(dplyr)
+library(ggplot2)
+data(iris)
+mutate(iris, Sepal.Length = Sepal.Length/max(Sepal.Length),
+       Sepal.Width = Sepal.Width/max(Sepal.Width)) %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point()
+
+```
+
+# Tabelka {.tabset}
+
+```{r}
+knitr::kable(iris)
+```
+
+## Tabelka DT
+
+```{r}
+library(DT)
+datatable(iris)
+```
+
+## Tabelka DT
+
+```{r}
+library(DT)
+datatable(iris, extensions = 'Buttons', 
+          filter = "top", rownames = FALSE, style = "bootstrap",
+          options = list(dom = "Brtip",
+                         buttons = c("copy", "csv", "excel", "print")))
+```
