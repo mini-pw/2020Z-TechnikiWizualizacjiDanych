@@ -1,0 +1,178 @@
+---
+title: "Praca domowa nr 3"
+author: "Agata Makarewicz"
+date: "5 11 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options("stringsAsFactors" = FALSE) 
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(grid)
+```
+
+## Wykres do poprawy
+
+
+![](wykres.png)
+
+
+Wykres przedstawia zmiany współczynnika aktywności zawodowej ludności wybranych państw świata w latach 2000-2018, z podziałem względem płci.
+
+
+Na wykresie, linia podpisana OECD pokazuje średnią wartość wskaźnika państw należących do OECD, czyli Organizacji Współpracy Gospodarczej i Rozwoju, skupiającej 36 wysoko rozwiniętych, demokratycznych krajów.
+
+
+Wykres nie zaczyna się od 0, chociaż przy tak dużych wartościach procentowych jest to zrozumiałe. Zaburzona jest skala osi y - jedna z nich obejmuje wartosci 73-88 %, gdzie kolejne linie oznaczają wartości różniące sie o 3 %, podczas gdy druga z nich wartosci 55-80 %, ze skokiem co 5 %. Pokazanie tych dwóch wykresów obok siebie, z takimi skalami, oraz z liniami na tym samym poziomie, lecz oznaczającymi różne wartości, może łatwo wprowadzic obserwatora w błąd. Wykres sugeruje, że wskaźniki akywności zawodowej mężczyzn i kobiet są w miare na tym samym poziomie, lub tez minimalnie różnią się, podczas gdy tak naprawdę róznica jest znaczna, w niektórych państwach rzędu 15-20 %, co będzie widoczne na poprawionym wykresie.
+
+
+Dane do wykresu zostały pobrane ze strony OECD: https://stats.oecd.org/index.aspx?queryid=64197#.
+
+## Przygotowanie danych
+
+
+```{r data}
+
+# wczytanie danych
+data <- read.csv2('data.csv',sep=",")
+
+# wybranie danych potrzebnych do wykresów
+data <- data%>%
+  select(Country,Sex,Time,Value)
+data <- transform(data, Value = as.numeric(Value))
+
+# mężczyźni
+data_men <- data%>%
+  filter(Sex=="Men")%>%
+  ungroup()%>%
+  select(-Sex)
+
+# kobiety
+data_women <- data%>%
+  filter(Sex=="Women")%>%
+  ungroup()%>%
+  select(-Sex)
+
+# lista wszystkich państw 
+countries <- t(unique(data["Country"]))
+
+# lata
+years <- unique(data["Time"])
+
+# przekształcamy dane, tak aby każda kolumna odpowiadała innemu państwu, wiersze to lata
+
+# mezczyzni
+a <- 1
+b <- dim(years)[1]
+data_final_men <- years
+while (b<=dim(data_men)[1]){
+  data_temp <- slice(data_men["Value"],a:b)
+  data_final_men <- cbind(data_final_men,data_temp) 
+  a <- a+19
+  b <- b+19
+}
+colnames(data_final_men)[2:4] <- countries[1:3]
+colnames(data_final_men)[5:8] <- c("New.Zealand","UK","US","OECD")
+
+# kobiety
+a <- 1
+b <- dim(years)[1]
+data_final_women <- years
+while (b<=dim(data_women)[1]){
+  data_temp <- slice(data_women["Value"],a:b)
+  data_final_women <- cbind(data_final_women,data_temp) 
+  a <- a+19
+  b <- b+19
+}
+colnames(data_final_women)[2:4] <- countries[1:3]
+colnames(data_final_women)[5:8] <- c("New.Zealand","UK","US","OECD")
+
+```
+
+
+## Poprawiony wykres
+
+
+```{r plot, echo=TRUE, fig.width=9, fig.height=6}
+
+# ustalamy podziałkę i etykiety na osiach
+y_breaks <- seq(55,90, by=5)
+y_labels <- c(y_breaks[1:7],"%")
+x_breaks <- seq(2000,2018,by=3)
+
+# wykres dla mężczyzn
+plot1 <- ggplot(data_final_men, aes(x=Time)) + 
+  
+  # dodajemy linię dla każdego z państw, przypisujemy nazwę do której później przypisany zostanie kolor
+  geom_line(aes(y = Australia, col="Australia"),  size=1) + 
+  geom_line(aes(y = Germany,  col="Germany"),size=1)+
+  geom_line(aes(y = Japan,  col="Japan"), size=1)+
+  geom_line(aes(y = New.Zealand, col="New Zealand"), size=1)+
+  geom_line(aes(y = UK, col="United Kingdom"), size=1)+
+  geom_line(aes(y = US, col="United States"), size=1)+
+  geom_line(aes(y = OECD, col="OECD"), size=1)+
+  
+  # ustalamy podziałkę i skalę osi
+  scale_x_continuous(breaks = x_breaks)+
+  scale_y_continuous(limits=c(55,90),
+                     breaks = y_breaks,
+                     labels = y_labels)+
+  
+  # ustalamy etykiety osi i tytuł
+  ylab("")+
+  xlab("Year")+
+  ggtitle("Males")+
+  
+  # dodajemy legendę
+  scale_color_manual(name="Countries",
+                     values=c("Australia"="red",
+                              "Germany"="yellow",
+                              "Japan"="darkorange",
+                              "New Zealand"="darkgrey",
+                              "United Kingdom"="purple",
+                              "United States"="green",
+                              "OECD"="blue"))+
+  
+  # białe tło 
+  theme_bw()+
+  
+  # usuwamy kreseczki na osi y
+  theme(axis.ticks.y=element_blank())
+  
+
+
+# analogicznie jak w wykresie pierwszym, pomijamy tworzenie legendy bo jest ona taka sama jak na pierwszym wykresie 
+
+plot2 <- ggplot(data_final_women, aes(x=Time)) + 
+  
+  geom_line(aes(y = Australia), color = "red", size=1) + 
+  geom_line(aes(y = Germany), color="yellow",size=1)+
+  geom_line(aes(y = Japan), color = "darkorange", size=1)+
+  geom_line(aes(y = New.Zealand), color = "darkgrey", size=1)+
+  geom_line(aes(y = UK), color = "purple", size=1)+
+  geom_line(aes(y = US), color = "green", size=1)+
+  geom_line(aes(y = OECD ), color = "blue", size=1)+
+  
+  scale_x_continuous(breaks = x_breaks)+
+  scale_y_continuous(limits=c(55,90),
+                     breaks = y_breaks,
+                     labels = y_labels)+
+  
+  ylab("")+
+  xlab("Year")+
+  ggtitle("Females")+
+  
+  theme_bw()+
+  
+  theme(axis.ticks.y=element_blank())
+
+# ustalenie układu wykresów, z legendą po środku, dodanie głównego tytułu
+
+grid.arrange(plot1, plot2, top=textGrob("Labour force participation rate
+  15 - 64 years", gp=gpar(fontsize=15,font=2)), nrow=1, widths = c(0.58, 0.42))
+```
+
