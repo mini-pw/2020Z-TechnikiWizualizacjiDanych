@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Praca domowa 1"
 author: "Martyna Majchrzak"
@@ -64,4 +65,72 @@ ggplot(data=df, aes(x=Reason,y=Percent, fill=Person))+
   removeGridY()
        
   
+=======
+---
+title: "Praca domowa 1"
+author: "Martyna Majchrzak"
+date: "17 10 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggExtra)
+library(reshape2)
+library(dplyr)
+
+```
+
+### 1. Oryginalny wykres
+
+Oryginalny wykres znajduje się w pliku grafika.png i przedstawia powody dla których różne osoby decydują się na ograniczenie lub całkowite wykluczenie mięsa ze swojej diety.
+
+### 2. Dane
+
+Dane znajdują się w pliku dane.csv i zostały przygotowane samodzielnie (oryginale źródło wymaga opłaty).
+
+### 3. Wczytanie danych
+
+```{r, message=FALSE}
+
+df<- read.csv("dane.csv", sep=";")
+colnames(df)<-c("Reason", "People interested in cutting down meat consumption", "Non-meat eaters")
+df<-melt(df)
+colnames(df)<-c("Reason", "Person", "Percent")
+
+# zabiegi mające na celu zapobiegnieciu pozniejszej zmianie kolejnosci danych w ggplot
+
+df<-df%>%arrange(desc(Person))
+df$Person<-factor(df$Person, levels=sample(levels(df$Person)))
+order<-c("Taste", "Concerns over antibiotics", "Envoirment","Animal welfare", "Weight management", "Health" )
+```
+
+### 4. Wykres w ggplot2
+```{r}
+ggplot(data=df, aes(x=Reason,y=Percent, fill=Person))+
+  scale_x_discrete(limits = order)+
+  expand_limits(y=c(0,60))+
+  scale_y_continuous(breaks=c(0,10,20,30,40,50,60),
+                     expand=c(0,0))+
+  scale_fill_manual(values=c("#039797","#014B4B"))+
+  geom_bar(position = "dodge",stat="identity", width=0.8)+
+  coord_flip()+
+  guides(fill = guide_legend(reverse = TRUE))+
+  labs(title="People give a variety of reasons for eating less meat",
+       subtitle = "% of respondents citing each reason (more than one could be given)")+
+  theme_light()+
+  theme(legend.position = "top",
+       axis.title.x=element_blank(),
+       axis.ticks.length.x=unit(0.25,"cm"),
+       axis.ticks.y=element_blank(),
+       axis.title.y=element_blank(),
+       legend.title=element_blank(),
+       legend.key.size= unit(0.3, "cm"),
+        legend.justification='left',
+        legend.direction='horizontal')+
+  removeGridY()
+       
+  
+>>>>>>> 14dfab715972436fd97860c65308c26059e5dc04
 ```
