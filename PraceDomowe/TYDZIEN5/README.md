@@ -1,4 +1,4 @@
-PD4: czas na wykonanie 08-11-2019 do 22-11-2019
+PD4: czas na wykonanie 08-11-2019 do 15-11-2019
 
 W katalogu z PD3 znajdź wykres innej osoby, który potrafisz zrobić lepiej wykorzystując narzędzia graficzne Inkscape lub Adobe Illustrator.
 
