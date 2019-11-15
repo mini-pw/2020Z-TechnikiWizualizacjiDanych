@@ -1,0 +1,44 @@
+---
+title: "Zadanie domowe nr 4"
+author: "Wojciech Szczypek"
+output: html_document
+---
+  
+## 1. Przed (Wykres Kacpra Staronia)
+
+<br>
+<br>
+
+<img src = "wykresy/stary_wykres.png">
+
+<br>
+<br>
+
+## 2. Po (Wersja poprawiona)
+
+<br>
+<br>
+
+<img src = "wykresy/nowy_wykres.png">
+
+<br>
+<br>
+
+## 3. Przemyślenia
+
+<br>
+<br>
+
+<font size="4"> 
+Wykres jest lepszy, bo:
+
+- usnięte tło, które niepotrzebnie szpeci wykres i rozprasza odbiorcę
+- kolor w gradiencie - dodatkowo oprocz wysoksoci slupkow informuje nas o wielkosci danych
+- dodane loga firm, wiecej mowia niz same nazwe
+- wiekszy tytul i lepiej widoczny
+- wieksze liczby, wcześniej były ledow widoczne
+- lepsza czciocnka
+- kolro czcionki estetyczniejszy i łatwiej czytelny
+- wykres jasny klaorwny i przejrzysty - od razu wiadomo o co chodzi
+
+</font>
