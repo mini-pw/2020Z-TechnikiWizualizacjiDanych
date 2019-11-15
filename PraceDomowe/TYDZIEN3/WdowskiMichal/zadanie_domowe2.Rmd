@@ -1,0 +1,64 @@
+---
+title: "Zadanie Domowe 2"
+author: "Michał Wdowski"
+date: "Na podstawie pracy Mikołaja Jakubowskiego"
+output: html_document
+---
+
+#Oryginał:
+
+Artykuł pochodzi ze strony <https://cybersport.pl/226338/epl-north-vs-aristocracy-statystyki-graczy/>. Dane przedstawiają statystyki poszczególnych graczy meczu e-sportowego.
+
+```{r setup, echo=FALSE}
+library(ggplot2)
+library(data.table)
+library(ggrepel)
+
+match_data <- read.csv("data.csv")
+```
+
+```{r plot1}
+#death/kill plot
+ggplot(match_data, aes(x = Kills, y = Deaths, label = Player, color = Team)) +
+  scale_y_continuous(trans = "reverse") +
+  geom_point(size = 3) +
+  geom_text_repel(size = 5, force = 1, color = "black") 
+```
+
+
+```{r plot2}
+#obliczenie k/d i dodanie do ramki
+kd_ratio <- match_data$Kills/match_data$Deaths
+match_data <- cbind(match_data, kd_ratio)
+
+#k/d plot
+
+ggplot(match_data, aes(x = Player, y = kd_ratio, fill = Team)) +
+  geom_bar(stat = "identity")
+```
+
+#Proponowane zmiany
+
+Samo przedstawienie wyników meczu za pomocą wykresu punktowego jest dobrym pomysłem. Spodobała mi się też odwrócona skala, mimo że na początku trochę mnie skonfudowała. W ten sposób widoczny jest "wzrost" w korelacji liczby zabójstw z liczbą śmierci - bo wyżej znaczy lepiej. Poprawiłbym jedynie kilka spraw wizualnych, czyli na mój gust odrobinę za duże podpisy punktów, nachodzenie podpisów na punkty, a także zakres osi X.
+
+```{r plot1_v2}
+#death/kill plot
+ggplot(match_data, aes(x = Kills, y = Deaths, label = Player, color = Team)) +
+    scale_x_continuous(limits = c(35, 62.5), expand = c(0, 0)) +
+    scale_y_continuous(trans = "reverse") +
+    geom_point(size = 3) +
+    geom_text_repel(size = 4.5, force = 8, color = "black", direction = "both") 
+```
+
+Wykres kolumnowy również został dobrany odpowiednio do danych, jednak pokusiłbym się o posortowanie kolumn - w ten sposób uwydatni się dominacja zwycięskiego zespołu. Ponadto usunąłem przestrzeń między osią X a kolumnami, która wydaje mi się być niepotrzebna, podobnie jak linie idące z osi X w tle.
+
+```{r plot2_v2}
+#k/d plot
+match_data$Player <- factor(match_data$Player, levels = match_data$Player[order(match_data$kd_ratio)])
+ggplot(match_data, aes(x = Player, y = kd_ratio, fill = Team)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(limits = c(0, 1.9), expand = c(0, 0)) +
+    labs(y = "Kill/Death Ratio") +
+    theme(panel.grid.major.x = element_blank())
+
+```

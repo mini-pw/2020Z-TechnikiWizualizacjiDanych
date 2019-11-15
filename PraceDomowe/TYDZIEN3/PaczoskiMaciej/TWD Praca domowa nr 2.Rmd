@@ -1,0 +1,133 @@
+---
+title: "TWD Praca domowa nr 2"
+author: "Maciej Paczóski"
+date: "25 10 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Elementy dodane do wykresu oryginalnego 
+
+Wykres poprawiony zawiera adnotacje zawarte w wersji znalezionej w internecie, a których brakowało w wersji kolegi.
+
+## Wczytanie Danych
+
+```{r message=FALSE, echo=TRUE}
+library(ggplot2) 
+library(reshape2)
+library(grid)
+library(gridExtra)
+
+# Dane zostały pobrane w 3 oddzielnych plikach:
+# 1. Dane bez podziału na płeć
+# 2. Dane o mężczyznach
+# 3. Dane o kobietach
+
+eurostat <- read.csv(file = "D:/studia/TPD/praca domowa 3/Eurostat.csv",
+                     stringsAsFactors = FALSE, sep = ";")
+eurostat <- eurostat[!is.na(eurostat$Interruption), ]
+
+eurostat_men <- read.csv(file = "D:/studia/TPD/praca domowa 3/Eurostat_man.csv",
+                         stringsAsFactors = FALSE, sep = ";")
+eurostat_female <- read.csv(file = "D:/studia/TPD/praca domowa 3/Eurostat_female.csv",
+                            stringsAsFactors = FALSE, sep = ";")
+```
+
+## Obróbka Danych
+
+```{r message=FALSE, echo=TRUE}
+
+# Dla każdego zbioru danych tworzymy kolumnę zawierającą procentowy udział osób, które kiedykolwiek wzięły urlop opiekuńczy na dłużej niż 6 miesięcy
+# Druga kolumna jest wskaźnikiem płci, który będzie potrzebny po połączeniu wszystkich ramek w jedną.
+eurostat[,4] <- (eurostat[,2]/eurostat[,3])*100
+colnames(eurostat)[4] <- "Percentage"
+eurostat[,5] <- "Total"
+colnames(eurostat)[5] <- "Sex"
+
+eurostat_female[,4] <- (eurostat_female[,3]/eurostat_female[,2])*100
+colnames(eurostat_female)[4] <- "Percentage"
+eurostat_female[,5] <- "Women"
+colnames(eurostat_female)[5] <- "Sex"
+
+
+eurostat_men[,4] <- (eurostat_men[,3]/eurostat_men[,2])*100
+colnames(eurostat_men)[4] <- "Percentage"
+eurostat_men[,5] <- "Men"
+colnames(eurostat_men)[5] <- "Sex"
+
+# Z danych dotyczących mężczyzn, usuwamy państwa, gdzie mniej niż 0.3% mężczyzn było na urlopie
+eurostat_men[eurostat_men$Percentage < 0.3,] <- NA
+eurostat_men <- na.omit(eurostat_men)
+
+# Łączymy ramki w jedno
+stats <- rbind(eurostat[,c(1,4,5)], eurostat_female[,c(1,4,5)], eurostat_men[,c(1,4,5)])
+colnames(stats) <- c("Country", "Percentage", "Sex")
+
+# Korygujemy różnice w nazwach państw, które istniały pomiędzy pobranymi danymi, a wykresem
+stats[stats$Country == "European Union - 28 countries", 1] <- "EU"
+stats[stats$Country == "Germany (until 1990 former territory of the FRG)", 1] <- "Germany"
+
+# Musimy posortować 'levels' kolumny countries, która będzie traktowana jako factor
+# Dzięki temu, dane na wykresie będą ułożone malejąco po 'total'
+
+# Najpierw tworzymy wektor pomocniczy złożony z nazw państw w odpowiedniej kolejności
+ordering_list <- eurostat[order(eurostat$Percentage, decreasing = TRUE),]
+ordering_list <- ordering_list[,c(1,4,5)]
+colnames(ordering_list) <- c("Country", "Percentage", "Sex")
+ordering_list[ordering_list$Country == "European Union - 28 countries", 1] <- "EU"
+ordering_list[ordering_list$Country == "Germany (until 1990 former territory of the FRG)", 1] <- "Germany"
+
+
+# Ustawiam 'levels' w żądanej kolejności
+stats$Country <- factor(stats$Country, levels = ordering_list$Country)
+
+
+labx <- ordering_list$Country
+labx[3] <-  expression("Bulgaria"^{2})
+labx[6] <- expression("Lativia"^{2})
+labx[8] <- expression("Slovenia"^{2})
+labx[13] <- expression("Croatia"^{1})
+labx[28] <- expression("Portugal"^{1})
+labx[29] <- expression("Malta"^{1})
+
+text <- bquote(atop(""^{1} ~ "Due to very low reliability value for man not shown",
+                    ""^{2} ~ "Low reliability for man"))
+
+```
+
+## Tworzenie Wykresu
+
+```{r plot,  fig.height=6, fig.width=10, fig.align="center"}
+ggplot(stats, aes(x = Country, y = Percentage)) + geom_point(aes(color = Sex), size = 2.5)+
+  # Tworzenie tytyłu, podtytułu
+  labs(title = "Share of the people (in employment or with previous employment) \nwith a work interruption of at least six months for childcare",
+       subtitle = "(population aged 18 to 64)")+
+  scale_x_discrete(text, labels = labx)+
+  # Zmienianie wielkości czcionki, ustawianie legendy, wartości na osi x itp.
+  theme(plot.title = element_text(size = 20, face = "bold"),
+        plot.subtitle = element_text(size = 18),
+        legend.title = element_blank(),
+        legend.position = c(0.5, 0.92),
+        legend.direction = "horizontal",
+        legend.key = element_blank(),
+        legend.background = element_blank(),
+        legend.text = element_text(size = 16, face = "bold"),
+        axis.title.y = element_blank(),
+        axis.line.x = element_line(colour = "black", size = 0.5, linetype = 1),
+        axis.text.x = element_text(angle = 90, size = 15, hjust = 0.9),
+        axis.text.y = element_text(size = 15),
+        axis.ticks.y = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major.y = element_line(colour = "grey", linetype = 3, size = 0.5)) +
+  # Zamiana kolorów oraz zmiana kolejności opisów w legendzie
+  scale_color_manual(values = c("darkorange", "gold", "royalblue"), breaks = c("Total", "Women", "Men")) +
+  # Zmiana wartości na osi y oraz przesunięcie początku wykresu na punkt bliski (0, 0)
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, by = 10), expand = c(0.002, 0.002))
+
+```
+
+
+

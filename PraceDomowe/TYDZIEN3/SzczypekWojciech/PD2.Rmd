@@ -1,0 +1,114 @@
+---
+title: "PD2 - poprawa wykresu Jacka Wiśniewskiego"
+author: "Wojciech Szczypek"
+date: "25 10 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+options(stringsAsFactors = FALSE)
+library(dplyr)
+library(ggplot2)
+library(maps)
+library(mapproj)
+library("ggnewscale")
+```
+
+# 1. Przed
+
+```{r echo = FALSE, warning = FALSE}
+data <- read.csv("C:\\Users\\Wojtek\\Desktop\\TWD\\zad_dom2\\ramenpho_jacek.csv", col.names = c("Country", "Pho", "Ramen"), skip = 2)
+data$Ramen = as.integer(gsub("[\\%,]", "", data$Ramen))
+data$Pho = as.integer(gsub("[\\%,]", "", data$Pho))
+
+data <- na.omit(data)
+
+# Tworzenie tabel pomocniczych
+Ramen_Country <- data[data$Ramen > data$Pho,]
+Pho_Country <- data[data$Pho > data$Ramen,]
+
+WorldData <- map_data('world') %>% filter(region != "Antarctica") %>% fortify
+
+# Tworzenie wykresu
+plot <- ggplot() +
+  theme_minimal() +
+  geom_map(data = WorldData, map = WorldData,
+           aes(x = long, y = lat, group = group, map_id = region),
+           fill = "light grey", colour = "white", size=0.5) +
+  geom_map(data = Pho_Country, map = WorldData,
+           aes(fill = Pho, map_id = Country),
+           fill = "blue", colour = "white", size=0.5) +
+  geom_map(data = Ramen_Country, map = WorldData, aes(fill = Ramen, map_id = Country),
+           colour = "white", size = 0.5) +
+  scale_fill_continuous(low = "firebrick", high= "firebrick4") +
+  coord_map("rectangular", lat0 = 0, xlim = c(-180,180), ylim = c(-60, 90)) +
+  scale_y_continuous(breaks = c()) +
+  scale_x_continuous(breaks = c()) +
+  labs(fill = "", title = "", x = "", y = "") +
+  theme(legend.position = "none")
+plot
+
+```
+
+# 2. Po
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+data <- read.csv("C:\\Users\\Wojtek\\Desktop\\TWD\\zad_dom2\\ramenpho.csv", col.names = c("Country", "Pho", "Ramen"), skip = 2)
+data$Ramen = as.integer(gsub("[\\%,]", "", data$Ramen)) / 100
+data$Pho = as.integer(gsub("[\\%,]", "", data$Pho)) / 100
+
+data[is.na(data$Pho),2] <- 0
+data[is.na(data$Ramen),3] <- 0
+  
+data_more_ramen <- data[data$Ramen > data$Pho,]
+data_more_pho <- data[data$Pho > data$Ramen,]
+world_map <- map_data('world') %>% filter(region != "Antarctica") %>% fortify
+
+data_pho <- data_more_pho %>%
+  select(1,2) %>%
+  rename(region = Country)
+map_pho <- left_join(data_pho, world_map, by = "region")
+
+data_ramen <- data_more_ramen %>%
+  select(1,3) %>%
+  rename(region = Country)
+map_ramen <- left_join(data_ramen, world_map, by = "region")
+
+ggplot() +
+  
+  geom_map(data = world_map, map = world_map,
+           aes(x = world_map$long, y = world_map$lat, group = group, map_id = region),
+           fill = "light grey", colour = "white", size= 0.2) +
+  
+  geom_map(data = map_pho ,map = map_pho,  color = "white", size= 0.2, aes(map_id = region, fill = Pho))+
+  expand_limits(x = map_pho$long, y = map_pho$lat) +
+  scale_fill_continuous(high = "blue", low = "#C6C6FF") +
+  
+  new_scale("fill") +
+  
+  geom_map(data = map_ramen ,map = map_ramen,  color = "white", size= 0.2, aes(map_id = region, fill = Ramen))+
+  expand_limits(x = map_ramen$long, y = map_ramen$lat) +
+  scale_fill_continuous(high = "red", low = "#FFC6C6") + 
+  
+  coord_map("rectangular", lat0 = 0, xlim = c(-180,180), ylim = c(-60, 90)) +
+  scale_y_continuous(breaks = c()) +
+  scale_x_continuous(breaks = c()) +
+  labs(title = "Która fraza jest częściej wyszukiwana w Google \n'pho' czy 'ramen'?", x = "", y = "", subtitle = "") +
+  theme(
+    plot.title=element_text(size=rel(1.5),face = "bold",margin = margin(10, 0, 5, 0), hjust = 0.5),
+    legend.title = element_text(size=rel(1.1), margin = margin(0, 2, 10, 0)),
+    legend.position="bottom",
+    legend.key.height = unit(0.25,"cm"),
+    legend.margin = margin(0, 2, 10, 18),
+    panel.background = element_rect(fill = "white")
+    )
+```
+
+Wykres jest lepszy, bo:
+
+- wiadomo jaka jest historia do wykresu (o co w ogóle w wykresie chodzi)
+- jest bardziej przejrzysty
+- jest legenda
+- bardziej informatywny - odcień kolorów mówi nam jak duża jest przewaga w danym państwie
+- mniej krajów z brakiem danych
+- osobiście, moim zdaniem, lepiej dobrane kolory
+

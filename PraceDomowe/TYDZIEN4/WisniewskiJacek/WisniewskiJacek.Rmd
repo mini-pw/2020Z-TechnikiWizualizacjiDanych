@@ -1,0 +1,41 @@
+---
+title: "TWD pd 3"
+author: "Jacek Wiśniewski"
+date: "08/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(reshape2)
+library(ggthemes)
+```
+
+###  Wstęp
+
+Wykres, który postanowiłem poprawić, znalazłem na tej stronie:
+https://www.budget.gc.ca/2018/docs/plan/chap-05-en.html
+
+Dane do stworzenia poprawionej wersji znalazłem tutaj:
+https://www.budget.gc.ca/2018/docs/plan/chap-05-txt-en.html#Fig5_4
+
+Główne zarzuty do pierwotnej wersji wykresu dotyczyły nie dopasowanej skali i trójwymiarowej formy. Niżej zamieszczam propozycję mojego wykresu do tych samych danych.
+
+### Wykres
+
+```{r, echo=FALSE}
+data <- data.frame(c("Labour\nforce", "Managers", "Senior\nmanagers", "Company\nboards", "Top 0.1%", "CEOs"),
+                   c(52.6, 65.5, 71.1, 78.4, 84.7, 95.1),
+                   c(47.4, 34.5, 28.9, 21.6, 15.3, 4.9))
+colnames(data) <- c("position", "men", "women")
+
+data <- melt(data, id.vars = "position")
+
+ggplot(data, aes(x = factor(position, levels = c("Labour\nforce", "Managers", "Senior\nmanagers", "Company\nboards", "Top 0.1%", "CEOs")), y = value, fill = variable)) +
+  geom_col() +
+  scale_fill_manual(values = c("#91bfdb", "#fc8d59")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x = "", y = "Percent", title = "Employment by gender in Canada", fill = "gender") +
+  theme_gdocs()
+```
