@@ -1,0 +1,87 @@
+---
+title: "PD2"
+author: "Hanna Zdulska"
+date: "10/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+options(stringsAsFactors = FALSE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+library("dplyr")
+library("ggplot2")
+```
+
+# Wczytanie danych
+```{r dane, fig.width=10, message=FALSE}
+# KOD ORYGINALNY
+data <- read.csv("ZAP_KSE_20191017_20191018080531.csv", sep=";")
+
+# ustawiamy kolumne z data i godzina
+godz <- paste(1:24, "00", sep=":")
+data[1] <- paste("2019-10-17", godz)
+# factory - inaczej posortuje stringi
+data$Data <- factor(data$Data, levels = data$Data)
+# stringi jako double - przecinek na kropke
+data$Rzeczywiste.zapotrzebowanie.KSE <- sapply(data$Rzeczywiste.zapotrzebowanie.KSE, function(x){scan(text = toString(x), dec=",")})
+
+```
+
+
+# Wykres orginalny
+```{r oryginalny}
+theme_set(theme_minimal())
+legenda <- c("red", "blue")
+
+plot_1 <- ggplot(data = data, aes(x = Data, group=1, color = legenda)) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"), size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"), size = 1) +
+  theme(axis.text.x = element_text(angle=90),
+        axis.text = element_text(colour = "#66CCFF"),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+# Wykres ulepszony
+```{r uleszpony}
+data$Dobowa.prognoza.zapotrzebowania.KSE <- data$Dobowa.prognoza.zapotrzebowania.KSE/1000
+data$Rzeczywiste.zapotrzebowanie.KSE <- data$Rzeczywiste.zapotrzebowanie.KSE/1000
+godz <- paste(1:24, "00", sep=":")
+data[1] <-godz
+
+data$Data <- factor(data$Data, levels = data$Data)
+
+theme_set(theme_minimal())
+
+zap <- data[data$Dobowa.prognoza.zapotrzebowania.KSE >= round(data$Rzeczywiste.zapotrzebowanie.KSE,1),]
+rzecz <- data[!(data$Dobowa.prognoza.zapotrzebowania.KSE > data$Rzeczywiste.zapotrzebowanie.KSE),]
+
+plot_2 <- ggplot(data = data, aes(x = Data, group=1, color = c("red", "blue"))) + 
+  scale_fill_manual(values = palette) +
+  geom_line(aes(y = Dobowa.prognoza.zapotrzebowania.KSE, col = "Prognoza"), size = 1) + 
+  geom_line( aes(y = Rzeczywiste.zapotrzebowanie.KSE, col = "Zapotrzebowanie"), size = 1) +
+  labs(title = "Zapotrzebowanie energetyczne Polskich Sieci Energetycznych w dniu 17.10") +
+  ylab(parse(text = "10^9*W")) +
+  theme(axis.text.x = element_text(angle=45),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        ) +
+  xlab("Godzina") +
+  geom_ribbon(data = zap, aes( x = Data, ymin = Dobowa.prognoza.zapotrzebowania.KSE,
+                               ymax = Rzeczywiste.zapotrzebowanie.KSE, col = "Nadwyżka"),
+              col = "NA", fill = "deepskyblue2", alpha = 0.2) +
+  geom_ribbon(data = rzecz, aes( x = Data, ymin = Dobowa.prognoza.zapotrzebowania.KSE,
+                                 ymax = Rzeczywiste.zapotrzebowanie.KSE, col = "Brak"),
+              col = "NA", fill = "red", alpha = 0.2)
+```
+Na orginalnym wykresie nie były zawarte podpisy pod osiami oraz najważniejsza informacja - co przedstawia wykres. Teraz z osi da się wyczytać co przedstawiają, ponadto na osi x nie znajduje się już pełna data, a tylko godzina, natomiast na wartości na osi Y zostały podzielone przez 1000, co poprawiło przejrzystość wykresu. Kolor na osiach zmieniony został z niebieskiego na czarny, żeby łatwiej było je odczytać. W celu uwydatnienia różnic pomiędzy prognozą a zapotrzebowaniem, obszar pomiędzy liniami został pomalowany na odpowiedni kolor.
+
+# Side by side
+```{r}
+plot_1
+plot_2
+```

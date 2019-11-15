@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Techniki Wizualizacji Danych - Praca domowa 4}
+\author{Patryk Wrona}
+\maketitle
+
+
+W tej pracy poprawiam wyglad wykresu Mateusza Grzyba z jego pracy domowej 3. Do eksportowania tego wykresu uzywam \textbf{cairo\_ps} zapisujac plik z rozszerzeniem .eps i nastepnie poprawiajac go w oprogramowaniu Inkscape.
+\newline
+\indent
+Jak wiemy z wykladu, okolo 5\% mezczyzn oraz 0,5\% kobiet ma zaburzenia widzenia barw.
+\newline
+Wykres zrobiony przez Mateusza Grzyba przedstawia slupki o kolorach zblizonych do zielonego i czerwonego (tutaj jest to pomaranczowy). 
+\newline
+Postanowilem to poprawic na poziomie Inkscape.
+\newline
+\newline
+\textbf{Przedstawiam odpowiedni kod i wykres stworzony przez Mateusza Grzyba:}
+\newline
+<<echo=TRUE, warning=FALSE, message=FALSE>>=
+#wczytanie bibliotek
+library(ggplot2)
+library(reshape2)
+#manipulacja danymi
+data <- read.csv("data.csv")
+data$lok_sabha <- factor(x = data$lok_sabha, levels = data$lok_sabha)
+data <- melt(data, id.vars = c("lok_sabha", "year"))
+@
+
+<<warning=FALSE>>=
+ggplot(data, aes(x = lok_sabha)) +
+  geom_col(aes(y = value, fill = variable), position = "dodge") +
+  geom_text(aes(y = value - 1, label = paste0(value, "%")), 
+            position = position_dodge2(width = 0.9, ), size = 2.5) +
+  annotate("text", x = 1, y = 2, label = "No data") +
+  annotate("text", x = 2, y = 2, label = "No data") +
+  scale_y_continuous(limits = c(0,100), breaks = seq(0,100,10), expand = c(0,0)) + 
+  scale_x_discrete(labels = paste0(data$lok_sabha, "\n", "(", data$year, ")")) +
+  scale_fill_manual(values = c("#FF9933", "#138808"), 
+                    labels = c("men turnout", "women turnout")) +
+  labs(title = "Lok Sabha general elections turnout by sex", subtitle = "",
+       caption = "Source: India Press Information Bureau", fill = "Legend:") +
+  ylab("Turnout (in %)") +
+  xlab("Lok Sabha general election") +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 0.5),
+    plot.caption = element_text(hjust = 1, size = 8),
+    axis.title.x = element_text(vjust = -3),
+    axis.ticks.x = element_blank(),
+    legend.position = "top"
+  )
+@
+\newpage
+\textbf{Poprawiony przeze mnie wykres w Inkscape:}
+\newline
+\newline
+\includegraphics[scale = 0.67]{pd4_png}
+\newline
+\newline
+W tym wykresie poprawilem:
+\newline
+
+\begin{itemize}
+\item \textbf{Estetyczna ramka} - trudne do dodania za pomoca R
+\item \textbf{Symbole plci - przeplatajace sie pierscienie} - trudne do dodania za pomoca R
+\item \textbf{Czcionka, jej wielkosc i umiejscowienie tekstow} - trudne do dodania za pomoca R
+\item kolory specjalnie dobrane dla daltonistow
+\item background - jasny szary kolor
+\end{itemize} 
+
+\end{document}
