@@ -8,10 +8,10 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 
 * 2019-10-03 W: [Gramatyka grafiki](http://biecek.pl/Eseje/indexGramatyka.html); L: Wstęp do Githuba i [Proton](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/proton)
 * 2019-10-10 W: [Standardy w komunikacji](http://www.ibcs-a.org/); L: [Wstęp do ggplot2](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN2).
-* 2019-10-17 nie ma wykładu i projektu; L: [Geometrie, transformacje danych i fasty](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN3).
-* 2019-10-24 W: [Standardy IBCS](Materiały/ibcs_wyklad.pdf); L: 
-* 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html); L:
-* 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L:
+* 2019-10-17 nie ma wykładu i projektu; L: [Geometrie, transformacje danych i fasety](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN3).
+* 2019-10-24 W: [Standardy IBCS](Materiały/ibcs_wyklad.pdf); L: [Skale, koordynaty, łączenie wykresów](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN4/scales-coordinates-multiplots.R).
+* 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html);
+* 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L: [Inkscape](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN5/export.R).
 * 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html)
 * 2019-11-21 W: prezentacje projektów;
 * 2019-11-28
