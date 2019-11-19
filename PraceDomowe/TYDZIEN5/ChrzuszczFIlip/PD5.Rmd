@@ -1,0 +1,55 @@
+---
+title: "PD4"
+author: "Filip Chrzuszcz"
+date: "11/15/2019"
+output: html_document
+---
+
+## 1. Przed 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+library(ggplot2)
+library(dplyr)
+
+countries <- c("Niemcy", "Wielka Brytania", "Francja", "Holandia", "Czechy", "Hiszpania", "Pozostałe kraje UE" ,"Kraje spoza UE")
+values <- c(22,13,9,9,7,4,27,9)
+ord <- 1:8 # do zachowania odpowiedniej kolejności słupków zamiast alfabetycznej
+dane <- bind_cols("panstwa" = countries, "wartosci" = values, "ord" = ord)
+a1 <- ggplot(dane, aes(x = reorder(countries, -ord), y = values)) +
+  geom_bar(stat="identity", fill="#e6ac00") +
+  coord_flip() +
+  theme_linedraw() +
+  scale_y_continuous(breaks = c(0,10,20), labels = c("0%", "10%", "20%")) +
+  ggtitle("Eksport mięsa drobiowego w I półroczu 2018 roku") +
+  xlab("Państwa") +
+  ylab("Część eksportowanego mięsa drobiowego") +
+  theme(
+    panel.background = element_rect(fill=NA),
+    panel.ontop = TRUE,
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(size=15),
+    axis.title.x = element_text(size=13),
+    axis.title.y = element_text(size=13),
+    axis.text.y = element_text(angle=30)
+  )
+a1
+
+```
+
+## 2. Po
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(ggplot2)
+library(cowplot)
+fig_svg<-cowplot::ggdraw()+cowplot::draw_image("Kurczaki1.svg")
+plot(fig_svg)
+```
+
+
+## 3. Podsumowanie
+
+Największą zmianą, z której jestem najbardziej dumny jest dodanie cudownego kurczaka w tle, co w ggplocie jest rownież możliwe, ale nie ma tam tylu opcji ustawienia wyglądu tegoż tła. Dodałem również flagi zamiast nazw państw. Uważam iż tego typu inforamcja wygląda dużo schludniej niz zwykły napis. Zrobienie teggo w ggplocie byłoby bardzo trudne.  Poprawiłem napisy, dodałem opisy na słupkach, a same słupki delikatnie zaokrąglilem na rogach, aby ładnie kompletowały się z okrągłymi ikonami państw. 
+
+
+
