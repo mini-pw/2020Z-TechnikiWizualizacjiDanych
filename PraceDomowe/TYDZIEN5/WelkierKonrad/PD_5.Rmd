@@ -1,0 +1,55 @@
+---
+title: "PD_5"
+author: "Konrad Welkier"
+date: "15 listopada 2019"
+output: html_document
+---
+
+
+## Wykres przed zmianami
+
+Na poczÄ…tku spĂłjrzmy na wykres oryginalny:
+
+```{r setup, echo=FALSE, message=FALSE}
+library("ggplot2")
+year<-c("2004","2007","2010","2013","2016")
+dead<-c(627,545,431,323,288)
+malaria<-data.frame(dead,year)
+ggplot(data=malaria)+
+  geom_col(aes(y = dead,x=year),fill = c("#33334d", "#006633","#00cc66","green","#77ff33")) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank()) +
+  labs(title = "Fewer Children Are Dying From Malaria",subtitle = "Thousands of deaths per year") +
+  scale_y_continuous(name = "Deaths")+
+  scale_x_discrete(name = "Year")
+```
+
+
+Wykres ten przekazuje treĹ›Ä‡, ktĂłrÄ… miaĹ‚ za zadanie prezentowaÄ‡, jednak ma teĹĽ pewne niedociÄ…gniÄ™cia, ktĂłre poprawiĹ‚em wykorzystujÄ…c narzÄ™dzie graficzne Inkscape.
+
+
+
+## Wykres po zmianach
+
+
+
+```{r, echo=FALSE, message=FALSE}
+knitr::include_graphics("my_picture.png")
+```
+
+
+UwaĹĽam, ĹĽe nowy wykres jest lepszy, poniewaĹĽ:
+
+- sĹ‚upki przedstawiajÄ…ce liczbÄ™ dzieci umierajÄ…cych na malariÄ™ nie powinny byÄ‡ w kolorze zielonym, bo sugeruje to pozytywny trend, lecz w coraz jaĹ›niejszych odcieniach czerwieni, bo wskazuje to na poprawiajÄ…cÄ… siÄ™ sytuacjÄ™, ale nie sugeruje, ĹĽe problem ten przestaĹ‚ juĹĽ istnieÄ‡,
+
+- dodane poziome linie znacznie uĹ‚atwiajÄ… odczytywanie wartoĹ›ci liczbowych,
+
+- powiÄ™kszenie wszystkich napisĂłw bardzo pozytywnie wpĹ‚ywa na Ĺ‚atwoĹ›Ä‡ odbioru wykresu,
+
+- usuniÄ™cie podtytuĹ‚u dostarcza wiÄ™cej miejsca na tytuĹ‚, a informacje zawarte w podtytule, i tak, pokrywajÄ… siÄ™ z poprawionymi tytuĹ‚ami osi,
+
+- zmiana czcionki na mniej ogĂłlnÄ… rĂłwnieĹĽ poprawia wykres,
+
+- dodane obramowanie sĹ‚upkĂłw uĹ‚atwia odczytywanie wartoĹ›ci.
