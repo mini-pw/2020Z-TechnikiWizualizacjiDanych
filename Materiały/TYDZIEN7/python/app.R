@@ -2,6 +2,7 @@ library(SmarterPoland)
 library(shiny)
 library(ggplot2)
 library(ggstance)
+library(plotly)
 
 ui <- fluidPage(title = "Aplikacja python",
                 plotOutput(outputId = "countries_plot", hover = "countries_hover"),
@@ -11,11 +12,13 @@ ui <- fluidPage(title = "Aplikacja python",
                             choices = colnames(countries), selected = "death.rate"),
                 selectInput(inputId = "cf_select", label = "Wybierz kolor", 
                             choices = colnames(countries), selected = "continent"),
-                verbatimTextOutput(outputId = "hover_result"))
+                verbatimTextOutput(outputId = "hover_result"),
+                plotlyOutput(outputId = "countries_plotly"))
 
 server <- function(input, output) {
   
-  output[["countries_plot"]] <- renderPlot({
+  
+  countries_plot_data <- reactive({
     chosen_geom <- if(is.character(countries[[input[["x_select"]]]])) {
       geom_boxplot()
     } else {
@@ -35,10 +38,17 @@ server <- function(input, output) {
       theme(legend.position = "bottom")
   })
   
+  output[["countries_plot"]] <- renderPlot({
+    countries_plot_data()
+  })
+  
   output[["hover_result"]] <- renderPrint({
     nearPoints(countries, input[["countries_hover"]])
   })
   
+  output[["countries_plotly"]] <- renderPlotly({
+    ggplotly(countries_plot_data())
+  })
   
 }
 
