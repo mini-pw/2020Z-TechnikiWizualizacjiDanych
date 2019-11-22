@@ -2,17 +2,19 @@ library(shiny)
 library(SmarterPoland)
 library(ggplot2)
 library(dplyr)
+library(plotly)
 
 ui <- fluidPage(
-  plotOutput(outputId = "countries_plot"),
   checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynenty", 
                      choices = sort(unique(countries[["continent"]])),
-                     selected = sort(unique(countries[["continent"]])))
+                     selected = sort(unique(countries[["continent"]]))),
+  plotOutput(outputId = "countries_plot"),
+  plotlyOutput(outputId = "countries_plotly")
 )
 
 server <- function(input, output) {
   
-  output[["countries_plot"]] <- renderPlot({
+  r_countries_plot <- reactive({
     unique_continents <- unique(countries[["continent"]])
     lazy_palette <- rainbow(length(unique_continents)) %>% 
       setNames(unique_continents)
@@ -24,7 +26,17 @@ server <- function(input, output) {
       scale_color_manual(values = lazy_palette) +
       scale_x_continuous(limits = range(countries[["birth.rate"]], na.rm = TRUE)) +
       scale_y_continuous(limits = range(countries[["death.rate"]], na.rm = TRUE))
+  })
+  
+  
+  output[["countries_plot"]] <- renderPlot({
+    r_countries_plot()
   }) 
+  
+  output[["countries_plotly"]] <- renderPlotly({
+    r_countries_plot() %>% 
+      ggplotly()
+  })
   
 }
 
