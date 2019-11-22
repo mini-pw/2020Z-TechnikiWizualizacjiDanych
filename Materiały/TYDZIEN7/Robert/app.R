@@ -8,7 +8,8 @@ ui <- fluidPage(
   checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynenty", 
                      choices = sort(unique(countries[["continent"]])),
                      selected = sort(unique(countries[["continent"]]))),
-  plotOutput(outputId = "countries_plot"),
+  plotOutput(outputId = "countries_plot", hover = "countries_hover"),
+  tableOutput(outputId = "hover_result"),
   plotlyOutput(outputId = "countries_plotly")
 )
 
@@ -26,6 +27,10 @@ server <- function(input, output) {
       scale_color_manual(values = lazy_palette) +
       scale_x_continuous(limits = range(countries[["birth.rate"]], na.rm = TRUE)) +
       scale_y_continuous(limits = range(countries[["death.rate"]], na.rm = TRUE))
+  })
+  
+  output[["hover_result"]] <- renderTable({
+    nearPoints(countries, input[["countries_hover"]], maxpoints = 5, threshold = 20)
   })
   
   
