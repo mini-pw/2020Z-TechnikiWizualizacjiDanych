@@ -2,16 +2,22 @@ library(shiny)
 library(ggplot2)
 library(SmarterPoland)
 library(dplyr)
+library(shinythemes)
 
 ui <- fluidPage(
   title = "Piątek wieczór",
-  plotOutput(outputId = "countries_plot", click = "countries_click"),
-  checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynent", 
-                     choices = unique(countries[["continent"]]),
-                     selected = unique(countries[["continent"]])),
-  verbatimTextOutput(outputId = "click_res"),
-  uiOutput(outputId = "slider_x")
-  
+  theme = shinytheme("cyborg"), 
+  sidebarPanel(
+    checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynent", 
+                       choices = unique(countries[["continent"]]),
+                       selected = unique(countries[["continent"]])),
+    
+    uiOutput(outputId = "slider_x")
+  ),
+  mainPanel(
+    verbatimTextOutput(outputId = "click_res"),
+    plotOutput(outputId = "countries_plot", click = "countries_click")
+  )
 )
 
 server <- function(input, output) {
