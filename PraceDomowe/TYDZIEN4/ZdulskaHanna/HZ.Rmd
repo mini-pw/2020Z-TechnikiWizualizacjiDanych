@@ -1,0 +1,63 @@
+---
+title: "PD3"
+author: "Hanna Zdulska"
+date: "11/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(patchwork)
+```
+
+## Żródło
+Jako materiał do analizy użyłam [tweeta](https://twitter.com/C_Kazmierczak/status/1191015667908128768) autorstwa Cezarego Kaźmierczaka (@C_Kazmierczak).
+Dane, które wykorzystałam do tworzenia wykresu znalazłam na stronie Polskiej Policji - [link](http://statystyka.policja.pl/st/ruch-drogowy/76562,Wypadki-drogowe-raporty-roczne.html). Na tych samych danych bazuje raport WHO, GUS oraz Wikipedia.
+
+![orygnialy wykres](https://pbs.twimg.com/media/EIdWb0YWsAEmqbU?format=jpg&name=small)
+
+Wykres przedstawia liczę ofiar śmiertelnych w latach 1975-2018. Pierwsze co wydawałoby się odbiorcy to fakt, iż liczba ofiar śmierelnych zmalała przez lata. Jest to jednak wprowadzenie w błąd, gdyż skala y nie zaczyna się od zera. Wykres wydaje się być również nieczytelny - dane są podawane dla roku i zastosowanie lini ciągłej jest tutaj nietrafne. Ponadto os X jest bardzo gęsta i przeszkadza w czytaniu wykresu, a sam tytuł "Zabici" napawa grozą i nie daje informacji co właściwie wykres przedstawia.
+
+## Osie i punkty
+Dla czytelności dodajmy punkty oraz wymyśmy oś od zera
+```{r}
+
+police <- read.csv("./data.csv", row.names = 1)
+
+p1 <- ggplot(police, aes(x = Year, y = Zabici)) + 
+  geom_line(col = "red") + 
+  geom_point(col = "red") + 
+  scale_y_continuous(limits = c(0,8000)) +
+  ylab("Ofiary śmiertleny") +
+  ggtitle("Wypadki samochodowe w latach 1975-2018")
+
+p1
+```
+
+
+## Nie tylko martwi mają znaczenie
+
+Patrząc na wykres powyżej nadal możnaby zgodzić się ze stwierdzeniem, że sytuacja na polskich drogach jest lepsza niż 30 lat temu. Żeby w pełni móc to ocenić skorzystajmy z innych danych - liczny wypadków oraz rannych.
+```{r}
+p2 <- ggplot(police, aes(x = Year, y = Ranni)) +
+  geom_line(col = "blue")  + 
+  geom_point(col = "blue") + 
+  scale_y_continuous(limits = c(0,85000)) +
+  xlab("Ranni")
+
+p3 <- ggplot(police, aes(x = Year, y = Wypadki)) +
+  geom_line(col = "green") +
+  geom_point(col = "green") +
+  scale_y_continuous(limits = c(0,70000))
+    xlab("Wypadki")
+
+(p2 + ggtitle("Wypadki samochodowe w latach 1975-2018")) / p3
+```
+
+## Końcowy wykres
+```{r, fig.height=8}
+
+p1 / p2 / p3
+
+```

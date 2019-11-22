@@ -1,0 +1,67 @@
+---
+title: "Zadanie domowe 4"
+author: "Anna Urbala"
+date: "11 listopada 2019"
+output: html_document
+---
+
+## Wykres przed
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(jpeg)
+library(ggimage)
+library(ggpubr)
+library(scales)
+
+data1 <- data.frame(c("GSK", "Sanofi-Aventis", "Merck", "Pfizer/Wyeth", "Novartis", "Sanofi-Pasteur"))
+data2 <- c(27.20, 22.60, 17.70, 13.90, 11.30, 7.40)
+data2 <- data2/100
+
+
+data <- cbind(data1, data2)
+colnames(data)[1] <- "data1"
+data <- arrange(data, data2)
+
+p <- ggplot(data = data, aes(x = reorder(data1, data2), y = data2)) +
+  ggtitle("Share in Vaccines Market Worldwide") +
+  geom_col(aes(fill = data2, color = "black"), alpha = 0.5) +
+  scale_fill_gradient2(low = "slateblue4", high = "skyblue", midpoint = median(data$data2)) +
+  scale_color_grey() +
+  coord_flip() +
+  geom_text(aes(label = percent(data2, 0.1), y = 0.01), color = "black", hjust = "left", position = position_dodge(1), size = 4) +
+  theme_tufte() +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = 13, face = "bold"),
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank(),
+        legend.position = "none")
+
+p <- ggbackground(p, "v8.jpg") + coord_fixed()
+p
+```
+
+## Wykres po
+
+```{r figSvg,eval=TRUE,echo=FALSE,message=FALSE, error=FALSE, warning=FALSE,fig.height=10}
+
+library(ggplot2)
+library(cowplot)
+fig_svg<-cowplot::ggdraw()+cowplot::draw_image("wykres.svg")
+plot(fig_svg)
+```
+
+## Zmiany i ich uzasadnienie
+
+| Zmiana        | Powód           | Dlaczego inkscape  |
+| ------------- |-------------| --------------------------------------|
+| zmiejszenie wyrazistości tła | tło rozpraszało uwagę | nietrywialne jest znalezienie rozwiązania w R (ggimage) |
+| jednakowe nieprzejrzyste słupki| nie ma powodu, by dać różnokolorowe słupki, w jednym kolorze mamy pewność, że nie zachodzi żadne złudzenie optyczne  | da się to zrobić w ggplot, ale w inkscape łatwiej wybrać pasujący kolor z palety |
+| wyraźniejsza czcionka | zwiększona czytelność | da się to zrobić w ggplot2, ale wymaga dodatkowego ustawiania czcionki, a nie tylko rodziny, w inkscape łatwiej "na bieżąco" porównywać zmiany |
+| wyrównanie tekstu | estetyka i czytelność | da się w ggplot, ale wymaga znacznie więcej trudu, by wyglądało to estetycznie |
+| wielkość tekstu | czytelność | jak w przypadku większości pozostałych zmian - łatwiej ustawiać wielkość tekstu, gdy widzimy zmiany "na żywo" po kliknięciu, można robić to w ggplot, ale jest bardziej czasochłonne | 

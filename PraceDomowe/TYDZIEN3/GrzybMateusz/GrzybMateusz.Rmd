@@ -1,0 +1,113 @@
+---
+title: "Praca domowa nr. 2"
+author: "Mateusz Grzyb"
+date: 20.10.19
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Oryginalne wykresy
+
+Autor: Mikołaj Jakubowski
+
+Wykresy: 
+
+```{r plot1, dpi=300, out.width='75%'}
+library(ggplot2)
+library(ggrepel)
+
+match_data <- read.csv('data.csv')
+
+ggplot(match_data, aes(x = Kills, y = Deaths, label = Player, color = Team)) +
+  scale_y_continuous(trans = "reverse") +
+  geom_point(size = 3) +
+  geom_text_repel(size = 5, force = 1, color = "black")
+```
+
+```{r plot2, dpi=300, out.width='75%'}
+kd_ratio <- match_data$Kills/match_data$Deaths
+match_data <- cbind(match_data, kd_ratio)
+
+ggplot(match_data, aes(x = Player, y = kd_ratio, fill = Team)) +
+  geom_bar(stat = "identity")
+```
+
+## Wprowadzone zmiany
+
+Przede wszystkim dane z wykresu słupkowego (KDR poszczególnych graczy) zostały przeniesione do wykresu punktowego w postaci tekstu. Natomiast wykres słupkowy został wykorzystany w celu przedstawienia odchyłu KDR poszczególnych graczy od średniej meczu (standaryacja Z danych).
+
+Dodatkowo:
+
+1. Wykres punktowy:
++ zamienione miejscami osie zwrócone są do zewnątrz
++ zmodyfikowana siatka pozwala na dokładny odczyt współrzędnych każdego punktu
++ zielona linia (KDR = 1) oddziela KDR > 1 i KDR < 1
++ nicki graczy nie zachodzą już na punkty
++ kolory punktów są bliższe kolorom używanym w logach drużyn
++ kształ punktu dodatkowo informuje o kapitanach drużyn
+
+2. Wykres słupkowy
++ kolor słupka informuje o byciu powyżej/poniżej średniej
++ kolor nicków informuje o przynależności graczy do drużyn
+
+Ponadto wykresy zostały połączone horyzontalnie za pomocą biblioteki patchwork.
+
+## Rozwiązanie zadania
+
+```{r plot3, fig.width=10, fig.height=6, dpi=300}
+library(ggplot2)
+library(patchwork)
+
+data <- read.csv("data.csv")
+
+data$KDR_1 <- round(data$Kills/data$Deaths, 2)
+
+a <- ggplot(data, aes(x = Deaths, y = Kills, color = Team, shape = Captain)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c('#BE1523', '#000099')) +
+  geom_abline(slope = 1, intercept = 0, color = '#00ba38', linetype = 2, alpha = 0.5) +
+  annotate(geom = 'text', x = 52, y = 54, label = 'KDR = 1', color = '#00ba38') +
+  geom_text(aes(label = Player), size = 4, color = 'black', nudge_y = 1) +
+  geom_text(label = data$KDR_1, color = ifelse(data$KDR>=1, '#00ba38', '#f8766d'), size = 3, nudge_y = -1) +
+  scale_x_continuous(limits = c(30, 55), breaks = seq(30, 55, 5), minor_breaks = seq(30, 55, 1)) +
+  scale_y_continuous(limits = c(35, 65), breaks = seq(35, 65, 5), minor_breaks = seq(35, 65, 1)) +
+  labs(title = 'Aristocracy (PL) vs. North (DNK) CS:GO match', subtitle = 'Kills, deaths, KDR') +
+  theme(
+    axis.line = element_line('black', 0.75),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    panel.grid.minor = element_line('gray', 0.25),
+    panel.grid.major = element_line('gray', 0.75),
+    legend.position = 'top'
+  )
+
+data$KDR_2 <- round((data$KDR_1 - mean(data$KDR_1))/sd(data$KDR_1), 2)
+data$KDR_2_type <- ifelse(data$KDR_2 < 0, "below", "above")
+data <- data[order(data$KDR_2), ]
+data$Player <- factor(data$Player, levels = data$Player)
+
+b <- ggplot(data, aes(x = Player, y = KDR_2)) + 
+  geom_bar(stat='identity', aes(fill = KDR_2_type), width=.5)  +
+  scale_y_continuous(limits = c(-2, 2), breaks = seq(-2, 2,)) +
+  scale_fill_manual(name='Standarized KDR', labels = c('Above Average', 'Below Average'),
+                    values = c('above'='#00ba38','below'='#f8766d')) +
+  labs(subtitle = 'Standarized KDR') +
+  ylab('Standarized KDR') +
+  coord_flip() +
+  theme(
+    axis.line = element_line('black', 0.75),
+    axis.ticks = element_blank(),
+    axis.text.y = element_text(color = ifelse(data$Team == 'North', '#000099', '#BE1523')),
+    panel.background = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line('gray', size = 0.75),
+    legend.position = 'top',
+    legend.title = element_blank()
+  )
+
+a + b + plot_layout(width = c(1.5, 1))
+```
