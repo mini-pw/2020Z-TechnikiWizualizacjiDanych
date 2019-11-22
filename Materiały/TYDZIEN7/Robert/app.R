@@ -6,8 +6,8 @@ library(dplyr)
 ui <- fluidPage(
   plotOutput(outputId = "countries_plot"),
   checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynenty", 
-                     choices = unique(countries[["continent"]]),
-                     selected = unique(countries[["continent"]]))
+                     choices = sort(unique(countries[["continent"]])),
+                     selected = sort(unique(countries[["continent"]])))
 )
 
 server <- function(input, output) {
@@ -21,8 +21,10 @@ server <- function(input, output) {
       filter(continent %in% input[["countries_choose"]]) %>% 
       ggplot(aes(x = birth.rate, y = death.rate, color = continent)) +
       geom_point() +
-      scale_color_manual(values = lazy_palette)
-  })
+      scale_color_manual(values = lazy_palette) +
+      scale_x_continuous(limits = range(countries[["birth.rate"]], na.rm = TRUE)) +
+      scale_y_continuous(limits = range(countries[["death.rate"]], na.rm = TRUE))
+  }) 
   
 }
 
