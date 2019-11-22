@@ -3,14 +3,21 @@ library(SmarterPoland)
 library(ggplot2)
 library(dplyr)
 library(plotly)
+library(shinythemes)
 
-ui <- fluidPage(
-  checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynenty", 
-                     choices = sort(unique(countries[["continent"]])),
-                     selected = sort(unique(countries[["continent"]]))),
-  plotOutput(outputId = "countries_plot", hover = "countries_hover"),
-  tableOutput(outputId = "hover_result"),
-  plotlyOutput(outputId = "countries_plotly")
+ui <- fluidPage(theme = shinytheme("superhero"),
+                sidebarPanel(checkboxGroupInput(inputId = "countries_choose", label = "Wybierz kontynenty", 
+                                                choices = sort(unique(countries[["continent"]])),
+                                                selected = sort(unique(countries[["continent"]])))),
+                mainPanel(
+                  tabsetPanel(
+                    tabPanel("ggplot2",
+                             plotOutput(outputId = "countries_plot", hover = "countries_hover", ),
+                             tableOutput(outputId = "hover_result")),
+                    tabPanel("plotly",
+                             plotlyOutput(outputId = "countries_plotly"))
+                  )
+                )
 )
 
 server <- function(input, output) {
