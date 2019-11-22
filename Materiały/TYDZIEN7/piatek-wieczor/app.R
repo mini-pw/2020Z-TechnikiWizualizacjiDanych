@@ -14,9 +14,15 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  countries_r <- reactive({ 
+    
+    filter(countries, continent %in% input[["countries_choose"]])
+    
+    })
+  
   output[["countries_plot"]] <- renderPlot({
     
-    filter(countries, continent %in% input[["countries_choose"]]) %>% 
+    countries_r() %>% 
       ggplot(aes(x = birth.rate, y = death.rate, color = continent)) +
       geom_point()
     
@@ -24,7 +30,7 @@ server <- function(input, output) {
   
   output[["click_res"]] <- renderPrint({
     
-    nearPoints(countries, input[["countries_click"]])
+    nearPoints(countries_r(), input[["countries_click"]])
     
   })
   
