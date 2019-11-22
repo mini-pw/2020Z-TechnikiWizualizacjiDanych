@@ -4,13 +4,14 @@ library(ggplot2)
 library(ggstance)
 
 ui <- fluidPage(title = "Aplikacja python",
-                plotOutput(outputId = "countries_plot"),
+                plotOutput(outputId = "countries_plot", hover = "countries_hover"),
                 selectInput(inputId = "x_select", label = "Wybierz os x", 
                             choices = colnames(countries), selected = "birth.rate"),
                 selectInput(inputId = "y_select", label = "Wybierz os y", 
                             choices = colnames(countries), selected = "death.rate"),
                 selectInput(inputId = "cf_select", label = "Wybierz kolor", 
-                            choices = colnames(countries), selected = "continent"))
+                            choices = colnames(countries), selected = "continent"),
+                verbatimTextOutput(outputId = "hover_result"))
 
 server <- function(input, output) {
   
@@ -33,6 +34,11 @@ server <- function(input, output) {
       theme_bw() +
       theme(legend.position = "bottom")
   })
+  
+  output[["hover_result"]] <- renderPrint({
+    nearPoints(countries, input[["countries_hover"]])
+  })
+  
   
 }
 
