@@ -1,0 +1,60 @@
+---
+title: "Praca domowa nr 4"
+author: "Agata Makarewicz"
+date: "14 11 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options("stringsAsFactors" = FALSE) 
+```
+
+## Wykres - wersja "przed"
+
+
+Do poprawki wybrałam wykres Marcelego Korbina - przedstawia on najlepszych zawodników krykieta z wybranych reprezentacji państw.
+
+
+```{r po, echo=FALSE}
+library(ggplot2)
+gracz <- c("Kane Williamson\n(Nowa Zelandia)", "Rohit Sharma\n(Indie)",
+           "Shakib Al Hasan\n(Bangladesz)", "David Warner\n(Australia)",
+           "Babar Azam\n(Pakistan)", "Faf Du Plessis\n(RPA)",
+           "Nicholas Pooran\n(kraje Karaibskie)", "Joe Root\n(Anglia)",
+           "Kusal Perera\n(Sri Lanka)", "Rahmat Shah\n(Afganistan)")
+procent <- c(30.23, 29.05, 28.25, 25.02, 24.51, 21.06, 20.01, 19.07, 18.16, 14.8)
+dataf <- as.data.frame(cbind(as.character(gracz), as.double(procent)))
+```
+
+```{r graph, fig.align='center', fig.width=9, fig.height=7, echo=FALSE}
+wykres <- ggplot(data=dataf, aes(x=reorder(gracz, procent), y=procent, label=paste(procent, "%", sep=""))) +
+  geom_col(fill="#004080", width=5/6) +
+  geom_text(color="#e0e0e0", size=4, hjust=1) + 
+  coord_flip() + 
+  labs(x="gracz (i reprezentacja)", y="procent punktów zdobytych dla drużyny",
+       title="Najlepsi z najlepszych...", subtitle="...graczy krykieta w swoich reprezentacjach")
+wykres
+```
+
+```{r zapis, echo=FALSE}
+#library(svglite)
+
+#svglite("wykresPrzed.svg", width = 10, height = 10)
+#wykres
+#dev.off()
+
+```
+
+
+## Wykres - wersja "po"
+
+
+Do wykresu dodałam tło, jakość niestety nie jest powalająca ale lepszego nie udało mi się znaleźć. Nawiązuje ono bezpośrednio do tematu wykresu. "Wyjściowe" zdjecię zostało obrócone, troszkę rozciągnięte itp. - wszystko po to aby jasny pasek pola znajdował się finalnie w odpowiednim miejscu - "za" zawodnikami z wykresu. Trudno byłoby dokonać takiego ustawienia w R, a w Inkscape jest to szybkie, łatwe i przyjemne. Zwiększyłam odległości między słupkami, oraz zwęziłam same słupki, tak aby bez problemu mozna było umieścić nad nimi nazwiska, a obok zdjecia zawodników. Ułatwiają one bezpośrednie skojarzenie danego zawodnika, jeśli ktoś nie zna go np. z nazwiska. Dodałam również flagi państw, które reprezentują zawodnicy - flagi są ładniejsze od nazw i również mogą pomóc skojarzyć dane państwo. Mimo to zostawiłam również same nazwy państw, gdyż nie każdy musi znać flagi Sri Lanki czy też Trynidadu i Tobago.
+Dodanie wszystkich tych grafik w odpowiednim miejscu,przyciemnienie zdjęcia w tle ( zastosowanie maski ), zmiana czcionek czy też dopasowanie osi byłoby wysoce problematyczne i czasochłonne w R, niektóre z nich praktycznie niemożliwe ( patrząc na nasz poziom wiedzy ).
+
+
+```{r wykres_po, echo=FALSE}
+knitr::include_graphics("wykres.svg")
+```
+

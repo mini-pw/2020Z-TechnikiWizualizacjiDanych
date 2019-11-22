@@ -1,0 +1,72 @@
+---
+title: "Praca domowa"
+author: "Jakub Kosterna"
+output: html_document
+---
+
+# *Techniki Wizualizacji Danych - PD4* 
+
+```{r setup, message = FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(svglite)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r, echo = FALSE}
+wyniki <- read.csv('/home/samba/kosternaj/Desktop/05Wiz/pd4i/IGN_wyniki.csv')
+```
+
+```{r, echo = FALSE}
+# reorganizacja danych
+staff <- wyniki %>% select(HERO, IGN_STAFF) %>% mutate(TYPE = "IGN STAFF") %>% rename(VALUE = IGN_STAFF)
+comm <- wyniki %>% select(HERO, IGN_COMMUNITY) %>% mutate(TYPE = "IGN COMMUNITY") %>% rename(VALUE = IGN_COMMUNITY)
+data <- staff %>% bind_rows(comm)
+# dla poprawnej kolejnosci zmiennych w legendzie
+data$HERO <- factor(data$HERO, levels = c("Captain America", "Iron Man", "Nebula", "Hulk", "Hawkeye", "Happy Hogan"))
+```
+
+Z pewnością największym problemem owej pracy domowej było znalezienie odpowiedniego wykresu - moi koledzy zdecydowanie sprostali wyzwaniu i ciężko było znaleźć coś, co warto by było poprawić. Pod lupę postanowiłem wziąć wykres Olka, który jak zdecydowanie jest jasny, dostał ode mnie parę fajnych rarytasów wizualnych.
+
+## Wykres Olka:
+
+```{r, echo = FALSE, message = FALSE}
+ggplot(data, aes(fill= TYPE, y=VALUE, x=HERO)) + 
+  # geom_bar dodge
+  geom_bar(position=position_dodge(), stat="identity") +
+  
+  # zmiana palety kolorow
+  scale_fill_manual(values = c("#b941e1", "#09a3ed")) +
+  
+  theme_classic() +
+  
+  # dodanie tekstu z liczbami i procentami
+  geom_text(aes(label = sprintf("        %s%%", VALUE)), 
+            position = position_dodge(width = 1), size = 3.4) +
+  
+  # zmiana pozycji legendy
+  theme(legend.position = "top") +
+  
+  # odwrocenie wykresu
+  coord_flip() +
+  
+  # pozbywam sie niepotrzebnych danych na osiach
+  theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
+      legend.title = element_blank(), axis.title = element_blank(), plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(face = "bold"), legend.text = element_text(face = "bold")) +
+  
+  # dodanie tytulu
+  labs(title = "POLL RESULTS \nWHO WILL DIE IN AVENGERS: ENDGAME?")
+```
+
+## Wykres mój:
+
+![](/home/samba/kosternaj/Desktop/05Wiz/pd4i/moj.svg)
+
+## Dlaczego mój wykres jest lepszy?
+1. (Moim zdaniem) najwiekszą zaletą jest zmniejszenie dystansu między nazwami suberbohaterów a słupkami - była to operacja, której dokonałem niemalże od razu, ze względu na niepewność której kolumny dotyczy "Hulk" - mieszanka niebieskiego i purpurowego koloru na zmianę w dodatku w połączeniu z "pustym" słupkiem spowodowały u mnie początkowo niezły dysonans. Z samym *ggplotem* byłoby trochę pierdzielenia z dokładnym dobraniem dystansu w parametrze funkcji (która i tak musiałaby być ręcznie wyszukana i przeterstowana), a potem z próbowaniem różnych wartości aby uzyskać względnie najlepszy efekt - po co strzelać / wyszukiwać binarnie, jeżeli mogę ręcznie bardzo szybko dostosować wielkość?
+2. ... stwierdziłem jednak, że wciąż to za mało - dlatego każdą parę kolumn oddzieliłem dodatkowymi liniami poziomowymi między etykietami super-bohaterów. Ta metoda doprowadziła już do całkowitej jasności na pierwszy rzut oka które słupki dotyczą której osoby. Nie wiem jak i czy w ogóle taką operację można by wykonać w *R*.
+3. Lekko powiększyłem tytuł wykresu, a także minimalnie go wydłużyłem w pionie - jak dla mnie też na plus. Taka nawigacja czcionką z *ggplot*? No, na pewno tutaj łatwiej (o ile można to właściwie zrobić z poziomu pisania kodu w przypadku wydłużenia tytułowego pola tekstowego)!
+4. Pierwsza wersja legendy jak dla mnie była nieco szpetna - tak małe odległości między kolorowymi kwadratami i etykietami nie pozwoliły mi nic z tym nie zrobić. I legendę więc powiększyłem, a przede wszystkim wrzuciłem trochę przestrzeni między cztery przed chwilą wspomniane obiekty.
+5. Danych nie jest dużo, a szybciej jest przeczytać wykres na pierwszy rzut oka bez obecności tycich literek (niezależnie od warunków biologiczno-fizycznych). Zdecydowałem się więc nieco powiększyć także i informacje o procentach i liczby przy osi x.
+6. Ostatnią operacją, której dokonałem, a na pewno nie byłaby możliwa za pomocą *RStudio* (albo osiągnięcie jej byłoby niebywale wymagające): pozwoliłem sobie na dostosowanie wielkości czcionki etykiet osi y do ich długości. Stąd na przykład taki Hulk jest większy od pozostałych, a Captain America ze względu na najdłuższą nazwę i brak miejsca z lewej strony wykresu - najkrótszy. Starałem sie zachować jednak przy tym smak i dążyłem do jak najmniejszej różnicy między dwoma pseudonimami jeden pod drugim.
