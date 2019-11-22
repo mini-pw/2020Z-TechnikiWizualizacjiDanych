@@ -1,0 +1,79 @@
+---
+title: "Praca domowa 4"
+author: "Martyna Majchrzak"
+date: "15 11 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Oryginalny wykres
+
+Pochodzi z trzeciej pracy domowej Patryka Wrony i przedstawia podział społeczeństwa polskiego na klasy (wyższa, średnia, niższa) w zależności od kryterium dochodowego oraz zawodowego.
+
+```{r, include=FALSE}
+# Dane
+klasy <- c("Klasa wyższa", "Klasa średnia", "Klasa niższa")
+kryt_dochodowe <- c(16,54,30)
+kryt_zawodowe <- c(12,51,37)
+data <- data.frame(klasy, kryt_dochodowe, kryt_zawodowe)
+kolory <- c("Klasa wyższa" = "#FFDF00",
+            "Klasa średnia" = "red",
+            "Klasa niższa" = "midnightblue")
+
+# Biblioteki:
+library(patchwork)
+library(ggplot2)
+library(RColorBrewer)
+library(gridExtra)
+
+class_order <- c("Klasa wyższa", "Klasa średnia", "Klasa niższa")
+p1 <- ggplot(data = data, aes(x = klasy, y = kryt_dochodowe, fill = klasy))+
+  geom_bar(stat = "identity") +
+  scale_x_discrete(limits = class_order) +
+  scale_fill_manual(values = kolory) +
+  theme(legend.position = "none",
+        plot.title = element_text(size=11)) +
+  labs( x = "Klasy w społeczeństwie",
+        y = "% społeczeństwa",
+        title = "Kryterium dochodowe (wiek 24-64 lat)")
+p2 <- ggplot(data = data, aes(x = klasy, y = kryt_zawodowe, fill = klasy))+
+  geom_bar(stat = "identity") +
+  scale_x_discrete(limits = class_order) +
+  scale_fill_manual(values = kolory) +
+  theme(legend.title = element_blank(),
+        legend.position = "none",
+        plot.title = element_text(size = 11)) +
+  labs( x = "Klasy w społeczeństwie",
+        y = "% społeczeństwa",
+        title = "Kryterium zawodowe (wiek 24-64 lat)")
+```
+
+```{r}
+grid.arrange(p1 + coord_cartesian(ylim = c(0,60)) +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 10)),
+             p2 + coord_cartesian(ylim = c(0,60)) +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 10)),
+             nrow = 1)
+```
+
+
+## Nowy wykres w Inkscape
+
+![]("inkscape_pd4")
+
+
+
+### Wprowadzone porawki
+
+- uwydatnienie istotnych informacji (procent społeczeństwa)
+- usunięcie nadmiarowych, powtarzających się napisów (opisy osi, tytuły itd.) oraz dodanie polskich znaków
+- dodanie tła w postaci mapy Polski (dane pochodzą ze strony Polskiego Instytutu Ekonomicznego, o czym pierwotny wykres nie informuje) i grafik ilustrujących kryteria podziału: dochodowe i zawodowe
+- poprawa kolorystyki  (coraz mniej intesywny kolor słupków przy zmiejszającej się wysokości klasy) i ogólnej atrakcyjności wizualnej wykresu
+
+### Dlaczego Inkscape?
+
+- dodanie tego typu grafik w R byłoby czasochłonne, a ich rorzmieszczenie - mało intuicyjne
+- narzędzia graficzne w Inkscape pozowoliły na modyfikacje detali słupków wykresu, dodanie gradientów i ciekawszych czcionek
