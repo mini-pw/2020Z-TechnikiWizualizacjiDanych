@@ -3,7 +3,9 @@ library(ggplot2)
 library(SmarterPoland)
 
 ui <- fluidPage(
-  plotOutput(outputId = "countries_plot")
+  title = "Piątek wieczór",
+  plotOutput(outputId = "countries_plot", click = "countries_click"),
+  verbatimTextOutput(outputId = "click_res")
 )
 
 server <- function(input, output) {
@@ -14,6 +16,12 @@ server <- function(input, output) {
       geom_point()
   
     })
+  
+  output[["click_res"]] <- renderPrint({
+    
+    input[["countries_click"]]
+    
+  })
   
 }
 
