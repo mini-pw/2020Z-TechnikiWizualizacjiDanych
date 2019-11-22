@@ -1,0 +1,133 @@
+---
+title: "Praca domowa 4"
+author: "Piotr Sieńko"
+output: html_document
+---
+
+ 
+  <style type="text/css">
+  .main-container {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+
+<br/><br/>
+
+## Wykres "przed"
+Wykres przedstawia frekwencję w wyborach parlamentarnych w Indiach. Dobrze ilustruje on różnice pomiędzy mężczyznami, a kobietami, jednak porównanie wyników dla jednej płci na przestrzeni lat jest już trudniejsze. 
+<br/><br/>
+```{r  echo=TRUE, fig.height = 10, fig.width=10, warning = FALSE}
+#wczytanie bibliotek
+library(ggplot2)
+library(reshape2)
+
+#manipulacja danymi
+data <- read.csv("/home/piotr/Pobrane/wybory.csv")
+data$lok_sabha <- factor(x = data$lok_sabha, levels = data$lok_sabha)
+data <- melt(data, id.vars = c("lok_sabha", "year"))
+
+#przygotowanie wykresu
+ggplot(data, aes(x = lok_sabha)) +
+  geom_col(aes(y = value, fill = variable), position = "dodge") +
+  geom_text(aes(y = value - 1, label = paste0(value, "%")), position = position_dodge2(width = 0.9), size = 2.5) +
+  annotate("text", x = 1, y = 2, label = "No data") +
+  annotate("text", x = 2, y = 2, label = "No data") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0)) +
+  scale_x_discrete(labels = paste0(data$lok_sabha, "\n", "(", data$year, ")")) +
+  scale_fill_manual(values = c("#FF9933", "#138808"), labels = c("men turnout", "women turnout")) +
+  labs(title = "Lok Sabha general elections turnout by sex", subtitle = "", caption = "Source: India Press Information Bureau", fill = "Legend:") +
+  ylab("Turnout (in %)") +
+  xlab("Lok Sabha general election") +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 0.5),
+    plot.caption = element_text(hjust = 1, size = 8),
+    axis.title.x = element_text(vjust = -3),
+    axis.ticks.x = element_blank(),
+    legend.position = "top"
+  )
+```
+<br/><br/>
+
+## Wykres poprawiony (w R)
+
+Utworzyłem odrębne wykresy dla mężczyzn i kobiet, co umożliwia łatwiejszą analizę tendecji dla obu płci. Dodatkowo, zrobiłem wykres pokazujący różnice pomiędzy nimi. Dzięki temu zachowano możliwość porównania wyników. 
+<br/><br/>
+```{r echo=TRUE, fig.height = 10, fig.width=10, warning = FALSE, message=FALSE}
+
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(gridExtra)
+
+# Importing Data
+data <- read.csv(file = "/home/piotr/Pobrane/wybory.csv")
+data$lok_sabha <- factor(x = data$lok_sabha, levels = data$lok_sabha)
+data <- melt(data, id.vars = c("lok_sabha", "year"))
+
+# Creating additional data frames
+data_woman <- data[data$variable == "woman", ]
+data_woman <- data_woman[c(-1, -2), ]
+data_man <- data[data$variable == "man", ]
+data_man <- data_man[c(-1, -2), ]
+
+# Calculating differences in turnouts
+data <- data_man %>%
+  mutate(difference = data_man$value - data_woman$value)
+
+# 1 plot - only men
+p1 <- ggplot(data_man, aes(x = year, y = value, fill = variable)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0))+
+  scale_x_discrete(limits = rev(data_man$year), position = "top") +
+  scale_fill_manual(values = c("#43a2ca")) +
+  theme(
+    legend.position = "none",
+    axis.title = element_blank(),
+    axis.ticks.length.y= unit(0, "mm")
+  ) 
+
+# 2 plot - only women
+p2 <- ggplot(data_woman, aes(x = year, y = value, fill = variable)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0)) +
+  scale_x_discrete(limits = rev(data_man$year)) +
+  scale_y_reverse(limits = c(100, 0), breaks = seq(0, 100, 10), expand = c(0, 0)) +
+  scale_fill_manual(values = c("#de2d26")) +
+  theme(
+    legend.position = "none",
+    axis.title = element_blank()
+  )
+
+# 3 plot - difference
+p3 <- ggplot(data, aes(x = year, y = difference, fill = variable)) +
+  geom_col()+
+  coord_flip() +
+  scale_x_discrete(limits = rev(data$year)) +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0)) +
+  scale_fill_manual(values = c("#0000b3")) +
+  theme(
+    legend.position = "none",
+    axis.title = element_blank())
+
+# Stworzenie pliku eps
+#cairo_ps("plot1.eps", width = 10, height = 10)
+#grid.arrange(p2, p3, p1, ncol = 3)  
+#dev.off()
+
+# Merging plots
+grid.arrange(p2, p3, p1, ncol = 3)  
+
+```
+<br/><br/>
+
+## Wykres poprawiony (w Inkscape)
+
+Uznałem, że najłatwiej będzie utworzyć multiplot w R i później w Inkscape scalić go w jeden wykres i usunąć zbędne osie. Stworzenie wspólnego tytułu oraz legendy oraz optymalne ich ustawienie również mogłoby być uciążliwe w R.
+<br/><br/>
+![](/home/piotr/plot_png.png)
