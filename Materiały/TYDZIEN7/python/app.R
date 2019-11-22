@@ -13,9 +13,12 @@ ui <- fluidPage(title = "Aplikacja python",
                                          choices = colnames(countries), selected = "death.rate"),
                              selectInput(inputId = "cf_select", label = "Wybierz kolor", 
                                          choices = colnames(countries), selected = "continent")),
-                mainPanel(plotOutput(outputId = "countries_plot", hover = "countries_hover"),
-                          verbatimTextOutput(outputId = "hover_result"),
-                          plotlyOutput(outputId = "countries_plotly"))
+                mainPanel(
+                  tabsetPanel(
+                    tabPanel("ggplot2", 
+                             plotOutput(outputId = "countries_plot", hover = "countries_hover"),
+                             verbatimTextOutput(outputId = "hover_result")),
+                    tabPanel("plotly", plotlyOutput(outputId = "countries_plotly"))))
 )
 
 server <- function(input, output) {
