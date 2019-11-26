@@ -13,9 +13,9 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html);
 * 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L: [Inkscape](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN5/export.R).
 * 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html)
-* 2019-11-21 W: prezentacje projektów;
-* 2019-11-28 W: omówienie projektu I;
-* 2019-12-05 W: prezentacje studentów cz 1;
+* 2019-11-21 W: Prezentacje projektów;
+* 2019-11-28 W: Omówienie projektu I;
+* 2019-12-05 W: Prezentacje studentów cz 1;
 * 2019-12-12
 * 2019-12-19
 * 2020-01-09
