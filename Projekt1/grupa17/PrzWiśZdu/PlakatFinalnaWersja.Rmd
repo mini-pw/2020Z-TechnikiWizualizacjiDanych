@@ -1,8 +1,0 @@
----
-title: "SzwecjaGEP"
-output: github_document
----
-
-https://drive.google.com/file/d/1TMGUTeoKcrZPQCM6kIRLuSWdIbjXFcAt/view?usp=sharing
-
-Autorzy: Przybyliński Dawid, Wiśniewski Jakub, Zdulska Hanna
