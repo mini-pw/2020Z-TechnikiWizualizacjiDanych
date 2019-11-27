@@ -12,8 +12,8 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-10-24 W: [Standardy IBCS](Materiały/ibcs_wyklad.pdf); L: [Skale, koordynaty, łączenie wykresów](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN4/scales-coordinates-multiplots.R).
 * 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html);
 * 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L: [Inkscape](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN5/export.R).
-* 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html)
-* 2019-11-21 W: prezentacje projektów;
+* 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: [Obrazy rastrowe i glify. Interaktywne dokumenty .Rmd](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN6).
+* 2019-11-21 W: prezentacje projektów; L: [Wstęp do Shiny. Interaktywne wizualizacje.](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN7).
 * 2019-11-28
 * 2019-12-05 
 * 2019-12-12
