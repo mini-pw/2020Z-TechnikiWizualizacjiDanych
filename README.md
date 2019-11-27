@@ -13,9 +13,9 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-10-31 W: [Nie rób tego w domu](http://biecek.pl/Eseje/indexPomylka.html);
 * 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L: [Inkscape](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN5/export.R).
 * 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: [Obrazy rastrowe i glify. Interaktywne dokumenty .Rmd](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN6).
-* 2019-11-21 W: prezentacje projektów; L: [Wstęp do Shiny. Interaktywne wizualizacje.](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN7).
-* 2019-11-28
-* 2019-12-05 
+* 2019-11-21 W: Prezentacje projektów; L: [Wstęp do Shiny. Interaktywne wizualizacje.](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN7).
+* 2019-11-28 W: Omówienie projektu I;
+* 2019-12-05 W: Prezentacje studentów cz 1;
 * 2019-12-12
 * 2019-12-19
 * 2020-01-09
@@ -46,13 +46,30 @@ Podczas semestru realizowane będą 2 projekty.
 
 [Projekt 1](Projekt1/README.md)
 
+[Projekt 2](Projekt2/README.md)
+
 # Prezentacje studentów
 
 Prezentacje można przygotować w 2-3 osobowych zespołach. Należy wybrać jeden z tematów poniżej, przeczytać, zrozumieć, przeczytać, przedstawić treści z tego artykułu w 5+5 min (5 minut na prezentacje i 5 minut na dyskusje).
 
-Prezentacje mają miejsce na wykładzie. 
+Prezentacje mają miejsce na wykładzie. Należy wybrać jeden z poniższych tematów. W teorii dwie grupy mogą wybrać ten sam temat, ale w tym wypadku każda grupa otrzyma inną liczbę punktów. Lepiej więc celować w rózne tematy.
 
-Tematy pojawią się wkrótce
+### Points of view
+
+Points of view to kolumna prowadzona przez nature methods. Należy wybrać jeden z jednostronicowych artykułów i go zreferować: http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html
+
+### Data Stories
+
+Data Stories to podcast o wizualizacji danych https://datastori.es/. Należy wybrać jeden odcinek i go zreferować
+
+### IEEE VIS 
+
+IEEE VIS to jedna  ztopowych konferencji o wizualizacji danych. http://ieeevis.org/year/2019/keynote http://ieeevis.org/year/2019/info/papers-sessions. Należy wybrać jeden z referatów i go zreferować.
+
+### Inne tematy
+
+Można też wybrać dowolny inny materiał o wizualizacji danych i go zreferować. Np. artykuł o boxplotach: https://vita.had.co.nz/papers/boxplots.pdf, wizualizacji grafów https://journal.r-project.org/archive/2017/RJ-2017-023/index.html, data tour https://journal.r-project.org/archive/2019/RJ-2019-002/index.html
+
 
 # Prace Domowe:
 
