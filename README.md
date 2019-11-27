@@ -46,6 +46,8 @@ Podczas semestru realizowane będą 2 projekty.
 
 [Projekt 1](Projekt1/README.md)
 
+[Projekt 2](Projekt2/README.md)
+
 # Prezentacje studentów
 
 Prezentacje można przygotować w 2-3 osobowych zespołach. Należy wybrać jeden z tematów poniżej, przeczytać, zrozumieć, przeczytać, przedstawić treści z tego artykułu w 5+5 min (5 minut na prezentacje i 5 minut na dyskusje).
