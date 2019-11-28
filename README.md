@@ -15,8 +15,8 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: [Obrazy rastrowe i glify. Interaktywne dokumenty .Rmd](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN6).
 * 2019-11-21 W: Prezentacje projektów; L: [Wstęp do Shiny. Interaktywne wizualizacje.](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN7).
 * 2019-11-28 W: Omówienie projektu I;
-* 2019-12-05 W: Prezentacje studentów cz 1;
-* 2019-12-12
+* 2019-12-05 
+* 2019-12-12 W: Prezentacje studentów cz 1;
 * 2019-12-19
 * 2020-01-09
 * 2020-01-16
