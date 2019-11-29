@@ -16,8 +16,9 @@ server <- function(input, output) {
   )
   
   observeEvent(input[["countries_click"]], {
-    selected_countries[["selected"]] <- nearPoints(countries, input[["countries_click"]], 
-                                                   maxpoints = 1)[["country"]]
+    selected_countries[["selected"]] <- c(selected_countries[["selected"]],
+                                          nearPoints(countries, input[["countries_click"]], 
+                                                   maxpoints = 1)[["country"]])
   })
   
   output[["selected_value"]] <- renderPrint({
