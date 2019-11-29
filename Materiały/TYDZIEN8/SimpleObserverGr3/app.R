@@ -1,6 +1,10 @@
 library(shiny)
 library(SmarterPoland)
 library(ggplot2)
+library(dplyr)
+
+remove_duplicates <- function(x)
+  setdiff(x, x[duplicated(x)])
 
 ui <- fluidPage(
   titlePanel("Simple Observer"),
@@ -15,8 +19,11 @@ server <- function(input, output) {
   )
   
   observeEvent(input[["countries_click"]], {
-    selected_countries[["selected"]] <- nearPoints(countries, input[["countries_click"]], 
-                                                   maxpoints = 1)[["country"]]
+    selected_countries[["selected"]] <- remove_duplicates(c(selected_countries[["selected"]],
+                                          nearPoints(countries, input[["countries_click"]], 
+                                                   maxpoints = 1)[["country"]]))
+    
+
   })
   
   output[["selected_countries_value"]] <- renderPrint({
