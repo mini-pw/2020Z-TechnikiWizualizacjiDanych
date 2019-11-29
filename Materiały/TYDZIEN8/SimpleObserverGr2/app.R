@@ -18,7 +18,16 @@ server <- function(input, output) {
   observeEvent(input[["countries_click"]], {
     selected_countries[["selected"]] <- c(selected_countries[["selected"]],
                                           nearPoints(countries, input[["countries_click"]], 
-                                                   maxpoints = 1)[["country"]])
+                                                     maxpoints = 1)[["country"]])
+    
+    if(length(selected_countries[["selected"]]) > 0) {
+      nonunique_countries <- table(country = selected_countries[["selected"]]) %>% 
+        as.data.frame() %>% 
+        filter(Freq == 2) %>% 
+        pull(country) %>% 
+        as.character()
+      selected_countries[["selected"]] <- setdiff(selected_countries[["selected"]], nonunique_countries)
+    }
   })
   
   output[["selected_value"]] <- renderPrint({
