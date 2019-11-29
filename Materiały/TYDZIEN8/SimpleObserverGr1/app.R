@@ -21,21 +21,28 @@ server <- function(input, output) {
     selected_country[["country"]] <- c(selected_country[["country"]],
                                        nearPoints(countries, input[["countries_click"]],
                                                   maxpoints = 1)[["country"]])
-
-    nonunique_country <- table(country = selected_country[["country"]]) %>% 
-      as.data.frame() %>% 
-      filter(Freq == 2) %>% 
-      pull(country) %>% 
-      as.character()
     
-    selected_country[["country"]] <- setdiff(selected_country[["country"]], nonunique_country)
+    if(length(selected_country[["country"]]) > 0) {
+      nonunique_country <- table(country = selected_country[["country"]]) %>% 
+        as.data.frame() %>% 
+        filter(Freq == 2) %>% 
+        pull(country) %>% 
+        as.character()
+      
+      selected_country[["country"]] <- setdiff(selected_country[["country"]], 
+                                               nonunique_country)
+    }
   })
   
   
   output[["countries_plot"]] <- renderPlot({
-    mutate(countries, selected = country %in% selected_country[["country"]]) %>% 
-      ggplot(aes(x = birth.rate, y = death.rate, color = continent, size = selected)) +
+    df <- mutate(countries, selected = country %in% selected_country[["country"]]) 
+    ggplot(data = df, 
+           mapping = aes(x = birth.rate, y = death.rate, color = continent, 
+                         size = selected)) +
       geom_point() +
+      geom_label(mapping = aes(label = country),
+                 data = filter(df, selected), vjust = -1) +
       theme_bw()
   })
   
