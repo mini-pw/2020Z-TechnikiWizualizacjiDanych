@@ -36,8 +36,10 @@ server <- function(input, output) {
   
   output[["countries_plot"]] <- renderPlot({
     mutate(countries, selected = country %in% selected_countries[["selected"]]) %>% 
-      ggplot(aes(x = birth.rate, y = death.rate, color = continent, size = selected)) +
+      ggplot(aes(x = birth.rate, y = death.rate, color = continent, size = selected, 
+                 label = if_else(selected, country, NULL))) +
       geom_point() +
+      geom_label() +
       theme_bw()
   })
   
