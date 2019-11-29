@@ -7,7 +7,8 @@ ui <- fluidPage(
   titlePanel("Simple Observer"),
   verbatimTextOutput("processed_selection"),
   plotOutput("countries_plot", height = 600, 
-             hover = "countries_click")
+             click = "countries_click")
+  
 )
 
 server <- function(input, output) {
