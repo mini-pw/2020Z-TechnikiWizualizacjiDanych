@@ -1,6 +1,6 @@
 library(shiny)
 library(SmarterPoland)
-library(dplyr)
+library(ggplot2)
 
 ui <- fluidPage(
   titlePanel("Simple Observer"),
