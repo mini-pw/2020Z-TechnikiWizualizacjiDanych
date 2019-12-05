@@ -1,0 +1,58 @@
+---
+title: "Praca Domowa 5"
+author: "Aleksander Podsiad"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Opis:
+
+Celem tej pracy domowej było zbadanie, jaki wpływ na poprawny odczyt danych ma forma wykresu.
+W [ankiecie internetowej](https://forms.gle/q8gH6S4CN8QqhJoe7) przeprowadzonej wśród 31 osób znajdowały się trzy różne wykresy przedstawiające te same dane w inny sposób oraz pytania sprawdzające postrzeganie danych z tych wykresów oraz samych wykresów.
+
+
+## Wyniki ankiety:
+
+### Dla wykresu kołowego
+
+64% ankietowanych stwierdziło, że jabłek jest więcej niż pomarańczy na podstawie poniższego wykresu.
+Jest to odpowiedź błędna*. Przyczyną takiego postrzegania wykresu jest nieumiejętność dokładnego ocenienia kątów i powierzchni przez ludzkie oko oraz dodatkowe zaburzenie proporcji wynikające z obrotu wykresu.
+
+
+![](/home/aleksander/Pulpit/kolo.png)
+
+##### *Ilości owoców: jabłka -	40, pomarańcze - 42, banany -	18, śliwki - 26, ananasy -	78
+
+### Dla wykresu liniowego
+
+Przy zadaniu tego samego pytania do poniższego wykresu już ponad 90% ankietowanych jest w stanie podać poprawną odpowiedź.
+Jednak, gdy zapytamy o stosunek liczby jabłek do liczby ananasów, to tylko około 20% odpowiadających widzi zachodzącą zależność.
+Problem w ocenie tworzy tutaj brak osi (i pewności czy wykres zaczyna się od zera) oraz trudność porównania proporcji wysokości dwóch punktów.
+W przeciwieństwie do poprzedniego wykresu bardzo łatwo stwierdzić, która wartość jest większa.
+
+![](/home/aleksander/Pulpit/linie.png)
+
+### Dla wykresu słupkowego
+
+Poniższy wykres ułatwia ocenę nie tylko różnic ilości owoców, ale również pozwala poprawnie ocenić ich wzajemne proporcje.
+Dzieje się tak, ponieważ ludzkie oko o wiele lepiej ocenia stosunki długości elementów, takich jak na przykład słupki.
+Oprócz tego na wykresie umieszczono sitkę pionowych linii dodatkowo ułatwiających odczytywanie wartości.
+
+![](/home/aleksander/Pulpit/slupki.png)
+
+
+## Podsumowanie
+
+Należy odpowiednio dobierać typ wykresu do danych. Powinno się unikać wykresów kołowych, a na pewno nie używać ich w wersji 3D.
+Trzeba też pamiętać, żeby dostosować sposób przedstawienia do prezentowanych zależności (nie tworzyć skali ciągłej dla wartości dyskretnych).
+Wykres słupkowy umożliwia najdokładniejszy odczyt danych i jest najlepiej odbieraną formą przekazu informacji.
+
+
+
+
+
+
+
