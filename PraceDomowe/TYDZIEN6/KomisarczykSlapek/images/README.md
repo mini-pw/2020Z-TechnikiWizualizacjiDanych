@@ -1,4 +1,0 @@
-## 
-
-
-Tu wstawiamy zdjęcia  
