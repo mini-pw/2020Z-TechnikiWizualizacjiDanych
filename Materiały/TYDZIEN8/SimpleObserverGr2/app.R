@@ -6,7 +6,7 @@ library(dplyr)
 ui <- fluidPage(
   titlePanel("Simple Observer"),
   verbatimTextOutput("selected_value"),
-  plotOutput("countries_plot", height = 600, click = "countries_click")
+  plotOutput("countries_plot", height = 600, hover = "countries_hover")
 )
 
 server <- function(input, output) {
@@ -15,10 +15,10 @@ server <- function(input, output) {
     selected = character()
   )
   
-  observeEvent(input[["countries_click"]], {
-    selected_countries[["selected"]] <- c(selected_countries[["selected"]],
-                                          nearPoints(countries, input[["countries_click"]], 
-                                                   maxpoints = 1)[["country"]])
+  observeEvent(input[["countries_hover"]], {
+    selected_countries[["selected"]] <- nearPoints(countries, input[["countries_hover"]], 
+                                                     maxpoints = 1)[["country"]]
+
   })
   
   output[["selected_value"]] <- renderPrint({
@@ -26,9 +26,12 @@ server <- function(input, output) {
   })
   
   output[["countries_plot"]] <- renderPlot({
-    mutate(countries, selected = country %in% selected_countries[["selected"]]) %>% 
-      ggplot(aes(x = birth.rate, y = death.rate, color = continent, size = selected)) +
+    mutate(countries, selected = country %in% selected_countries[["selected"]],
+           ) %>% 
+      ggplot(aes(x = birth.rate, y = death.rate, color = continent, size = selected, 
+                 label = if_else(selected, country, NULL))) +
       geom_point() +
+      geom_label(nudge_x = 1) +
       theme_bw()
   })
   
