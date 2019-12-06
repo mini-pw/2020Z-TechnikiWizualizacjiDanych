@@ -11,7 +11,8 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   output[["d3"]] <- renderD3({
-    r2d3(runif(5, 0, input[["bar_max"]]), script = "baranims.js"
+    r2d3(runif(n = 5, min = 0, max = input[["bar_max"]]), 
+         script = "baranims.js"
     )
   })
 }
