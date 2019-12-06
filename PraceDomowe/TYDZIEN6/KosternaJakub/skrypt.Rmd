@@ -1,0 +1,147 @@
+---
+title: "Techniki wizualizacji danych: praca domowa nr 6"
+author: "Jakub Kosterna"
+date: "December 6, 2019"
+output: html_document
+---
+
+```{r setup, message = FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(svglite)
+library(ggplot2)
+library(tidyverse)
+```
+
+## 1. Dane
+
+Od lat śledzę oficjalne statystyki najczęściej nadawanych imion polskim dzieciom, toteż biorąc pod uwagę elastyczność projektu właśnie tymi danymi postanowiłem się pobawić. Rok w rok **Ministerstwo Cyfryzacji** udostępnia kompletne informacje o najpopularniejszych imionach w danym półroczu / roku. W ramach tego małego projektu zająłem się pierwszą dziesiątką *I połowy 2019 r*.
+
+Owe dane prezentują się następująco:
+
+Miejsce  | Imię (chłopiec)| Liczba nadań | Imię (dziewczynka) | Liczba nadań
+--------:|:--------------:|:------------:|:------------------:|:-----------:
+       1 |         Antoni | 4247         | Zuzanna            | 4251
+       2 |          Jakub | 4050         | Julia              | 4042
+       3 |            Jan | 3979         | Maja               | 3853
+       4 |         Szymon | 3584         | Zofia              | 3755
+       5 |     Aleksander | 3582         | Hanna              | 3651
+       6 |     Franciszek | 3340         | Lena               | 3495
+       7 |          Filip | 2996         | Maria              | 2572
+       8 |       Wojciech | 2770         | Alicja             | 2546
+       9 |        Mikołaj | 2685         | Amelia             | 2339
+      10 |         Kacper | 2429         | Oliwia             | 2306
+
+#### Źródło:
+https://dane.gov.pl/dataset/219,imiona-nadawane-dzieciom-w-polsce/resource/19065/table
+
+
+## 2. Cel
+
+Wszyscy uwielbiamy wykresy kolumnowe, ale czy na pewno nie ulegamy iluzjom obserwując je i nie zapamiętujemy danych z nich błędnie?
+Wcześniej wspomiane informacje postanowiłem przedstawić właśnie za pomocą owych ukochanych przez wszystkich słupków, przy czym pod lupę wziąłem kwestię ilorazu nadań dzieci z 1. i 10. miejsca w rankingu - dla chłopców Antioniego (4247) i Kacpra (2429), a dla dziewczynek Zuzanny (4251) i Oliwii (2306). Żeby nie było nudno, jeden wykres postanowiłem dodatkowo zmanipulować - zmieniając oś y tak, aby nie zaczynała sie od 0.
+
+Generalnie stwierdziłem, że znajdę odpowiedź na dwa pytania:zi
+1. Czy oszacowanie ilorazu między dwoma wartościami przedstawionymi przez kolumny nie leżące bezpośrednio siebie będzie trafne?
+
+2. Jak z powyższym szacunkiem w przypadku manipulacji wykresu i przedstawienia danych w niestandardowej formie?
+
+
+## 3. Wykres
+
+Oto i mój kod i wersja wizualizacji wygenerowana przez R (dostępny także w pliku *generowanieWykresu.R*):
+
+```{r, message = FALSE}
+# potrzebne pakiety
+library(ggplot2)
+library(gridExtra)
+library(svglite)
+
+# przygotowanie danych
+## dziewczynki
+girls = data.frame(cbind(c("1. Zuzanna", "2. Julia", "3. Maja", "4. Zofia", "5. Hanna",
+                           "6. Lena", "7. Maria", "8. Alicja", "9. Amelia", "10. Oliwia"),
+                         c(4251, 4042, 3853, 3755, 3651,
+                           3495, 2572, 2546, 2339, 2306)))
+colnames(girls) = c("name", "nOfGiven")
+
+girls$nOfGiven <- as.numeric(levels(girls$nOfGiven))[girls$nOfGiven]
+girls$name <- factor(girls$name, levels = girls$name)
+
+## chłopcy
+boys = data.frame(cbind(c("1. Antoni", "2. Jakub", "3. Jan", "4. Szymon", "5. Aleksander",
+                          "6. Franciszek", "7. Filip", "8. Wojciech", "9. Mikołaj", "10. Kacper"),
+                        c(4247, 4050, 3979, 3584, 3582,
+                          3340, 2996, 2770, 2685, 2429)))
+colnames(boys) = c("name", "nOfGiven")
+
+boys$nOfGiven <- as.numeric(levels(boys$nOfGiven))[boys$nOfGiven]
+boys$name <- factor(boys$name, levels = boys$name)
+
+# podwykresy
+boysPlot <- ggplot(data = boys, aes(x = name, y = nOfGiven)) +
+  geom_col(fill = "lightblue") +
+  coord_cartesian(ylim = c(0, 4500)) +
+  scale_y_continuous(breaks = seq(0, 4500, 1500)) +
+  xlab("Chłopięce") +
+  ylab("Liczba nadań") +
+  theme(axis.text.x = element_text(angle = 15, size = 10, vjust = 0.7))
+
+girlsPlot <- ggplot(data = girls, aes(x = name, y = nOfGiven)) +
+  geom_col(fill = "pink") +
+  coord_cartesian(ylim = c(900, 4500)) +
+  scale_y_continuous(breaks = seq(0, 4500, 1500)) +
+  xlab("Dziewczęce") +
+  ylab("Liczba nadań") +
+  theme(axis.text.x = element_text(angle = 15, size = 10, vjust = 0.7))
+
+# cały wykres
+
+top10beforeCorrection <- grid.arrange(girlsPlot, boysPlot, nrow = 2,
+             top = "TOP 10 imion w I połowie 2019")
+
+```
+
+Końcowy efekt podrasowałem jeszcze wektorowo w **InkSpace**, m. in. zmieniając czcionki i zaznaczając mocniejszym kolorem kolumny dotyczące 1. i 10. miejsca w celu zasygnalizowania osobie widzącej wykres, że mają one jakieś znaczenie (na poziomie świadomym lub ewentualnie podświadomym).
+
+![](/home/samba/kosternaj/Desktop/05Wiz/pd5i/top10afterCorrection.png)
+
+## 4. Forma
+
+Do zbadania wcześniej wspomnianych zagadnień postanowiłem użyć zapewne najbardziej powszechnego narzędzia do ankiet przynajmniej jak na tę chwilę - **formularzy Google**. Moje badanie przyjęło formę kilku slajdów, na które złożyły się:
+
+1. Interfejs powitalny, informacja o czasie trwania (< minuta) i wieść o styczności z jednym i tylko jednym wykresem,
+
+2. Slajd zawierający przygotowaną przeze mnie wizualizację,
+
+3. Dwa pytania o stosunek liczby nadanych imion z miejsca 1. i 10. dla obu płci,
+
+4. Prośba o wpisanie płci i wieku.
+
+**Link do ankiety:**
+https://forms.gle/jZ7SREsV4CEzqT6VA
+
+Slajd 3. zawierał duży nagłówek z tekstem "Czy poniższe zdania są prawdziwe?", a treść obu z nich brzmiała: *Urodziło się ponad 2 razy więcej \<imię męskie / żeńskie\> (1. miejsce) niż \<imię męskie / żeńskie\> (10. miejsce).* Dozwolonymi odpowiedziami były "tak", "trudno powiedzieć" lub "nie".
+
+Poprawne stosunki wynosiły następująco: ~1.84 dla dziewcząt i ~1.75 dla chłopców. Biorąc pod uwagę formę ankiety i fakt, że odpowiadający nie powinien wracać do wykresu z poprzedniej strony, przeważać powinny odpowiedzi "nie" lub "trudno powiedzieć" - obie wartości są zdecydowanie mniejsze od 2, ale błąd wynikający ze zbyt pobieżnego zerknięcia lub mimo zaznaczenia kolorystycznie kluczowych słupków skupieniu się na innych punktach jest jak najbardziej ludzki. Tak jak jednak w chłopięcym wykresie nie liczyłem na dużą liczbę odpowiedzi "tak" ze względu na nie zmanipulowaną proporcję ~1.75, dla dziewczynek już jak najbardziej miałem nadzieję na dominację błędnych odpowiedzi - porównanie obu wykresów gdzie prawdziwa proporcja jest dosyć podobna i zauważenie dużej różnicy liczby niepoprawnych rozwiązań dla damskiego wykresu a dla męskiego byłaby już dobrym dowodem na to, że ludzie nie zerkają na oś y, tylko automatycznie ufają prezentowanym danym w najbardziej instynktowny sposób \<bez głębszej refleksji\>. Uważam, że do takich wniosków mozna się posunąć tym bardziej, że dolny wykres możemy uznać za dobry test kontrolny, a każda badana osoba dostała za zadanie odpowiedzi na to samo pytania dla i wykresu "oszukanego", i zupełnie niemylącego.
+
+## 5. Wyniki
+
+Link do mojej ankiety uruchomiło i wykonało 40 osób, przy czym zaznaczyć trzeba, że **jedynie kilka z nich to studenci MiNI, a żaden nie studiuje na kierunku stricte związanym z analizą danych lub uczęszcza na przedmiot "techniki wizualizacji danych"**. Specjalnie tak przygotowałem badaną grupę, aby uniknąć nieszczerych lub niereprezentatywnych odpowiedzi osób, które znają cel owego badania. Tytułem *Odczytywanie wykresu kolumnowego* myślę tym bardziej zrobiłem badanie naturalnym ze względu na zmylenie osób wykonujących jeżeli idzie o samą istotę problemu.
+
+Oto i graficzna wizualizacja wyników zaprezentowana przez Google:
+
+![](/home/samba/kosternaj/Desktop/05Wiz/pd5i/wynikiGoogle1.png)
+
+![](/home/samba/kosternaj/Desktop/05Wiz/pd5i/wynikiGoogle2.png)
+
+Odpowiedziom można przyjrzeć się także zaglądając do pliku *odczytywanieWykresuKolumnowego.csv*.
+
+## 6. Wnioski
+
+Moje badanie potwierdziło, że manipulacja osią y jest bardzo nikczemnym czynem - nawet osoby przygotowane na to, że biorą udział w ankiecie i mogące się domyślać, że ktoś chce je zrobić w bambuko, totalnie dały się nabrać. Przy 50% poprawnych odpowiedzi dla "dobrej" wizualizacji i 20% tych akceptowalnych, w przypadku zmanipulowanej osi y dobrej odpowiedzi udzieliło jedynie 12.5% ankietowanych, a aż 72.5% zaznaczyło jednoznacznie złą opcję.
+
+Podsumowując, odpowiadając na pytania zadane w sekcji drugiej:
+
+1. Przynajmniej wnioskując po grupie 40 osób, z dominującą liczbą osób koło 21. roku życia, społeczeństwo dobrze odczytuje stosunki z wykresów słupkowych, nawet wtedy, kiedy owe kolumny nie leżą koło siebie. Tylko 30% udzieliło błędnej odpowiedzi na pytanie czy stosunek 1.75 jest większy od 2 (co moim zdaniem jest zdecydowanie małą liczbą, biorąc pod uwagę brak możliwości zerknięcia na wykres przy ujrzeniu kluczowego pytania).
+
+2. Manipulowanie osiami wciąż jest problemem i większość zdecydowanie ma problem z weryfikacją prawdziwości danych. Nawet oszukanie przeze mnie w kontrolowanych warunkach gdzie wydawałoby się skupienie powinno być na nieco wyższym poziomie niż w życiu codziennym poskutkowało społeczną porażką - jedynie 12.5% osób odpowiedziało poprawnie na pytanie czy 2 > 1.84, zaś tylko 27.5% ludzi udzieliło akceptowalnej odpowiedzi (włączając rezultat "trudno powiedzieć", co świadczy o zauważeniu mojego oszukaństwa lub totalnemu nie zwróceniu uwagę na wyraźniej zaznaczone słupki). Porównanie owych wyników z podobnymi danymi z kolumnami zaczynającymi się od poziomu 0 dowodzi, że w praktyce mało kto zerka na wartości wielkości i większość jedynie ślepo zwraca uwagę na wielkość słupków.
