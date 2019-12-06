@@ -25,6 +25,14 @@
   <p>6. Użyj biblioteki r2d3, aby położena początkowe kółek przekazywać do randomCircles.js z wykorzystaniem R.</p>
   
     <script>
+    d3.select('#d3checkbox').on('change', function() {
+      if(d3.select('#d3checkbox').property('checked')) {
+        d3.select('p').style('color', 'red');
+      } else {
+        d3.select('p').style('color', 'initial');
+      }
+    });
+    
     
     d3.select('body')
       .append('svg')
