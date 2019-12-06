@@ -1,0 +1,24 @@
+---
+title: "Praca domowa nr 4"
+author: "Dawid Przybyliński"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wykres przed: 
+
+![](original.PNG)
+
+## Wykres po:
+
+![](rysunek.svg)
+
+## Wprowadzone zmiany:
+
+- ułożenie barów w kolejności, co zwiększyło przejrzystość wykresu,
+- dodanie flag do nazw państw, ułatwiających szybkie odczytanie wykresu, co w R byłoby problematyczne,
+- dodanie obrazka pod wykresem, związanego z tematem, który daje odbiorcy jasny przekaz odnośnie tematyki wykresu.
+
