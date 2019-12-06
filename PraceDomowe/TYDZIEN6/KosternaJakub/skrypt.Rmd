@@ -40,7 +40,8 @@ https://dane.gov.pl/dataset/219,imiona-nadawane-dzieciom-w-polsce/resource/19065
 Wszyscy uwielbiamy wykresy kolumnowe, ale czy na pewno nie ulegamy iluzjom obserwując je i nie zapamiętujemy danych z nich błędnie?
 Wcześniej wspomiane informacje postanowiłem przedstawić właśnie za pomocą owych ukochanych przez wszystkich słupków, przy czym pod lupę wziąłem kwestię ilorazu nadań dzieci z 1. i 10. miejsca w rankingu - dla chłopców Antioniego (4247) i Kacpra (2429), a dla dziewczynek Zuzanny (4251) i Oliwii (2306). Żeby nie było nudno, jeden wykres postanowiłem dodatkowo zmanipulować - zmieniając oś y tak, aby nie zaczynała sie od 0.
 
-Generalnie stwierdziłem, że znajdę odpowiedź na dwa pytania:zi
+Generalnie stwierdziłem, że znajdę odpowiedź na dwa pytania:
+
 1. Czy oszacowanie ilorazu między dwoma wartościami przedstawionymi przez kolumny nie leżące bezpośrednio siebie będzie trafne?
 
 2. Jak z powyższym szacunkiem w przypadku manipulacji wykresu i przedstawienia danych w niestandardowej formie?
