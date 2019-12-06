@@ -1,0 +1,83 @@
+---
+title: "Praca domowa"
+author: "Aleksander Podsiad"
+output: html_document
+---
+
+### *Techniki Wizualizacji Danych - PD2* 
+
+#### Setup:
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+
+#### Oryginalny wykres:
+
+![Cristiano Ronaldo - games vs goals](/home/aleksander/Dokumenty/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN3/PodsiadAleksander/Ronaldo.png)
+
+Autor: Konrad Welkier
+
+#### Wczytanie danych:
+
+```{r}
+ronaldo <- read.csv('/home/aleksander/Dokumenty/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN3/PodsiadAleksander/Cristiano_Ronaldo.csv')
+```
+
+
+#### Modyfikacja danych:
+
+```{r}
+# ulatwienie dla wyznaczenia pozycji tekstow
+data <- ronaldo %>% mutate(position = case_when(type == 'games' ~ games - 2.3,
+                                                type == 'goals' ~ goals + games - 2.3) ) 
+
+# dla poprawnej kolejnosci zmiennych w legendzie
+data$type <- factor(data$type, levels = c("games", "goals"))
+```
+
+
+#### Modyfikacja wykresu:
+
+Modyfikując oryginalny wykres miałem na celu przede wszystkim poprawę czytelności danych. Dzięki zastosowaniu geom_bar można teraz zobaczyć nie tylko liczbę goli, czy gier Cristiano Ronaldo, ale też ich sumę pokazującą ogólną produktywność piłkarza w danym sezonie. Geom_bar ma również taką zaletę, że jest łatwo odczytywalny dla ludzkiego oka, które najlepiej radzi sobie z porównywaniem długości na wykresach. Poza tym zmodyfikowałem paletę kolorów na przyjemniejszą (mniej kontrastową) dla ludzkiego oka. Odwrócenie wykresu rozwiązało problem słabej czytelności sezonu i roku (tekst nie nachodzi już na siebie i na wykres). Zastosowanie geom_text pozwala na dokładną analizę postępów i statystyk piłkarza (na powyższym wykresie odczytanie tych danych mogło sprawiać problemy).
+
+
+
+```{r}
+ggplot(data, aes(fill= type, y=value, x=date)) + 
+  # odwrocony geom_bar
+  geom_bar(position=position_stack(reverse = TRUE), stat="identity") +
+  
+  # zmiana palety kolorow
+  scale_fill_manual(values = c("#303A52", "#596174")) +
+  
+  theme_classic() +
+  
+  # dodanie tekstu z liczbami dla lepszej czytelnosci
+  geom_text(aes(x = date, y = position, label = value), color = "white") +
+  
+  # zmiana pozycji legendy
+  theme(legend.position = "top") +
+  
+  # odwrocenie wykresu
+  coord_flip() +
+  
+  # pozbywam sie niepotrzebnych danych na osiach
+  theme(axis.line = element_blank(), axis.ticks = element_blank(), axis.text.x = element_blank(),
+      legend.title = element_blank(), axis.title = element_blank(), plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(face = "bold"), legend.text = element_text(face = "bold")) +
+  
+  # dodanie tytulu
+  labs(title = "Ronaldo games and goals per season")
+```
+
+
+
+
+
+
+
+
+

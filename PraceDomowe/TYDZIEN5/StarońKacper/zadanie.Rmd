@@ -1,0 +1,55 @@
+---
+title: "TWD Zadanie Tydzień 5."
+author: "Kacper Staroń"
+output: html_document
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ładowanie używanych bibliotek dla pierwowzoru
+
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+library(tidyverse)
+library(reshape2)
+
+```
+
+## Ładowanie danych
+
+```{r message = FALSE, echo = TRUE}
+data <- data.frame(year=as.character(seq(2017,2023)),Android=as.numeric(c("85.1","85.1", "87.0",	"87.0","87.2","87.3",	"87.4")),
+                   Apple = as.numeric(c("14.7","14.9","13.0","13.0",	"12.8",	"12.7","12.6")),
+                   Others=as.numeric(c("0.2","0","0","0","0","0","0")))
+
+data <- melt(data,id.vars=c("year"))
+
+```
+
+## Generowanie pierwotnego wykresu
+
+```{r plot,  fig.height = 5, fig.width = 8, warning = FALSE, message = FALSE}
+ggplot(data=data,aes(x=year,y=value,fill=variable))+
+  geom_bar(stat = "identity", position = position_dodge(width = 0.75), width = 0.8)+
+  theme_minimal()+
+  ggtitle("Worldwide Smartphone Shipment OS Market Share Forecast")+
+  xlab("")+ ylab("")+
+  theme(legend.title = element_blank(),
+        plot.title = element_text(hjust = 0.5,size=18))+
+  annotate(geom="label",x=seq(1,7)+0.25,y=3,label= data[15:21,3],size=3)+
+  annotate(geom="label",x=seq(1,7)+0.01,y=3,label= data[8:14,3],size=3)+
+  annotate(geom="label",x=seq(1,7)-0.25,y=3,label= data[1:7,3],size=3)+
+  scale_fill_brewer(labels = data[1], type = "qual", palette = 7)
+  
+```
+
+## Nowy wykres
+
+![](C:\\Users\\staro\\Desktop\\Semestr 3\\Techniki Wizualizacji Danych\\zad_dom_workspace\\adroiosx3.png)
+
+## Zmiany
+
+Pierwotny wykres przekazywał informację o przewidywanej tendencji zmian na rynku - tendencji zmiennej nieznacznie i łatwej do jednoznacznego przedstawienia. 
+Zmodyfikowany wykres przedstawia część z tych danych równie precyzyjnie, jednocześnie przedstawia tylko taką ich ilość, jaka wystarczy do przekazania komunikatu o tendencji, co pozwala na zastosowanie atrakcyjnej i dodatkowo podkreślającej przekaz formy, trudnej do osiągnięcia przy użyciu R-a. 
+Podobnie, choć taka modyfikacja byłaby możliwa, dostosowanie położenia tekstu, jego wielkości, zastosowanych fontów itd. było znacząco łatwiejsze podczas bezpośredniej ręcznej edycji grafiki.

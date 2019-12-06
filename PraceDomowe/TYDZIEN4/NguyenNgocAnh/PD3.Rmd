@@ -1,0 +1,53 @@
+---
+title: "Praca domowa 3"
+author: "Ngoc Anh Nguyen"
+date: "10/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Misleading chart
+
+Wykres z Twittera [\@pisorgpl](https://twitter.com/PremierRP/status/1186526303832465408):
+![](./pisofe.jpg)
+``
+
+## Co jest nie tak?
+
+Oś Y zaczyna się od 42% powiększając róźnice, zaznaczony jest tylko wybrany trend wygodny dla pokazującego. 
+
+```{r, echo=FALSE, fig.width=10}
+DF <- data.frame(as.character( 2005:2018) , 
+                 c(46.4, 46.9, 44.2, 46.3, 49.4, 53.1, 54.1, 
+                   53.7, 55.7, 50.4, 51.3, 54.2, 50.6, 48.9))
+
+names(DF) <- c("rok", "procent")
+lab <- paste(as.character(DF$procent), "%", sep = "")
+library(ggplot2)
+
+
+ggplot(data = DF, aes(x=rok, y = procent, label = lab )) +
+  ggtitle("DŁUG SEKTORA INSTYTUCJI \nRZĄDOWYCH I SAMORZĄDOWYCH DO PKB") +
+  geom_col(fill=alpha("#30b9ff", 0.7), width = 0.5, ) +
+  expand_limits( y = c(0, 100)) +
+  geom_text(color = "white", size = 4, nudge_y = 2.5) +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        # axis.text.y=element_text()
+        axis.text.x=element_text(size=11, face="bold", color = "white"),
+        axis.text.y=element_text(color = "white"),
+        plot.title = element_text(size=17, face="bold", colour = "white"), 
+        plot.background = element_rect(fill = "darkblue"),
+        panel.background = element_rect(fill = "darkblue"),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y= element_line(color="#506885",size=0.3),
+) 
+```
+
+Jak widać wcale nie ma jakiegoś wyrażnego znaczącego spadku w trendzie.

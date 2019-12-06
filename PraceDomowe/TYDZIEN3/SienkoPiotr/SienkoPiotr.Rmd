@@ -1,0 +1,97 @@
+---
+title: "Praca Domowa 2"
+author: "Piotr Sieńko"
+date: "25 października 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wczytanie danych i wstępna obróbka
+
+```{r message=FALSE, echo=TRUE}
+library(ggplot2)
+library(dplyr)
+library(RColorBrewer)
+
+# Wczytanie danych
+data <- read.csv("/home/piotr/Pobrane/dane.csv", sep = ";", stringsAsFactors = FALSE)
+
+# Wstępna obróbka danych
+countries_groups <- unname(unlist(data[1, 2:8]))
+data <- data[2:19, ]
+colnames(data)[1] <- "Months"
+colnames(data)[2:8] <- countries_groups
+
+# Zmiana nazw miesięcy i ustalenie kolejności 
+months <- factor(c("Jan 2018", "Feb 2018", "Mar 2018", "Apr 2018", "May 2018", "Jun 2018", "Jul 2018",
+                   "Aug 2018", "Sep 2018", "Oct 2018", "Nov 2018", "Dec 2018", "Jan 2019",  "Feb 2019",
+                   "Mar 2019", "Apr 2019", "May 2019", "Jun 2019"),
+                 levels = c("Jan 2018", "Feb 2018", "Mar 2018", "Apr 2018", "May 2018", "Jun 2018", "Jul 2018",
+                            "Aug 2018", "Sep 2018", "Oct 2018", "Nov 2018", "Dec 2018", "Jan 2019",  "Feb 2019",
+                            "Mar 2019", "Apr 2019", "May 2019", "Jun 2019"))
+data[,1] <- months
+```
+
+## Przygotowanie Danych do wykresu
+
+
+```{r message=FALSE, echo=TRUE}
+# W celu wykonania wykresu, należało scalić kolumny poszczególnych państw w jedną 
+plot_data <- data.frame(matrix(NA, nrow = 7*18, ncol = 3))
+colnames(plot_data) <- c("Months", "Country", "Change")
+plot_data[,1] <- rep(months, 7)
+plot_data[,2] <- rep(countries_groups, each = 18)
+plot_data[,3] <- c(data[,2], data[,3], data[,4], data[,5], data[,6], data[,7], data[,8])
+```
+
+## Wykres Oryginalny
+
+
+
+![](/home/piotr/Pobrane/indeks.png)
+
+## Wady wykresu oryginalnego
+
+Uznałem, że największą wadą oryginalnego wykresu jest bardzo utrudniona analiza wyników dla poszczególnych państw. Tendencje wzrostowe lub malejące dla każdego z nich jesteśmy w stanie zauważyć dopiero po dłuższej chwili. Dodatkowo, dane o Wielkiej Brytanii czy też reszcie świata są w niektórych miesiącach mało czytelne. 
+
+## Wykres poprawiony 
+
+Stworzenie wykresów liniowych dla każdego państwa eliminuje wymienione wcześniej wady. Umieszczenie ich w jednej kolumnie umożliwia ogólne porównanie wyników w każdym miesiącu. Kolory ułatwiają odczytanie danych z wykresu oraz pozwalają oszacować miesięczną zmianę dla całego świata. Gdyby zaistniała potrzeba pokazania dokładnej wartości, struktura wykresu pozwala nam na łatwe dodanie skumulowanego wyniku. Oznaczenie każdego miesiąca na osi X przyśpiesza szukanie interesujących nas danych.
+
+
+```{r plot, fig.height=8, fig.width=10, fig.align="center"}
+
+ggplot(plot_data, aes(x = plot_data$Months, y = as.numeric(plot_data$Change), color = as.numeric(Change), group = Country)) +
+  geom_hline(yintercept = 0, linetype = 2, color = "black") +
+  geom_line(linetype = 1, size = 0.8) +
+  geom_point(size = 3.5) +
+  # Podzielenie wykresu liniowego na 7 podwykresów
+  facet_wrap(Country ~ ., strip.position = "right", nrow = 7) + 
+  theme(panel.background = element_rect(fill = "grey60"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.spacing.y = unit(2, "mm"),
+        legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.y = element_text(size = 14, angle = 0),
+        strip.placement = "outside",
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 14),
+        axis.line.x = element_line(colour = "black", size = 0.8, linetype = 1),
+        axis.line.y = element_line(colour = "black", size = 0.8, linetype = 1),
+        axis.ticks.length = unit(2, "mm"),
+        plot.title = element_text(size = 24),
+        plot.subtitle = element_text(size = 18))+
+  labs(title = "Contribution to Global Imports", subtitle = "(Percent points, three-month moving average)") +
+  # Ustalenie skali kolorów
+  scale_colour_gradient2(low = "red", high = "green",mid = "white", midpoint = 0) +
+  scale_y_continuous(limits = c(-1.5, 2), breaks = c(-1, 0, 1)) 
+
+
+```
+
