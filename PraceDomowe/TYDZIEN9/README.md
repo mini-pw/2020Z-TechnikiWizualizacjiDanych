@@ -1,4 +1,4 @@
-PD7: czas na wykonanie 06-12-2019 do 13-12-2019
+PD7: czas na wykonanie XXX do YYY
 
 W ramach pracy należy wykonać dashboard (aplikacje shiny), pozwalającą na eksploracje danych o zanieczyszczeniu powietrza.
 Dane można pobrać ze strony http://powietrze.gios.gov.pl/pjp/archives (stron z danymi o powietrzu jest więcej, można korzystać z innych).
