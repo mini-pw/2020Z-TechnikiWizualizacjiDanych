@@ -33,13 +33,20 @@
       }
     });
     
+    var width = 500;
+    var height = 500;
+    
+    var cd = d3.range(20).map(function() {return {x:  Math.random()*width }});
     
     d3.select('body')
       .append('svg')
-      .attr('height', 500)
-      .attr('width', 500)
+      .attr('height', height)
+      .attr('width', width)
+      .selectAll('circle')
+      .data(cd)
+      .enter()
       .append('circle')
-      .attr('cx', 50)
+      .attr('cx', function(d) {return d.x; })
       .attr('cy', 50)
       .attr('r', 20)
       .attr('fill', 'blue')
