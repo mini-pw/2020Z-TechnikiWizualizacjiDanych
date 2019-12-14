@@ -20,3 +20,5 @@ https://docs.google.com/forms/d/e/1FAIpQLSfpQ_tni2-pO654kkV5AXqTvIr_KKozQlh0PT5g
 Celem pracy jest sprawdzenie czy ,,dobre praktyki'' omawiane na wykładzie opracowane lata temu
 (słupki lepsze niż kąty, kolor wykorzystywane z umiarem, unikanie ozdobników), 
 faktycznie działa w społeczeństwie które wykresami karmione jest od urodzenia.
+
+Wyniki ankiety, wraz z pytaniami, zaprezentować w postaci raportu.
