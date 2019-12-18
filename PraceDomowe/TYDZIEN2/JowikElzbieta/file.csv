@@ -1,0 +1,32 @@
+month_week,schedule,special_label,week_day,year,year_month,date
+1,Commons due to sit,None,Tuesday,2019,October,2019/10/1
+1,Commons due to sit,None,Wednesday,2019,October,2019/10/2
+1,Commons due to sit,None,Thursday,2019,October,2019/10/3
+1,Commons not due to sit,None,Friday,2019,October,2019/10/4
+1,Commons not due to sit,None,Saturday,2019,October,2019/10/5
+1,Commons not due to sit,None,Sunday,2019,October,2019/10/6
+2,Commons due to sit,None,Monday,2019,October,2019/10/7
+2,Commons due to sit,Parliament prorogued,Tuesday,2019,October,2019/10/8
+2,Commons suspended,None,Wednesday,2019,October,2019/10/9
+2,Commons suspended,None,Thursday,2019,October,2019/10/10
+2,Commons not due to sit,None,Friday,2019,October,2019/10/11
+2,Commons not due to sit,None,Saturday,2019,October,2019/10/12
+2,Commons not due to sit,None,Sunday,2019,October,2019/10/13
+3,Commons due to sit,MP's return for Queen's speech,Monday,2019,October,2019/10/14
+3,Commons due to sit,None,Tuesday,2019,October,2019/10/15
+3,Commons due to sit,None,Wednesday,2019,October,2019/10/16
+3,Commons due to sit,EU leaders meet for council summit,Thursday,2019,October,2019/10/17
+3,Commons not due to sit,None,Friday,2019,October,2019/10/18
+3,Commons due to sit,Special sitting of MPs in Parliament ,Saturday,2019,October,2019/10/19
+3,Commons not due to sit,None,Sunday,2019,October,2019/10/20
+4,Commons due to sit,None,Monday,2019,October,2019/10/21
+4,Commons due to sit,None,Tuesday,2019,October,2019/10/22
+4,Commons due to sit,None,Wednesday,2019,October,2019/10/23
+4,Commons due to sit,None,Thursday,2019,October,2019/10/24
+4,Commons not due to sit,None,Friday,2019,October,2019/10/25
+4,Commons not due to sit,None,Saturday,2019,October,2019/10/26
+4,Commons not due to sit,None,Sunday,2019,October,2019/10/27
+5,Commons due to sit,None,Monday,2019,October,2019/10/28
+5,Commons due to sit,None,Tuesday,2019,October,2019/10/29
+5,Commons due to sit,None,Wednesday,2019,October,2019/10/30
+5,Current Brexit date,Current Brexit date,Thursday,2019,October,2019/10/31

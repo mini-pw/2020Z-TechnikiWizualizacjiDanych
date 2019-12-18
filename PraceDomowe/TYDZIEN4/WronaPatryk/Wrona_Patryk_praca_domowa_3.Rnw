@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Techniki Wizualizacji Danych - Praca domowa 3}
+\author{Patryk Wrona}
+\maketitle
+
+
+W tej pracy poprawiam wyglad wykresu znalezionego w internecie - 
+\href{http://www.obserwatorgospodarczy.pl/gospodarka/19-polska/814-polska-klasa-srednia-liczy-12-mln-osob?fbclid=IwAR1EBHEdCG7gNBraYd9N0occaoKeJSVCvErGWAC9FdeE_3K-PSBaOJqvlLg}{link}
+\newline
+\newline
+Wykres ten daje złudzenie, że Klasa wyższa ma taki sam wkład procentowy 
+chociaż na pierwszym wykresie jest 33 procent liczniejsza.
+\textbf{Wykres znaleziony w internecie:}
+\newline
+\includegraphics[scale = 0.85]{piramida}
+\newline
+<<echo=TRUE, warning=FALSE, message=FALSE>>=
+klasy <- c("Klasa wyzsza", "Klasa srednia", "Klasa nizsza")
+kryt_dochodowe <- c(16,54,30)
+kryt_zawodowe <- c(12,51,37)
+data <- data.frame(klasy, kryt_dochodowe, kryt_zawodowe)
+kolory <- c("Klasa wyzsza" = "#FFDF00",
+            "Klasa srednia" = "red",
+            "Klasa nizsza" = "midnightblue")
+
+# Używane biblioteki:
+library(patchwork)
+library(ggplot2)
+library(RColorBrewer)
+library(gridExtra)
+@
+\newpage
+\textbf{Sporządzam dwie składowe wykresu, aby porównać wysokości słupków:}
+<<echo=TRUE, warning=FALSE, message=FALSE>>=
+class_order <- c("Klasa wyzsza", "Klasa srednia", "Klasa nizsza")
+p1 <- ggplot(data = data, aes(x = klasy, y = kryt_dochodowe, fill = klasy))+
+  geom_bar(stat = "identity") +
+  scale_x_discrete(limits = class_order) +
+  scale_fill_manual(values = kolory) +
+  theme(legend.position = "none",
+        plot.title = element_text(size=11)) +
+  labs( x = "Klasy w społeczeństwie",
+        y = "% społeczeństwa",
+        title = "Kryterium dochodowe (wiek 24-64 lat)")
+p2 <- ggplot(data = data, aes(x = klasy, y = kryt_zawodowe, fill = klasy))+
+  geom_bar(stat = "identity") +
+  scale_x_discrete(limits = class_order) +
+  scale_fill_manual(values = kolory) +
+  theme(legend.title = element_blank(),
+        legend.position = "none",
+        plot.title = element_text(size = 11)) +
+  labs( x = "Klasy w społeczeństwie",
+        y = "% społeczeństwa",
+        title = "Kryterium zawodowe (wiek 24-64 lat)")
+@
+\newpage
+\textbf{Wynikowy wykres rysuję za pomocą grid.arrange() :}
+<<>>=
+grid.arrange(p1 + coord_cartesian(ylim = c(0,60)) +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 10)),
+             p2 + coord_cartesian(ylim = c(0,60)) +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 10)),
+             nrow = 1)
+@
+
+\end{document}
