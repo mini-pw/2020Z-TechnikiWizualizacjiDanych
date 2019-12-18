@@ -1,0 +1,78 @@
+---
+title: "Praca domowa nr 5"
+author: "Piotr Fic"
+date: "6 grudnia 2019"
+output: html_document
+---
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(ggplot2)
+library(reshape2)
+library(gridExtra)
+```
+
+##Dane wykorzystane w badaniu
+Dane, które zostały przedstawione na wykresach są autentyczne i opisują strukturę rynku sprzedaży energii elektrycznej 
+w Polsce. Na potrzeby ankiety i badania, przedstawiłem je na dwóch wykresach: słupkowym i kołowym. Nazwy firm zmieniłem na neutrealne, żeby ankietowani nie mogli odpowiadać na podstawie sowjej ewentualnej wiedzy na ten temat.
+
+##Schemat badania
+Link do ankiety: https://cutt.ly/qe8LpDm \
+Formularz został wypełniony w większości przez osoby z wykształceniem średnim obecnie studujące, z grupy wiekowej 18-25 lat.\
+Liczba odpowiedzi wyniosła 19.
+
+Do wykresów przygotowałem dwa pytania:
+
+* odczytanie wartości z wykresu
+* porównanie dwóch wartości z prezentowanych na wykresie
+
+Zadając pytania zmieniłem wartości, o których podanie prosiłem aby ankietowani nie udzielali odpowiedzi odczytując dane raz na pierwszym wykresie. 
+
+##Wykresy
+![](slupkowy.png)
+
+![](kolowy.png)
+
+##Wyniki ankiety
+Pytania: 
+
+* Wykres słupkowy: Podaj udział [%] w rynku firmy D.
+* Wykres kolowy: Podaj udział [%] w rynku firmy B.
+* Wykres słupkowy: Podaj o ile punktów procentowych różni się udział firm A oraz C.
+* Wykres kolowy: Podaj o ile punktów procentowych różni się udział firm D oraz E.
+
+Punkty w zielonym kolorze oznaczają poprawną odpowiedź.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=10}
+wyniki <- read.csv("PD_TWD.csv")
+
+wyniki <- melt(wyniki)
+punkty <- c(1,2,1,2)
+punkty <- as.data.frame(cbind(punkty, c(14, 15, 30, 8)))
+
+wyniki_s <- wyniki[1:38,]
+wyniki_k <- wyniki[39:76,]
+slupkowy <- ggplot(wyniki_s, aes(x = variable, y = value))+
+  geom_boxplot()+
+  theme_light()+
+  geom_point(punkty[1:2,], mapping = aes(x = punkty, y = V2), color = "green", size = 3)+
+  xlab("Pytanie")+
+  ylab("Podane wartości")+
+  ggtitle("Odpowiedzi ankietowanych:\nwykres słupkowy")+
+  scale_x_discrete(labels = c("Określenie wartości", "Określenie różnicy\nw punktach procentowych"))
+  
+kolowy <- ggplot(wyniki_k, aes(x = variable, y = value))+
+  geom_boxplot()+
+  theme_light()+
+  geom_point(punkty[3:4,], mapping = aes(x = punkty, y = V2), color = "green", size = 3)+
+  xlab("Pytanie")+
+  ylab("Podane wartości")+
+  ggtitle("Odpowiedzi ankietowanych:\nwykres kołowy")+
+  scale_x_discrete(labels = c("Określenie wartości", "Określenie różnicy\nw punktach procentowych"))
+  
+grid.arrange(slupkowy, kolowy, ncol = 2)
+```
+
+##Podsumowanie
+Wykres słupkowy zapewnił ewidentnie dokładniejsze odczytanie danych przez ankietowanych. Badani odczytując dane z wykresu kołowego mylili się
+częściej, zwłasza kiedy pytanie wymagało porównania wielkości danych pomiędzy sobą. Poprawność odczytu\
+i porównania danych z wykresu słupkowego
+była niemal 100%-owa.

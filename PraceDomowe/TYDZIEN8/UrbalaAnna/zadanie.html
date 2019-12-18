@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Choinka</title>
+	<meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+</head>
+<body>
+	Kolor: <select id="kolor">
+		<option value="red">czerwony</option>
+		<option value="yellow">żółty</option>
+		<option value="green" selected>zielony</option>
+	</select>
+	Wysokość: <input type="range" min="1" max="5" value="1" id="wysokosc">
+	<button id="bombka">Dodaj bombkę</button><br>
+
+	<script type="text/javascript">
+        var triangles = [];
+        triangles.push({x:50, s:1000})
+        triangles.push({x:90, s:2000})
+        triangles.push({x:140, s:3500})
+        triangles.push({x:200, s:6000})
+        triangles.push({x:260, s:8000})
+
+        var colors = ['violet', 'steelblue', 'salmon', 'purple', 'orange', 'lime', 'hotpink', 'gold'];
+
+        function random(a, b) {
+        	return Math.random() * (b - a) + a;
+        }
+
+        var svg = d3.select('body')
+		  .append('svg')
+		  .attr('height', 500)
+		  .attr('width', 300);
+
+        function choinka() {
+          svg.selectAll('*').remove();	
+          triangles
+            .slice(0, d3.select('#wysokosc').property('value'))
+            .reverse()
+            .forEach((d) => {
+			  svg.append('path')
+			    .attr('d', d3.symbol().type(d3.symbolTriangle).size(d.s))
+			    .attr('stroke', 'black')
+			    .attr('fill', d3.select("#kolor").property("value"))
+			    .attr("transform", "translate(" + 150 + "," + d.x + ")")
+			    .attr('class', 'choinka')
+			    .attr('pom', d.x)
+
+			});
+        };
+
+        choinka();
+
+		d3.select('#kolor').on('change', function() {
+		  d3.selectAll('.choinka')
+			.transition()
+			.duration(1000)
+			.style('fill', d3.select("#kolor").property("value"))
+		})
+
+		d3.select('#wysokosc').on('change', function() {
+		  choinka();
+		})
+
+		d3.select('#bombka').on('click', function() {
+		  elem = svg.selectAll('.choinka')._groups[0];
+		  box = elem[Math.floor((Math.random()*elem.length))];
+		  svg
+		    .append('circle')
+		    .attr('fill', colors[Math.floor(random(0, colors.length))])
+		    .attr('cx', 150 + random(-30, 30))
+		    .attr('cy', parseInt(box.attributes.pom.value) + random(-30, 30))
+		    .attr('r', random(3, 6));
+			
+		})
+
+	</script>
+</body>
+</html>
+</html>
