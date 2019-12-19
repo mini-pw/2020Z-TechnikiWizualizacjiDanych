@@ -3,10 +3,6 @@ library(r2d3)
 
 ui <- fluidPage(
   inputPanel(
-    sliderInput("bombki", label = "liczba bombek",
-                min = 0, max = 20, value = 1, step = 1),
-    sliderInput("bombki_R", label = "maksymalna wielkość bombek",
-                min = 5, max = 50, value = 10, step = 1),
     sliderInput("szerokosc", label = "szerokość choinki",
                 min = 50, max = 500, value = 400, step = 5),
     sliderInput("poziomy", label = "liczba poziomów choinki",
@@ -23,15 +19,9 @@ kolory <- function(n) {
   return(rgb(runif(n, 0, 1), runif(n, 0, 1), runif(n, 0, 1)))
 }
 
-sv <- function(s, v) {
-  
-}
-
 server <- function(input, output) {
   output[["d3"]] <- renderD3({
-    r2d3(data.frame(bombki_n = input[["bombki"]],
-                    bombki_r = runif(input[["bombki"]], 5, input[["bombki_R"]]),
-                    wys = input[["szerokosc"]],
+    r2d3(data.frame(szr = input[["szerokosc"]],
                     poz = c(1:input[["poziomy"]]),
                     pozM = input[["poziomy"]],
                     kolor = hsv(1/3, input[["zielonosc"]], input[["jasnosc"]])
