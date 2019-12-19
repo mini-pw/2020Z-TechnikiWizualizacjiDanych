@@ -1,0 +1,79 @@
+---
+title: "Praca Domowa nr 5"
+author: "Bartosz Rożek"
+date: "5/12/2019"
+output: html_document
+---
+
+# Zadanie ankiety
+
+W zadaniu poprosiłem ankietowanych aby oszacowali wartości na wykresie kołowym i słupkowym mając do dyspozycji jedną podaną daną. Link do ankiety: https://docs.google.com/forms/d/e/1FAIpQLSeTja2l_LD3Jsaa1uAoJSSDwHUjm-FnkMKZ6tYEmTcVu6Y6Uw/viewform?fbclid=IwAR0J00-QEhDfmeZmZckCLp6mL98UCof_K2CONv_HboUugvG4RijVM2m06WM 
+
+## Wykresy
+
+Wykresy podane ankietowanym wyglądały następująco (pod wykresami prawdziwe wartości):
+
+<center>
+![](PieChartfinall.png)
+</center>
+
+```{r}
+library(DT)
+library(stringi)
+library(knitr)
+piechart <- c(9,23,37)
+barplot <- c(4,15,53)
+piechart <- as.data.frame(t(piechart))
+colnames(piechart) <- c("Czerwony", "Niebieski", "Fioletowy")
+kable(piechart)
+
+```
+
+<center>
+![](Barplotfinall.png)
+</center>
+
+```{r}
+barplot <- as.data.frame(t(barplot))
+colnames(barplot) <- c("Czerwony", "Niebieski", "Fioletowy")
+kable(barplot)
+
+```
+
+
+## Wyniki ankiety
+
+```{r}
+df <- read.csv("/home/bartosz/studia/Semestr_3/TWD/PD5/TWDPD5.csv")
+df <- df[,2:7]
+for (i in 1:ncol(df)) {
+  df[,i] <- stri_replace_all_regex(df[,i], "%", "")
+  df[,i] <- as.double(sub(",", ".", df[,i]))
+}
+colnames(df) <- c("Czerwony wycinek [%]", "Niebieski wycinek [%]", "Fioletowy wycinek [%]", "Czerwony słupek [%]", "Niebieski słupek [%]", "Fioletowy słupek [%]")
+df <- abs(df)
+datatable(df)
+```
+
+## Błędy bezwzględne ankietowanych
+```{r}
+for (i in 1:nrow(df)) {
+  df[i,1:3] <- df[i,1:3] - piechart  
+  df[i,4:6] <- df[i,4:6] - barplot
+}
+df <- abs(df)
+datatable(df)
+```
+
+## Średni błąd dla każdej wartości
+
+```{r}
+df <- colMeans(df)
+df <- round(df,2)
+df <- as.data.frame(t(df))
+kable(df)
+```
+
+## Podsumowanie
+  
+Tak jak mówiliśmy na zajęciach barplot jest zdecydowanie lepszym typem wykresu niz piechart, co wyraźnie widać po średnich błędach popełnianych przez ankietowanych. Wynika to z tego, że ludzkie oko zdecydowanie lepiej porównuje długości niż kąty. 

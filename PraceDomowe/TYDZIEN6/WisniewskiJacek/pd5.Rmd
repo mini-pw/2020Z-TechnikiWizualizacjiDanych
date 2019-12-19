@@ -1,0 +1,21 @@
+---
+title: "Praca domowa 5"
+author: "Jacek Wiśniewski"
+date: "12/6/2019"
+output: html_document
+---
+
+### Wstęp
+W tej pracy zajmę się tematem błędów na wykresach. Skupiłem się na temacie źle dobranej skali. Przed przeprowadzeniem badania stawiam tezę: "Wykres ze skalą nie zaczynającą się od 0 zaburza odbiór proporcji na wykresie". Przeprowadzone badanie spróbuje potwierdzić lub obalić tę tezę.
+
+### Badanie
+15 studentów MiNI odpowiedziało na pytania ankiety:
+
+https://drive.google.com/open?id=1EZbtyLr67tWlJsv2ujplbHDfMvWyPdgRLG-5WM6ysJg
+
+### Wyniki i ich omówienie
+Okazało się, że studenci nie mieli problemów ze wskazaniem prawidłowej proporcji w jednym i drugim przypadku. Dobrze to świadczy o ich umiejętności czytania informacji z wykresów. Z kolei ostatnie pytanie pokazało, że ponad 70% ankietowanych uważa drugi wykres za manipulujący danymi. Wnioski, które wyciągnąłem z wyników, to:
+
+1. Proporcja dwóch wartości, przedstawionych na wykresie z osią nie zaczynającą się od 0, jest czytelna.
+
+2. Oś, nie zaczynająca się od 0, może prowadzić do nieporozumień, a wyniki pierwszych dwóch pytań mogłyby być zupełnie inne, gdyby ankieta miała inną grupę docelową.

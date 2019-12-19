@@ -1,0 +1,115 @@
+---
+title: "PD5"
+author: "Hanna Zdulska"
+date: "12/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+# Wprowadzenie
+Dawno, dawno temu w odległej pracy domowej poprawialiśmy złe wykresy i argumentowaliśmy dlaczego są mylące, bądź wręcz manipulujące. Jako że warto być ekologicznym, to w tej pracy zastosuję recykling i do analizy percepcji odbiorców zastosujemy wykres analizowany w PD3. 
+
+Jako materiał do analizy użyłam [tweeta](https://twitter.com/C_Kazmierczak/status/1191015667908128768) autorstwa Cezarego Kaźmierczaka (@C_Kazmierczak).
+
+Ankieta jest dostępna tutaj: [link](https://forms.gle/azHisAQfwTuxxoWh9)
+
+Na pierwszej stronie odbiorca poproszony jest o przyjrzenie się wykresowni przez 10-15, a następnie udzielenie odpowiedzi na następujące pytania:
+
+ * Jaki (procentowy) spadek zabitych nastąpił między pikiem(maksymalną wartością) a rokiem 2018?
+ * W którym roku wystąpiła największa liczba zabitych?
+ 
+Następnie ponownie wyświetlony jest wykres wraz z pytaniami:
+
+ * Napisz co twoim zdaniem przedstawia wykres
+ * Czy oś pozioma(z datami) jest czytelna?
+ 
+# Dane
+Przyjrzyjmy się teraz otrzymanym wynikom.
+```{r}
+
+dat <- read.csv("./dane.csv")
+colnames(dat) <- c("time", "proc", "rok", "wykres", "czytelny")
+czy_procent <- function(x){
+        flag <- (substr(x, nchar(x), nchar(x)) == "%")
+        return(flag)
+}
+
+```
+Przenalizujmy ile osób było w stanie określić poprawnie procentowy spadek pomiędzy pikiem a rokiem 2018?
+Z danych wynika, iż jest to dokładnie (7901 -2862) / 7901 czyli 0.64%
+
+```{r}
+#Odsiejmy procenty
+v <- ifelse(czy_procent(dat$proc), substr(dat$proc, nchar(dat$proc)-2, nchar(dat$proc) - 1), dat$proc)
+
+#usuniemy również odpowiedzi w stylu "nie wiem"
+v <- as.numeric(v[nchar(v) <= 2])
+kol2 <- rep("#00BFC4", 10)
+kol2[6] <- "#F8766D"
+ggplot(as.data.frame(v), aes(x = v)) + 
+        geom_histogram(stat = "count", fill =kol2, bins = 20) + 
+        scale_x_continuous(breaks = seq(0,100,5)) +
+        xlab("Procent spadku") +
+        ylab("Liczba głosów")
+```
+
+
+Jak widać trudno było czytelnikom ocenić jaka była faktyczna różnica. Fakt, iż pytanie zostało sforumowane w sposób nieintuicyjny (procentowy spadek - kto myśli o takich pojęciach przy oglądaniu wykresu?)
+
+Jak poradzili sobie z rokiem?
+```{r}
+# odsiejmy niepewne wyniki 
+v <- as.numeric(dat$rok[nchar(dat$rok) == 4])
+ggplot(as.data.frame(v), aes(x = v, fill = ifelse(v == 1991, "1991", "Pozostałe"))) + geom_histogram(stat = "count") + theme(legend.title = element_blank()) + xlab("Rok") + ylab("Liczba głosów")
+```
+
+Jak widać pomimo braku osi, więkoszość osób była w przybliżeniu poprawnie określić rok - pik nastąpił w 1991, wyniki oscylowały wokół 1990. Nie mniej jednak w pytaniu o czytelność osi X, większość osób odpowiedziała, iż nie była ona czytelna, co daje prosty wniosek - pomimo nieczytelności odbiorcy byli w stanie poprawnie określić rok.
+```{r}
+dat2 <- dat[nchar(dat$rok) == 4,]
+dat2$rok <- v
+ggplot(as.data.frame(dat2), aes(y = rok,x = czytelny, color = czytelny)) + geom_jitter(width = 0.3, height = 0) + scale_color_discrete(name = "Czy oś Y jest czytelna?", labels = c("Nie (63,6%)", "Tak (27,3%)", "Trudno powiedzieć (9,1%)"))
+```
+
+Przy tak małej próbie(22 osoby) niestety trudno stwierdzić czy istnieje korelacja pomiędzy uważaniem osi za nieczytelną a poprawnym określeniem piku.
+
+# Ale o czym jest ten wykres?
+
+W ankiecie padło również pytanie na które każdy wykres powinien jasno odpowiadać - o czym właściwie jest.
+```{r}
+knitr::kable(dat$wykres)
+```
+Większość ludzi bezproblemowo odczytała, iż wykres przedstawia zabitych w danych latach. Jest to dość oczywiste, jednak wykres nie daje ani źródeł, ani nawet nie próbuje wyjaśnić co bądź kto zabił. Tylko nieduży odsetek osób - tylko trzy osoby podjęły sie próby doprecyzowania przyczyny zgonów i kwestionowania danych:
+ 
+ > Liczba zabitych mieszkańców na danym terenie
+ 
+ > osoby zabite bezpośrednio przez napastnika, prawdopodobnie należące do węższej grupy np.osoby pewnej rasy, orientacji lub w jakimś wieku
+ 
+ > Ilość zabitych ludzi gdzieś
+ 
+ Jedna postanowiła zadać pytania, na które autor wykresu nie odpowiada:
+ 
+  > Liczba zabitych w poszczególnych latach (gdzie i dlaczego?)
+ 
+# Podsumowanie
+ Wykres jest nieczytelny i przez brak np. siatki nie pozwala odczytać dokładnych wartości i dat bądź odczytać je tylko w przybliżeniu. Co więcej oś Y jest według większości nieczytelna. Najbardziej rażący jest jednak brak poprawnego tutułu ani oznaczeń osi, przez który widzimy dane, ale nie mamy pojęcia czym właściwie są.
+ 
+ Na zakończenie przytoczmy jedną z odpowiedzi na pytanie co przedstawia wykres:"
+ 
+  > Właściwie to nie mam pojęcia
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
