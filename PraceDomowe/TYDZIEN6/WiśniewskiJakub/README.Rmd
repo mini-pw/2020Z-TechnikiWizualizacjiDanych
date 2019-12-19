@@ -1,0 +1,119 @@
+---
+title: "Praca domowa 5"
+author: "Jakub Wiśniewski"
+date: "04/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+# Wstęp 
+Link do ankiety: https://forms.gle/dRNzcJ4d5VB6HPs48
+
+Ankieta którą przeporwadziłem miała za zadanie pokazać 3 rzeczy: 
+
+1. Sprawdzić jakie rzeczy przeszkadzają ludziom w wykresach
+
+2. Zobaczyć które typy wykresów chcą zobaczyć ludzie 
+
+3. Sprawdzić czy wykresy ozdobione (1 wykres) bardziej zapadają w pamięć niż wykresy przedstawiające surowe dane (2,3 wykres). Moim ten aspekt jest najciekawszy, bo ankieta została zaprojektowana w ten sposób by przyjrzeć się wykresom, ale niekoniecznie skupiać się na ich zapamiętaniu.
+
+W badaniu wzięło udział 16 osób
+
+
+# Wyniki: 
+
+## Wykres 1
+
+```{r, fig.width= 9}
+
+data <- read.csv("~/Downloads/form.csv")
+```
+
+```{r fig.width=5, fig.height=5,echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("plot.png")
+ grid.raster(img)
+
+```
+
+
+```{r, include= FALSE}
+library(ggplot2)
+library(dplyr)
+```
+Odpowiedzi:
+
+```{r, warning= FALSE}
+
+rows1  <- c("Ludziki odciągają uwagę, wolałbym słupki",
+           "Skala nie zaczyna się od zera", "Proporcje są zaburzone, Filipińczyk jest kilkukrotnie niższy niż Holender", 
+           "Własna odpowiedź") 
+rows2 <- c(3, 8, 13, 5)
+
+tovis <- data_frame(name = rows1, val = rows2)
+p <- bind_cols(as.data.frame(rows1), as.data.frame(rows2))
+
+ggplot(p , aes(rows1, rows2)) + geom_bar(stat = "identity", fill = "#34aeeb") + coord_flip() + theme_minimal() + 
+    ggtitle(label = "Co Ci przeszkadza w tym wykresie", subtitle = "Odpowiedzi") + 
+    xlab("") + 
+    ylab("Ilość odpowiedzi")
+```
+
+Największej ilości osób przeszkadzają proporcje, następna jest skala niezaczynająca się od zera. Pojawiły się również we własnych odpowiedziach takie, zwracające uwagę na źródło. Niektórym z nich przeszkadzało jego wyeksponowanie.
+
+
+## Wykres 2 
+```{r fig.width=5, fig.height=5,echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("Rplot04.png")
+ grid.raster(img)
+
+```
+
+```{r fig.width=5, fig.height=5,echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("Rplot06.png")
+ grid.raster(img)
+
+```
+
+Odpowiedzi:
+
+
+```{r}
+
+ggplot(data, aes(Który.wykres.lepiej.przedstawia.dane.)) + geom_bar(fill = "#34aeeb") + theme_minimal() + 
+  ylab("Ilość odpowiedzi") + 
+  xlab("") + 
+  ggtitle(label = "Który wykres lepiej przedstawia dane?", subtitle = "Odpowiedzi")
+  
+```
+
+Bez większych zaskoczeń, większa część osób woli wykresy słupkowe od kołowych
+
+
+## Podchwytliwe pytanie
+
+```{r}
+p <- ggplot(data, aes(Na.1.wykresie.pod.względem.wzrostu.Kanadyjczyk.był...)) +
+  geom_bar(fill = c("#eb4823", "#34aeeb", "#eb4823")) + theme_minimal() + 
+  xlab("odpowiedzi") + ggtitle("Odtwarzanie wykresów z pamięci", subtitle = "Na wykresie 1 Kanadyjczyk był...")
+d <- ggplot(data, aes(Na.wykresie.kołowym.i.słupkowym.pod.względem.wielkości.3.kraj.to...)) +
+  geom_bar(fill = c("#eb4823", "#eb4823", "#eb4823", "#eb4823", "#34aeeb" )) + theme_minimal() + 
+  xlab("odpowiedzi") + 
+  ylab("") + ggtitle("" , subtitle = "3 kraj pod względem wielkości na wykresie 2 i 3 to...")
+  
+
+library(patchwork)
+p / d
+```
+
+Kolor niebieski oznacza poprawną odpowiedź.
+
+Poprzednie pytania miały niejako odwrócić uwagę od tego. Nic nie spodziewający się ankietowani mieli za zadanie odtworzyć z pamięci fakty z wykresów. Jak się okazało "ozdobniki" z pierwszego wykresu zdecydowanie pomogły zapamiętać postać 3 pod względem wysokości Kanadyjczyka, z kolei nudnie przedstawione Włochy były mylone z jakiegoś powodu z Polską. Ukazuje to, że umiejętne ozdobienie wykresu wzbudza ciekawość w ludziach, dzięki temu dłużej się przyglądają i więcej zapamiętują. 
+
