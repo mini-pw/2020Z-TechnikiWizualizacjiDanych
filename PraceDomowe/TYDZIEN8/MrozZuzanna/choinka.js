@@ -1,8 +1,8 @@
-const x = d3.scaleLinear().range([0, 400]);
-const y = d3.scaleLinear().range([0, 400]);
+const x = d3.scaleLinear().range([0, 500]);
+const y = d3.scaleLinear().range([0, 500]);
 
-x.domain([0, 400]);
-y.domain([0, 400]);
+x.domain([0, 500]);
+y.domain([0, 500]);
 
 // choinka 
 const tree = [{"x":100,"y":300},
@@ -65,6 +65,13 @@ svg.data(r2d3.data).append("line").attr("x1", 197.74)
 document.getElementById("add_bom").addEventListener("click",() => {
 var bomb_color1 = function(d) {return d.col_bom1}; 
 
+//bomb cz 0
+svg.data(r2d3.data).append("circle") 
+                   .attr('cx', function() {return Math.random()*50 + 225;})
+                   .attr('cy', function() {return Math.random()*300 + 30;})
+                   .attr('r', 4)
+                   .attr('fill', bomb_color1);
+
 //bomb cz 1
 svg.data(r2d3.data).append("circle") 
                    .attr('cx', function() {return Math.random()*100 + 200;})
@@ -74,14 +81,14 @@ svg.data(r2d3.data).append("circle")
     
 //bomb cz 2
 svg.data(r2d3.data).append("circle") 
-                   .attr('cx', function(d) {return Math.random()*160 + 150})
+                   .attr('cx', function(d) {return Math.random()*200 + 150})
                    .attr('cy', function(d) {return Math.random()*80 + 180;})
                    .attr('r', 4)
                    .attr('fill', bomb_color1);
          
 //bomb cz 3
 svg.data(r2d3.data).append("circle") 
-                   .attr('cx', function(d) {return Math.random()*220 + 100;})
+                   .attr('cx', function(d) {return Math.random()*400 + 100;})
                    .attr('cy', function(d) {return Math.random()*80 + 240;})
                    .attr('r', 4)
                    .attr('fill', bomb_color1); } ,false);
