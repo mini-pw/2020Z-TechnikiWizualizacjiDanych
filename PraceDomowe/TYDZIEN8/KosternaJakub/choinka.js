@@ -59,12 +59,21 @@ function generateDrawing()
   // za każdą zmianą czyścimy ekran...
   d3.selectAll("svg > *").remove();
   
+  // ...zastępuję dużym białym prostokątem...
+  svgContainer
+    .append('rect')
+    .attr('cx', 0)
+    .attr('cy', 0)
+    .attr('height', 400)
+    .attr('width', 400)
+    .attr('fill', "white");
+  
   // ...i zaczynamy wszystko od nowa
   svgContainer = r2d3.svg
     .append('svg')
     .attr('height', imageHeight)
     .attr('width', imageWidth);
-
+  
   // produkujemy <levels> poziomów choinki
   var i;
   for(i = 0; i < levels; i++)
