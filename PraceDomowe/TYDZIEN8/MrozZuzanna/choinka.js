@@ -32,7 +32,8 @@ svg = r2d3.svg.append('svg')
                .attr('height', 400)
                .attr('width', 400);  
                
-               
+
+document.getElementById("add_chain").addEventListener("click",() => {            
 var chain_color = function(d) {return d.col_chain}; 
 
 //chain1             
@@ -57,11 +58,11 @@ svg.data(r2d3.data).append("line").attr("x1", 197.74)
                   .attr("x2", 289.34)
                   .attr("y2", 86.07)
                   .attr("stroke", chain_color)
-                  .attr("stroke-width", 15);
+                  .attr("stroke-width", 15); } ,false);
                   
                   
 
-
+document.getElementById("add_bom").addEventListener("click",() => {
 var bomb_color1 = function(d) {return d.col_bom1}; 
 
 //bomb cz 1
@@ -83,22 +84,28 @@ svg.data(r2d3.data).append("circle")
                    .attr('cx', function(d) {return Math.random()*220 + 100;})
                    .attr('cy', function(d) {return Math.random()*80 + 240;})
                    .attr('r', 4)
-                   .attr('fill', bomb_color1);
+                   .attr('fill', bomb_color1); } ,false);
 
 
 //gwiazdka
+
+document.getElementById("add_star").addEventListener("click",() => {
 var star_color = function(d) {return d.col_star}; 
 svg.data(r2d3.data).append("text") 
                    .attr('x', 238)
                    .attr('y', 50)
                    .attr('font-size', 60)
                    .text("*")
-                   .attr('fill', star_color);
+                   .attr('fill', star_color);   } ,false);
                    
                    
 // reset bombek
 document.getElementById("reset_bom").addEventListener("click",() => {
 	                                   r2d3.svg.selectAll('circle').remove();},false);
+	                                   
+// reset ŁAŃCUCHA
+document.getElementById("reset_chain").addEventListener("click",() => {
+	                                   r2d3.svg.selectAll('line').remove();},false);
 
 // reset gwiazdki
 document.getElementById("reset_star").addEventListener("click",() => {
