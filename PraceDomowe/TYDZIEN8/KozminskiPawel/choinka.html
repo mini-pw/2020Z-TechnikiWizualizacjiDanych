@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Choinka</title>
+</head>
+<body>
+<p><b>Wesołych świąt!</b></p>
+<input type="button" value="Podłącz sopelki do prądu" id = 'd3button'>
+<input type="button" id = 'wylacznik' value="Wyłącznik bezpieczeństwa">
+<script>document.getElementById("wylacznik").style.visibility = "hidden";</script>
+<p>Podaj liczbę bombek:
+<input type="number" name="quantity" min=1 max=100 id = 'bombkiinput' value = 50></p>
+<p>Wybierz kolor bombek:</p>
+ <form name="listawyboru">
+  <input type="radio" name="kolor" value="Kolorowe" checked> Losowy<br>
+  <input type="radio" name="kolor" value="Srebrne"> Srebrny<br>
+  <input type="radio" name="kolor" value="Złote"> Złoty<br>
+  <input type="radio" name="kolor" value="Czerwone"> Czerwony
+</form> 
+<script src='https://d3js.org/d3.v4.min.js'></script>
+<script>
+var przelacznikLampek = 1;
+const button = document.querySelector('input');
+button.addEventListener('click', updateButton);
+function updateButton() {
+  if (button.value === 'Włącz 2. program sopelków') {
+    button.value = 'Włącz 1. program sopelków';
+    przelacznikLampek = 2;
+  } else {
+    button.value = 'Włącz 2. program sopelków';
+    przelacznikLampek = 1;
+    document.getElementById("wylacznik").style.visibility = "visible";
+
+  }
+}
+
+
+var areaGenerator = d3.area(); //funkcja generujaca wielokaty
+var height = 800;//wymiary obrazka
+var width = 800;
+var vjust = 100;//przesuniecie choinki w pionie
+var hjust = -150; //przesuniecie horyzontalnie
+var liczbabombek = 50;
+var wysokosc = 100;
+wysokosc = wysokosc/100; //mozliwosc edycji wysokosci - bazowa wysokosc - 100, np. centymetrow
+height = height*wysokosc;
+var vjustgwiazdy = vjust*wysokosc; 
+
+
+//Pozycje bombek
+var bombki = d3.range(liczbabombek).map(function(){
+  k = Math.random()*3
+  if(k<1){  //gorny trojkat
+    x = 240*Math.random()+280;
+  if(x<400){
+    y = 200-Math.random()*(200-644.94+1.582*x);
+  }
+  else{
+    y = 200-Math.random()*(200-1.58*x+624.896);
+  }
+  }
+  else if(k<2){   //srodkowy trojkat choinki
+  x = 300*Math.random()+250;
+  if(x<370){
+    y = 400-Math.random()*(400-816.67+1.667*x);
+  }
+  else if(x>430){
+    y = 400 - Math.random()*(400-1.67*x+516.667);
+  }
+  else{
+    y =400-Math.random()*(200); 
+  }
+  
+  }
+  else{ //dolny trojkat
+    x = 360*Math.random()+220;
+     if(x<350){
+    y = 600-Math.random()*(600-938.46+1.54*x);
+  }
+  else if(x>450){
+    y = 600 - Math.random()*(600-1.54*x+292.3);
+  }
+  else{
+    y =600-Math.random()*(200); 
+  }
+  
+  }
+  var colors = ["#aa0000", "#f7efef", "#dbd220", "#639565",
+  "#7d3c1b", "#f0c090"]//czerw, srebrny, zolty, zielony, brazowy, bezowy
+  var color = colors[Math.round(Math.random()*(colors.length-1))] //losowy kolor bombki
+  y = wysokosc*(y + vjust);
+  x = x + hjust;
+  return{x, y, color};
+})
+
+
+//koordynaty drzewa, pnia i gwiazdy
+var zielone = [
+  [400+hjust, wysokosc*(10+vjust)],
+  [280+hjust, wysokosc*(200+vjust)],
+  [370+hjust, wysokosc*(200+vjust)],
+  [250+hjust, wysokosc*(400+vjust)],
+  [350+hjust, wysokosc*(400+vjust)],
+  [220+hjust, wysokosc*(600+vjust)],
+  [580+hjust, wysokosc*(600+vjust)],
+  [450+hjust, wysokosc*(400+vjust)],
+  [550+hjust, wysokosc*(400+vjust)],
+  [430+hjust, wysokosc*(200+vjust)],
+  [520+hjust, wysokosc*(200+vjust)],
+  [400+hjust, wysokosc*(10+vjust)]
+];
+
+var brazowe = [
+  [360+hjust, wysokosc*(600+vjust)],
+  [360+hjust, wysokosc*(680+vjust)],
+  [440+hjust, wysokosc*(680+vjust)],
+  [440+hjust, wysokosc*(600+vjust)],
+  [360+hjust, wysokosc*(600+vjust)]
+];
+
+var zlote = [
+  [400+hjust, -30+vjustgwiazdy],
+  [400-10+hjust, -10+vjustgwiazdy],
+  [400-30+hjust, -10+vjustgwiazdy],
+  [400-12+hjust, 4+vjustgwiazdy],
+  [400-20+hjust, 27+vjustgwiazdy],
+  [400+hjust, 11+vjustgwiazdy],
+  [400+20+hjust, 27+vjustgwiazdy],
+  [400+12+hjust, 4+vjustgwiazdy],
+  [400+30+hjust, -10+vjustgwiazdy],
+  [400+10+hjust, -10+vjustgwiazdy],
+  [400+hjust, -30+vjustgwiazdy]
+];
+
+//stworzenie lancucha sopelkow
+var j = 0;
+var lancuch = d3.range(75).map(function(){
+  if(j<15){
+    x = 305+200/15*j;
+    y = -Math.cosh((x-400)/26)+180;
+  }
+  else if(j<32){
+    x = 290+240/18*(j-15);
+    y = -Math.cosh((x-400)/26)+380;
+  }
+  else if(j<50){
+    x = 286+260/19.5*(j-32);
+    y = -Math.cosh((x-400)/24)+580;
+  }
+  else if(j<58){
+    x = 345+110/7*(j-50);
+    y = -Math.cosh((x-400)/26)+100;
+  }
+   else if(j<67){
+    x = 320+160/8*(j-58);
+    y = -Math.cosh((x-400)/26)+300;
+  }
+  else{
+    x = 310+180/7*(j-67)
+    y = -Math.cosh((x-400)/26)+500;
+  }
+  
+  j = j+1;
+  y = wysokosc*(y + vjust);
+  x = x + hjust;
+  colorA = j%2==0?"#a6a6a6":"#f2f2f2";
+  colorB = j%2==0?"#f2f2f2":"#a6a6a6";
+
+  return{x, y, colorA, colorB}
+})
+
+
+var drzewko = areaGenerator(zielone);
+var pieniek = areaGenerator(brazowe);
+var gwiazda = areaGenerator(zlote);
+  
+//szkielet obrazka
+var svgcreat = d3.select('body')
+.append('svg')
+.attr('height', height)
+.attr('width', width)
+
+//pieniek
+svgcreat.selectAll('path')
+.data(pieniek)
+.enter()
+.append('path')
+.attr('d', pieniek)
+.style('fill', 'brown')
+//gwiazda
+svgcreat.selectAll('path')
+.data(gwiazda)
+.enter()
+.append('path')
+.attr('d', gwiazda)
+.style('fill', '#ffcc00')
+//zielona czesc drzewka
+svgcreat.selectAll('path')
+.data(drzewko)
+.enter()
+.append('path')
+.attr('d', drzewko)
+.style('fill', 'green')
+//poczatkowe dodanie bombek
+svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return d.color;});
+
+//obsluga pierwszego guzika - sopelkow
+d3.select('#d3button').on('click', function() {
+      if(button.value=='Włącz 2. program sopelków'){
+           svgcreat.selectAll('rect').remove();
+           svgcreat.selectAll('rect')
+            .data(lancuch)
+            .enter()
+            .append('rect')
+            .attr('x', function(d) {return d.x;})
+            .attr('y', function(d) {return d.y;})
+            .attr('width', 2)
+            .attr('height', 10)
+            .style('fill', function(d) {return d.colorA;})
+            .transition()
+            .duration(100)
+            .on('start', function repeat(){
+                d3.active(this)
+                .transition()
+                .duration(500)
+                .style('fill', function(d) {return d.colorB;})
+                .transition()
+                .duration(500)
+                .style('fill', function(d) {return d.colorA;})
+                .on('end', repeat)});
+            } else {
+            svgcreat.selectAll('rect').remove();
+            svgcreat.selectAll('rect')
+            .data(lancuch)
+            .enter()
+            .append('rect')
+            .attr('x', function(d) {return d.x;})
+            .attr('y', function(d) {return d.y;})
+            .attr('width', 2)
+            .attr('height', 10)
+            .style('fill', function(d) {return d.colorA;})
+            .transition()
+            .duration(100)
+            .on('start', function repeat(){
+                d3.active(this)
+                .transition()
+                .duration(1000)
+                .delay(500)
+                .style('fill', function(d) {return d.colorB;})
+                .transition()
+                .duration(1000)
+                .delay(500)
+                .style('fill', function(d) {return d.colorA;})
+                .on('end', repeat)});
+      }
+    });
+    
+    
+//obsluga drugiego pola - liczba bombek
+    
+d3.select('#bombkiinput').on('change', function(){
+  svgcreat.selectAll('circle').remove()
+  liczbabombek = d3.select('#bombkiinput').property('value');
+  bombki =  d3.range(liczbabombek).map(function(){
+  k = Math.random()*3
+  if(k<1){  //gorny trojkat
+    x = 240*Math.random()+280;
+  if(x<400){
+    y = 200-Math.random()*(200-644.94+1.582*x);
+  }
+  else{
+    y = 200-Math.random()*(200-1.58*x+624.896);
+  }
+  }
+  else if(k<2){   //srodkowy trojkat choinki
+  x = 300*Math.random()+250;
+  if(x<370){
+    y = 400-Math.random()*(400-816.67+1.667*x);
+  }
+  else if(x>430){
+    y = 400 - Math.random()*(400-1.67*x+516.667);
+  }
+  else{
+    y =400-Math.random()*(200); 
+  }
+  
+  }
+  else{ //dolny trojkat
+    x = 360*Math.random()+220;
+     if(x<350){
+    y = 600-Math.random()*(600-938.46+1.54*x);
+  }
+  else if(x>450){
+    y = 600 - Math.random()*(600-1.54*x+292.3);
+  }
+  else{
+    y =600-Math.random()*(200); 
+  }
+  
+  }
+  var colors = ["#d72621", "#f7efef", "#dbd220", "#639565",
+  "#7d3c1b", "#f0c090"]//czerw, srebrny, zolty, zielony, brazowy, bezowy
+  var color = colors[Math.round(Math.random()*(colors.length-1))]
+  y = wysokosc*(y + vjust);
+  x = x + hjust;
+  return{x, y, color};
+})
+  svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return radios[0].checked?d.color:radios[1].checked?'silver':radios[2].checked?'gold':'#aa0000'}); 
+})
+//w ostatniej linii dbamy aby przy zmianie liczby bombek, uwzglednionie bylo rowniez zaznaczenie z listy radio
+
+//obsługa ostatniego pola - wyboru koloru bombek
+var radios = document.forms["listawyboru"].elements["kolor"];
+radios[0].onclick = function(){ //kolorowe
+  svgcreat.selectAll('circle').remove();
+  svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return d.color;});
+}
+radios[1].onclick = function(){ //Srebrne
+    svgcreat.selectAll('circle').remove();
+  svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return 'silver';});
+}
+radios[2].onclick = function(){ //Złote
+    svgcreat.selectAll('circle').remove();
+  svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return 'gold';});
+}
+radios[3].onclick = function(){ //Czerwone
+    svgcreat.selectAll('circle').remove();
+  svgcreat.selectAll('circle')
+.data(bombki)
+.enter()
+.append('circle')
+.attr('cx', function(d) {return d.x;})
+.attr('cy', function(d) {return d.y;})
+.attr('r', 5)
+.attr('fill', function(d) {return '#aa0000';});
+}
+
+//Obsluga wylacznika z pradu
+d3.select('#wylacznik').on('click', function() {
+  svgcreat.selectAll('rect').remove();
+  document.getElementById("wylacznik").style.visibility = "hidden";
+  document.getElementById('d3button').value = "Podłącz sopelki do prądu"
+});
+
+
+  
+</script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+---
+title: "Praca domowa"
+author: "Aleksander Podsiad"
+output: html_document
+---
+
+
+### *Techniki Wizualizacji Danych - PD4* 
+
+
+
+#### Oryginalny wykres:
+```{r plot, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=10}
+library(ggplot2)
+library(dplyr)
+library(showtext)
+font_add_google("Roboto", "Roboto") 
+data <- data.frame(
+    Year=c("2019","2018","2017","2016","1997"),
+    Value=c(51,43,0,0,34)
+)
+ggplot(data, aes(x=Year,y=Value))+
+    
+    geom_col(fill="#2e8b57")+
+    geom_text(aes(label=paste0(Value,"%")),data = data[c(1,2,5),],nudge_y=1.6,size=6)+
+    geom_segment(aes(x=0.6, xend=1.4, y=43, yend=43),color="darkgrey",size=0.75) + 
+    geom_segment(aes(x=0.6, xend=1.4, y=47, yend=47),color="darkgrey",size=0.75) + 
+    annotate("text",x="1997",y=45,label="MOE* 4%",color="darkgrey",size=4) +
+    
+    scale_y_continuous(position = "right",
+                       labels=c("0"="","10"="10%","20"="20%","30"="30%","40"="40%","50"="50%"))+
+    scale_x_discrete(
+                        labels = c("1997","2016"="               . . .","2017"="","2018","2019"))+
+    labs(title="\nAMERICA AND MARIJUANA",
+         caption = "* Margin of Error +/- 4%\nSource: CBS NEWS poll",
+         subtitle ="Percentage of Americans who smoked pot")+
+    theme(
+        text = element_text(family="Roboto"),
+        
+        panel.background = element_blank(),
+        panel.grid.major.y = element_line(colour = "lightgrey"),
+        
+        axis.ticks = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size=20,face="bold"),
+        axis.text.y = element_text(size=10,color="grey"),
+        
+        plot.title = element_text(size=30,face="bold"),
+        plot.subtitle=element_text(size=18,color="darkgrey"),
+        plot.caption  = element_text(size=10,color="darkgrey")
+    )
+
+```
+autor: Bartłomiej Eljasiak
+
+
+
+#### Wykres zmodyfikowany w Inkscape:
+
+![](/home/aleksander/Dokumenty/Techniki Wizualizacji Danych/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN5/PodsiadAleksander/plot_inkscape.png)
+
+#### Zmiany:
+
+Moim głównym motywem przy wprowadzniu zmian do wykresu było jego urozmaicenie i poprawienie czytelności.
+Powiększyłem wybrane napisy i pozmieniałem czcionki (do zrobienia w ggplot, ale bez podglądu w czasie rzeczywistym i więcej zachodu).
+Dodałem tło związane tematycznie z wykresem (trudne do osiągnięcia w ggplot, bez odpowiedniego dopasowania).
+Zmieniłem kolor słupków, ich przezroczystość i obramowania. Dodałem ikonę ludzika dla poprawienia ogólnego wrażenia wzrokowego i zapełnienia pustego miejsca (dużo roboty w ggplot i mogłoby się nie udać).
