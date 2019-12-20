@@ -1,0 +1,67 @@
+---
+title: "PracaDomowa5"
+author: "Paulina Przybyłek, Renata Rólkiewicz"
+date: "7/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ankieta
+Celem ankiety było sprawdzenie czy ludzie "nabierają się" na wykresy, które celowo manipulują wynikami, tak bu uzyskać dany efekt. Zmienione kolory, różne zakresy osi czy odwrotna kolejność danych na osi w stosunku do tytułu wykresu. 
+
+Link do ankiety: https://forms.gle/uNUshoN45DzM1Zfu8
+
+## 1. Koło jako dobre przedstawienie danych?
+Oba wykresy przedstawiają popularność kolorów na wiosnę 2019. Wykres po lewej - w formie wykresu kołowego 3D, który uważany jest za atrakcyjny sposób przedstawienia danych i często możemy spotkać go w internecie. Wykres po prawej przedstawia te same dane  w formie wykresu słupkowego. Aby ocenić, który wykres jest "lepszy" zadałyśmy 3 pytania (te same) do obu wykresów.
+
+![](C:/Users/acer/Desktop/PracaDomowa5/temat1.png)
+
+### Pytania zadane w ankiecie:
+(Po lewej do wykresu kołowego, po prawej - słupkowego)
+______________________________________________________________________________________________________________________
+![](C:/Users/acer/Desktop/PracaDomowa5/1.1.png)
+Spora część ankietowanych - 55% - nie zwróciła uwagi na legendę. Sugerując się kolorami wycinków koła zaznaczyła, że to błękitny był najbardziej popularnym kolorem podczsas, gdy był to kolor zielony. Po przeniesieniu tych danych na wykres słupkowy, żaden ankietowany nie miał problemu z poprawną odpowiedzią na te pytanie.
+______________________________________________________________________________________________________________________
+![](C:/Users/acer/Desktop/PracaDomowa5/1.2.png)
+
+![](C:/Users/acer/Desktop/PracaDomowa5/1.3.png)
+
+Ankietowani w powyższych pytaniach musieli zmieżyć się z oceną, który kolor jest bardziej popularny. Ze względu na to, że różnice pomiedzy poszczególnymi kolorami były niewielkie, odpowiedź na to pytanie przy wykresie kołowym - porównanie dwóch wycinków koła 3D - okazało się trudne. W obu przypadkach dominuje odpowiedź "Były tak samo popularne", co potwierdza, ze różnice były niezauważalne. Natomiast dla wykresu słupkowego dominują poprawne odpowiedzi. 
+______________________________________________________________________________________________________________________
+![](C:/Users/acer/Desktop/PracaDomowa5/1.4.png)
+
+W opinii ankietowanych wykres słupkowy był czytelniejszy, łatwiej było ocenić popularność poszczególnych kolorów i je ze spobą porównać. Dodatkowo znaczna większość z nich przekonała się, że wykres kołowy nie jest dobrym wyborem w przypadku wizualizacji takich danych.
+______________________________________________________________________________________________________________________
+
+## 2. Pułapka na wykresie słupkowym?
+Wykres słupkowy także może wprowadzać czyteliników w błąd. Wystarczy tylko zmnienić zakres osi - na tym skupiłyśmy się w kolejnym zagadnieniu. Wykresy przedstawiają zyski firm uzyskane na wiosnę 2019. Pionowa oś wykresu po lewej zaczyna się od 200, po prawej - od 0.
+
+![](C:/Users/acer/Desktop/PracaDomowa5/temat2.png)
+
+### Pytania zadane w ankiecie:
+(odpowiednio z lewej do lewego wykresu, z prawej - do prawego)
+______________________________________________________________________________________________________________________
+![](C:/Users/acer/Desktop/PracaDomowa5/2.1.png)
+
+![](C:/Users/acer/Desktop/PracaDomowa5/2.2.png)
+Możemy wywnioskować, że ponad połowa ankietowanych (55% dla pierwszego i 60% dla drugiego wykresu) annkietowanych nie zwróciła uwagi na zakres osi. Sugerowała się tylko wysokościami poszczegółnych słupków, wierząc, że one wiernie odwzorowywują dane. Na wykresie po prawej (z osią zaczynającą się od 0) żaden aknietowany nie miał problemu z poprawną odpowiedzią. Taki zabieg często możemy spotkać na portalach internetowych, które chcą podkreślić wyższość jednego z aspektów nad innymi. Warto więc być czujnym i uważnie czytać osie.
+
+_______________________________________________________________________________________________________________________
+
+
+## 3. Co z wykresem liniowym?
+Sprawdziłyśmy już czy ludzie zwracają uwagę na zakres osi Y, a co z osią X? Tym razem nie zmieniłyśmy zakresu, a odwróciłyśmy kolejność danych. Choć tytuł sugeruje, że lata są umieszczone rosnąco (od 2010 do 2019 roku), na wykresie po lewej są malejąco. Oba wykresy przedstawiają liczbę sklepów firmy HM w tysiacach.
+
+![](C:/Users/acer/Desktop/PracaDomowa5/temat3.png)
+
+### Pytania zadane w ankiecie:
+(odpowiednio z lewej do lewego wykresu, z prawej - do prawego)
+______________________________________________________________________________________________________________________
+![](C:/Users/acer/Desktop/PracaDomowa5/3.1.png)
+Tylko połowa ankietowanych poprawnie odpowiedziała na pytanie. Aż 40% zasugerowała się samym wykresem i tytułem nie zwracając uwagi na podpisy osi X co skutkowało błędną odpowiedzią. A pozostałe 10%, zastanawiając się czy zaufać wykresowi czy podpisom osi X, zaznaczyło opcję "nie wiem". W drugim przpadku wszyscy ankietowani zaznaczyli poprawną odpowiedź. 
+
+## Podsumowanie
+Jak widać duża część społeczeństwa nie zwraca uwagi na szczegóły i tylko pobieżnie patrzy na wykresy. Poprzez niewielkie zmiany (np. przy osiach) jesteśmy w wstanie manipulować wynikami by osiągnąć korzystny dla nas efekt. Dlatego czytając wykresy (szcególnie na niesprawdzonych stronach internetowych) powinniśmy zwracać uwagę na detale a tworząc wykresy strać się unikać złych praktyk by nie wprowadzać czytelników w niezamierzony błąd.

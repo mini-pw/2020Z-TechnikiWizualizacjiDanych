@@ -22,7 +22,7 @@
   
   <p>5. Przygotuj skrypt randomCircles.js, który będzie losowo przemieszczał 20 kółek.</p>
   
-  <p>6. Użyj biblioteki r2d3, aby położena początkowe kółek przekazywać do randomCircles.js z wykorzystaniem R. Dodaj przekazywanie losowego koloru początkowego i końcowego.</p>
+  <p>6. Użyj biblioteki r2d3, aby położena początkowe kółek przekazywać do randomCircles.js z wykorzystaniem R.</p>
   
     <script>
     d3.select('#d3checkbox').on('change', function() {
@@ -34,9 +34,8 @@
     });
     
     var height = 500;
-    var width = 400;
-    
-    var cd = d3.range(20).map(function() {return {x: Math.random()*width}})
+    var width = 500;
+    var cd = d3.range(20).map(function() { return {x: Math.random()*width }; });
     
     d3.select('body')
       .append('svg')
@@ -46,7 +45,7 @@
       .data(cd)
       .enter()
       .append('circle')
-      .attr('cx', function(d) { return d.x;})
+      .attr('cx', function(d) {return d.x; })
       .attr('cy', 50)
       .attr('r', 20)
       .attr('fill', 'blue')
