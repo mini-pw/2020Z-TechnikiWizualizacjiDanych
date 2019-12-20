@@ -1,0 +1,144 @@
+---
+title: "Praca domowa nr 6"
+author: "Agata Makarewicz, Martyna Majchrzak, Elżbieta Jowik"
+date: "6 12 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(png)
+library(grid)
+
+```
+
+# Wprowadzenie
+
+
+Przedmiotem badania było sprawdzenie wpływu geometrii wykresu na jego odbiór. 
+W tym celu została przeprowadzona ankieta wśród 60 osób, które odpowiedziały na ten sam zestaw pytań, po obejrzeniu wykresu zawierającego błędy wizualizacji, a następnie wykresu poprawionego.
+
+Link do ankiety:
+
+https://docs.google.com/forms/d/e/1FAIpQLScITSgnV9OiFRuyDoWp02708j6nttnyC7ReAlDv55WUMwI3mQ/viewform?usp=sf_link
+
+# Zestaw 1
+
+![](zestaw_1.png)
+
+## Wyniki
+
+### Pytanie 1: Który typ przestępstw jest sumarycznie liczniejszy? 
+
+
+Prawidłowa odpowiedź: Property 
+
+
+![](wyniki_1_1.png)
+
+
+### Pytanie 2: Jakie przestępstwo występuje najrzadziej?
+
+
+Prawidłowa odpowiedź: Murder and Manslaughter 
+
+
+
+![](wyniki_1_2.png)
+
+### Pytanie 3:  Wybierz poprawne uzupełnienie zdania: Burglary występuje ......... niż Motor Vehicle Theft.
+
+
+Prawidłowa odpowiedź: częściej 
+
+
+![](wyniki_1_3.png)
+
+
+## Wnioski
+
+
+Jak widać zmiana geometrii na wykres słupkowy wpłynęła pozytywnie na:
+
+* odczyt liczebności kategorii, które oryginalnie przedstawione były dwoma różnymi wykresami (wzorst o 17 punktów %);
+* odczyty najmniejszej wartości na wykresie ( 25 punktów %);
+* porównywanie dwóch wartości ( 24 punkty %);
+
+
+# Zestaw 2
+
+![](zestaw_2.png)
+
+## Wyniki
+
+### Pytanie 1: W którym kwartale odnotowano najwyższe koszta?
+
+
+Prawidłowa odpowiedź: III
+
+
+![](wyniki_2_1.png)
+
+### Pytanie 2: Z którego roku były przestawione dane?
+
+
+Prawidłowa odpowiedź: 2015
+
+
+![](wyniki_2_2.png)
+
+### Pytanie 3: Który spośród wykresów w zestawie 2. był wg Ciebie wizualnie atrakcyjniejszy?
+
+
+![](wyniki_atrakcyjnosc_2.png)
+
+
+## Wnioski
+
+
+Z porównania wykresów wynika, że ludzie nie zwracają uwagi na to co dzieje się wokół wykresu. Odczytując dane szczególną uwagę zwracają na opisy osi i podziałkę ale wszystko to co dzieje się dookoła wykresu kompletnie umyka ich uwadze. Zdecydowana mniejszość badanych dobrze odczytała z pierwszego wykresu rok, z którego pochodzą dane i nie zwrócili uwagi, że miesiące w kalendarzu nie są po kolei tylko alfabetycznie. Drugi wykres znacznie zniwelował występowanie tego typu pomyłek oraz okazał się atrakcyjniejszy wizualnie.
+
+
+# Zestaw 3
+
+![](zestaw_3.png)
+
+## Wyniki
+
+### Pytanie 1: Czy łączny udział Solar i Hydro jest większy od udziału Wind?
+
+
+Prawidłowa odpowiedź: Tak
+
+
+![](wyniki_3_1.png)
+
+### Pytanie 2: Jaki jest procentowy udział Biomass?
+
+
+Prawidłowa odpowiedź: 18% (Tutaj niestety nastąpiła mała pomyłka przy wpisywaniu możliwych odpowiedzi do ankiety)
+
+
+![](wyniki_3_2.png)
+
+
+### Pytanie 3: Który spośród wykresów w zestawie 2. był wg Ciebie wizualnie atrakcyjniejszy?
+
+
+![](wyniki_atrakcyjnosc_3.png)
+
+
+## Wnioski
+
+
+Zgodnie z oczekiwaniami przy każdym z kolejnych wykresów badani coraz lepiej odpowiadali na pytanie wymagające porównania reprezentowanych wielkości. Najlepiej wypadł wafflechart z wynikiem 69,5% ( o prawie 30 punktów % niż na wykresie radarowym). 
+Odczytywanie konkretnej wartości również wypadało najlepiej na wafflecharcie (mimo braku prawidłowej odpowiedzi wyniki 15% i 20% są najwyższe). Okazał się on też najatrakcyjniejszy wizualnie.
+
+
+ \
+ 
+ \
+ 
+ 
+  
