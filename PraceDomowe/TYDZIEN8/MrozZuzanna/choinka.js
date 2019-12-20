@@ -20,7 +20,7 @@ svg.append("polygon")
     .attr("points",function(d) {return d.map(function(d) {return [x(d.x),y(d.y)].join(",");}).join(" ");});
 
 
-// dodanie pnia
+// pień
 svg.append('rect')
       .attr('width', 40)
       .attr('height', 60)
@@ -98,10 +98,8 @@ svg.data(r2d3.data).append("text")
                    
 // reset bombek
 document.getElementById("reset_bom").addEventListener("click",() => {
-	r2d3.svg.selectAll('circle').remove();
-},false);
+	                                   r2d3.svg.selectAll('circle').remove();},false);
 
 // reset gwiazdki
 document.getElementById("reset_star").addEventListener("click",() => {
-	r2d3.svg.selectAll('text').remove();
-},false);
+	                                   r2d3.svg.selectAll('text').remove();},false);
