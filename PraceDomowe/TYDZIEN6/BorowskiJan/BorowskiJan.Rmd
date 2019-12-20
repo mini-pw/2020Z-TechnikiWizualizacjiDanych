@@ -1,0 +1,142 @@
+---
+title: "Raport"
+author: "Jan Borowksi"
+date: "6/12/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+  
+Zdecydowałem się porównać wykres kołowy z słupkowym ale aby ich porównywanie miało sens (w normalnym przypadku lepszy jest wykres słupkowy).
+Usunąłem z wykresów słupkowych skale i wybrałem dane idealnie pasujące do wykresu kołowego. Doprowadziło to do ciekawych wyników w dwóch eksperymentach. Użyłem danych o wyborach w Hiszpanii i Włoszech w 2019 roku.\
+Link do ankiety: https://tiny.pl/tkjw8
+  
+Eksperyment 1 
+=====
+W pierwszym eksperymencie porównuję dokładność odczytu danych używając następujących wykresów :
+```{r echo=FALSE,fig.width=8}
+# dane wykres 1
+partie <- ( c("LN","PD","M5S","FI","FDI","Inne"))
+
+data_plot1 <-  as.data.frame(partie)
+data_plot1$wyniki <- (c(34.26,22.74,17.06,8.78,6.44,11.19))
+data_plot1$kolejnosc <- 1:6
+
+library(reshape2)
+
+library(ggplot2)
+ggplot(data_plot1, aes(y=wyniki, x=reorder(partie,kolejnosc))) +
+  geom_bar(stat="identity",fill="#5ab4ac")+theme_minimal()+theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    legend.position = "no",
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.title.x = element_text("Partia",size =15),
+    axis.text.x = element_text(size=12),
+    title = element_text(size = 20),
+    plot.title = element_text(hjust=0.5)
+ 
+     )+ ggtitle("Procnetowe wyiki wyborów na terenie Włoch 2019")+labs(x="Partia Polityczna") 
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+partie <-  c("PSOE/PSC","PP","C's","Coal(UP+IU+...)","VOX","Inne")
+data_plot2 <- as.data.frame(partie)
+data_plot2$wyniki <- c(33.18,20.35,12.30,10.17,6.28,17.72)
+data_plot2$kolejnosc <- 1:6
+library(plotrix)
+
+pie3D(data_plot2$wyniki, labels =data_plot2$partie, main = "Procnetowe wyiki wyborów na terenie Hiszpanii 2019", radius=1, labelcex = 1.8,  start=0.7)
+```
+
+Pytanie polegało na określeniu procentowego wyniku wybranej partii. Wyniki przedstawiają się następująco:
+
+```{r echo=FALSE,fig.width=8}
+library(ggplot2)
+pytanie1 <- as.data.frame(c("Dobra odpowiedż","Zła odpowiedż"))
+pytanie1$wynik <- c(7,12)
+pytanie2 <- as.data.frame(c("Dobra odpowiedż","Zła odpowiedż"))
+pytanie2$wynik <- c(10,9)
+pytanie1 <- rbind(pytanie1,pytanie2)
+pytanie1$wykres <-  c("słupkowy","słupkowy","kołowy","kołowy")
+colnames(pytanie1) <- c("Odpowiedzi","ans","Wykres")
+
+ggplot(pytanie1,aes(x=Wykres,y=ans,fill=Odpowiedzi))+geom_bar(stat = "identity",position = position_dodge())+theme_minimal()+scale_y_continuous(breaks = c(0,2,4,6,8,10,12))+labs(y="Ilość ankietowanych",title = "Odpowiedzi a typ wykresu")+theme(plot.title = element_text(hjust=0.5))
+
+```
+
+Jak widać więcej poprawnych odpowiedzi uzyskałem na wykresie kołowym co może sugerować ,że przedstawia on te dane dokładniej ale  dodanie skali do wykresu słupkowego bez wątpienia odwróciło by proporcje. Jeśli jednak dokładniej przyjżymy się rozkładom odpowiedzi:
+
+
+```{r echo=FALSE, fig.width=8, message=FALSE, warning=FALSE}
+dane <- read.csv("ANKIETA TWD.csv")
+
+colnames(dane) <- c("data","p1","p2","p3","p4")
+library(dplyr)
+
+eksperyment1_p1 <-  dane %>% group_by(p1) %>% count()
+eksperyment1_p2 <-  dane %>% group_by(p2)%>% count()
+
+colnames(dane) <- c("data","p1","p2","p3","p4")
+library(dplyr)
+
+eksperyment1_p1 <-  dane %>% group_by(p1) %>% count()
+eksperyment1_p2 <-  dane %>% group_by(p2)%>% count()
+eksperyment1_p1$color <- c("z","z","d","z")
+
+p2<- ggplot(eksperyment1_p1,aes(x=p1,y=n,fill=color))+geom_bar(stat="identity")+theme_minimal()+
+  labs(title="Pytanie 1",x="Odpowiedź",y="Ilość ankietowanych")+theme(legend.position = "no",
+                                                                      plot.title=element_text(hjust=0.5))+scale_y_continuous(breaks=c(0,2,4,6,8,10))
+
+eksperyment1_p2$color <- c("z","d","z","z")
+
+p1<- ggplot(eksperyment1_p2,aes(x=p2,y=n,fill=color))+geom_bar(stat="identity")+theme_minimal()+
+  labs(title="Pytanie 2",x="Odpowiedź",y="Ilość ankietowanych")+theme(legend.position = "no",
+                                                                      plot.title=element_text(hjust=0.5))+scale_y_continuous(breaks=c(0,2,4,6,8,10))
+library(patchwork)
+p2+p1
+
+```
+
+
+Chociarz ilość poprwanych odpowiedzi jest większa to jednak liczba osób które myliły się bardzo (czyli o wiecej niż 2%) jest dużo wyższa w wykresie kołowy co może wskazywać, że zgodnie z oczekiwaniami utrudnia on ocenę podziału. Należy też pamiętać, że wybrane dane były idealnie dopasowane dla wykresu kołowego.
+
+
+
+Eksperyment 2 
+=====
+W eksperymecnie drugim chiałem sprawdcić jak ankietowani zapamiętują dane w zależności od typu wykresu. Pojawił się jednak oczywisty problem mianowicie jeśli zapytam o coś co należało zapamiętać. To przy następnym wykresie ankietowany przyłoży większą uwagę do zapamiętania danych co może wþłynąć (prawdopodobnie wpłyneło) na wynik. Starałem się tamu zaradzić zminiając formę pytań. W eksperymencie drugim uzywam takich samych danych jak przy pierwszym ale tym razem zamieniam przypożądkowane im typy wykresów. Wyniki prezentują się następująco:
+
+```{r echo=FALSE, warning=FALSE, ,message=FALSE, r,fig.width=8}
+pytanie1 <- as.data.frame(c("Dobra odpowiedż","Zła odpowiedż"))
+pytanie1$wynik <- c(9,10)
+pytanie2 <- as.data.frame(c("Dobra odpowiedż","Zła odpowiedż"))
+pytanie2$wynik <- c(16,3)
+pytanie1 <- rbind(pytanie1,pytanie2)
+pytanie1$wykres <-  c("słupkowy","słupkowy","kołowy","kołowy")
+colnames(pytanie1) <- c("Odpowiedzi","ans","Wykres")
+
+ggplot(pytanie1,aes(x=Wykres,y=ans,fill=Odpowiedzi))+geom_bar(stat = "identity",position = position_dodge())+theme_minimal()+scale_y_continuous(breaks = c(0,2,4,6,8,10,12))+labs(y="Ilość ankietowanych",title = "Odpowiedzi a typ wykresu")+theme(plot.title = element_text(hjust=0.5))
+
+
+```
+
+Jak widać tutaj wykres kołowy okazał się zdecydowanie lepszy. Należy jednak zwrócić uwagę na dwie rzeczy:\
+Trudność pytań obu wykresów jest nie koniecznie równa\
+Co ważniejsze wykres kołowy był prezentowany jako __drugi__ co mogło mieć znaczący wpływ na wynik\
+
+Podsumowanie 
+=====
+Wykresy kołowe nie wypadły aż tak żle jak zakładałem. Nawet pomijając niepewny eksperymet drugi wykresy kołowe poradziły sobie dobrze.
+Warto jednak zauważć:\
+
+Wykresy słupkowe nie miały dodanej skali co miało uatrakcyjnić eksperyment ale w praktyce nie ma zbyt wiele sensu. Myślę ,że dodanie skali zmieniło by wynik pierwszego eksperytentu.\
+
+Dane były idealnie dobrane do formy wykresu kołowego (sumowały się do 100% i dotyczyły czegoś co człowiek naturalnie dzieli na części).\
+
+
+Uwzględniając powyższe nie mogę oczywiście uznać wykresów kołowych za lepsze czy nawet równie dobre co słupkowe ale może warto je rozważyć przy doskonale pasujących danych.
+
