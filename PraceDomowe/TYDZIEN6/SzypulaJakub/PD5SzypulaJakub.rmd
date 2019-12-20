@@ -1,0 +1,98 @@
+---
+title: "PD nr 5"
+author: "Jakub Szypuła"
+date: "06/12/2019"
+output: html_document
+---
+
+
+
+# Ankieta
+
+W celu wykonania pracy domowej, na przestrzeni ubiegłego tygodnia przeprowadziłem ankietę na temat odczytywania danych i porównania dwóch wykresów, przedstawionych poniżej. Ankieta została przeprowadzona na próbce 29 osób, które były mieszanką innych osób z Inżynierii i Analizy Danych oraz znajomych spoza Politechniki Warszawskiej.
+
+![](wykresy.png) 
+
+Wykres pierwszy (stożkowy) miał reprezentować "inne" i "ciekawsze" podejście do prezentowania danych, kiedy drugi jest klasycznym wykresem słupkowym, z dobrze opisanymi osiami. Ideą wykresu stożkowego jest to, że wielkość danego zbioru (tutaj poparcia) przekłada się na wysokość części tego stożka. W celu sprawdzenia, czy ludzie są faktycznie w stanie ocenić tą wysokość, czy będą po prostu patrzyli na kolejność ułożenia elementów, Partie D i E zamienione są ze sobą miejscami. Wysokość części D dalej wynosi około $1.25$ wysokości części E, jednak teraz to ona jest ostatnia, a E przedostatnia.
+
+
+## Pytania o dane
+Pytania o dane (oraz same dane) były takie same dla obu wykresów i wyglądały następująco:
+
+
+1. Która partia ma najniższe poparcie?
+  * Partia D
+  * Partia E
+2. Czy Partie C, E i D mają raem lepszy wynik od partii B?
+  * Tak
+  * Nie
+  * Mają porównywalne poparcie (do 3 punktów procentowych różnicy)
+3. Jaki procent poparcia posiada partia A?
+  * 40
+  * 44
+  * 48
+  * 52
+  * 56
+  
+## Pytania o wykresy
+
+1. Który wykres jest ciekawszy wizualnie?
+2. Który wykres lepiej odczytać?
+3. Który wykres wolisz?
+
+# Wyniki
+
+W poniższych tabelkach będą prezentowane procenty danych odpowiedzi na dane pytania dla konkretnych wykresów. Poprawne odpowiedzi będą pogrubione.
+
+
+## Pytania o dane:
+
+
+### Pytanie pierwsze:
+
+Która partia ma najniższe poparcie?
+
+(poprawna odpowiedź: Partia E)
+
+|Wykres|  Partia D 	| Partia E	|
+|---	|---	|---	|
+|Stożkowy|86%| **14%**|
+|Słupkowy|0%|**100%**|
+
+
+### Pytanie drugie:
+
+Czy Partie C, E i D mają raem lepszy wynik od partii B?
+
+(poprawna odpowiedź: Mają porównywalne poparcie (do 3 punktów procentowych różnicy), 27.92 C+E+D do 27.40 B)
+
+| Wykres   	| Tak 	| Nie  	| Porównywalne  	|
+|---	|---	|---	|---	|
+|Stożkowy| 3%  	| 66%  	|   **31%**	|
+|Słupkowy|  24% 	|  17% 	|  **59%** 	|
+
+### Pytanie trzecie:
+
+Jaki procent poparcia posiada partia A?
+
+(poprawna odpowiedź: 44)
+
+| Wykres  	| 40   	|  44 	| 48  	|  52 	| 56  	|
+|---	|---	|---	|---	|---	|---	|
+|Stożkowy|7%|  **14%** 	| 21%  	|  24% 	| 34%  	|
+|Słupkowy|  0% 	| **86%**  	| 14%  	|   0%	|   0%	|
+
+
+## Pytania o wykresy;
+
+| Pytanie	| Stożkowy  	|  Słupkowy 	|
+|---	|---	|---	|
+|  Który wykres jest ciekawszy wizualnie? 	|  55% 	|   45% 	|
+|  Który wykres lepiej odczytać? 	| 0%  	|  100% 	|
+|  Który wykres wolisz? 	|  0% 	| 100%  	|
+
+# Analiza wyników
+
+Wyniki ankiety, choć przeprowadzone na całkiem małej próbce, pokazują, że zasady tworzenia czytelnych wykresów są dalej bardzo ważne, chociaż prawie wszyscy uczestnicy ankiety (najpewniej) są z pokolenia, które "całe życie karmione jest wykresami". Wyniki ankiety były druzgoczące dla wykresu stożkowego. Podmiana Partii E z Partią D doprowadziła do tego, że 86% ankietowanych odpowiedziało na to pytanie źle, co pokazuje duży potencjał na manipulacje wynikami, bez bezpośredniego zakłamywania danych. W drugim pytaniu było to tylko 31% (34%, jeżeli weźmiemy pod uwagę też "tak"), a w trzecim tylko 14%. Chociaż dane były te same, dla wykresu słupkowego procent dobrych odpowiedzi wynosił 100%, 59% (83% licząc "tak") i 86%.
+
+Mimo to, większość osób (55%) przyznała, że wykres stożkowy jest "ciekawszy" wizualnie od słupkowego. Wszyscy byli zgodni w preferencjach (wykres słupkowy) oraz w decyzji, który był bardziej czytelny (również słupkowy). Pokazuje to, że zrobienie "ciekawego" wykresu nie zniweluje jego wad pod względem czytelności.

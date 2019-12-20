@@ -1,0 +1,205 @@
+---
+title: "Praca domowa nr. 5"
+author: "Mateusz Grzyb"
+date: 03.12.19
+output: html_document
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(stringi)
+library(ggplot2)
+library(treemap)
+library(reshape2)
+library(treemapify)
+data <- read.csv("data.csv")
+poll_data <- read.csv("poll_data.csv")
+```
+
+## Wstęp
+
+Celem przeprowadzonego przeze mnie eksperymentu było zbadanie, jak różne typy wykresów wpływają na poprawność odczytywania proporcji przez odbiorców. W tym celu przygotowałem cztery różne wykresy, przedstawiające te same dane, sprawdziłem ich odbiór (używając ankiet Google), a następnie przeanalizowałem wyniki.
+
+Prezentowane poniżej grafiki są czytelne na 24 calowym ekranie FHD w trybie pełnoekranowym.
+
+## Dane
+
+Do przygotowania wykresów użyłem danych o podziale światowej produkcji energii elektrycznej w 2018 roku względem jej źródła.
+
+Źródło danych: https://www.iea.org/geco/electricity/
+
+## Wykresy
+
+Poniżej przedstawiam cztery wykresy, przygotowane w celu umieszczenia ich w ankiecie:
+
+```{r pie_chart}
+theme_set(theme_classic())
+
+palette <- c("#3a3a3a", "#d55E00", "#3366ff", "#9900cc", "#996600", "#ffcc00")
+
+pie <- ggplot(data, aes(x = "", y=Percent, fill = factor(Source))) + 
+  geom_bar(width = 1, stat = "identity", color = "black") +
+  theme(axis.line = element_blank(), 
+        plot.title = element_text(hjust=0.5),
+        axis.ticks = element_blank(),
+        axis.text = element_blank()) + 
+  labs(fill="Source", 
+       x=NULL, 
+       y=NULL, 
+       title="2018 World electricity generation by source",
+       subtitle ="") +
+  scale_fill_manual(values=palette)
+
+pie + coord_polar(theta = "y", start=0)
+```
+
+```{r bar_plot}
+palette <- c("#3a3a3a", "#d55E00", "#3366ff", "#9900cc", "#996600", "#ffcc00")
+
+bar <- ggplot(data, aes(x=0, fill=Source, y=Percent)) + 
+  geom_bar(position="fill", stat="identity", color = "black") +
+  scale_fill_manual(values=palette) +
+  geom_text(x=0, y=1.03, size = 5, label="100%") + 
+  geom_text(x=0, y=-0.03, size = 5, label="0%") +
+  labs(title="2018 World electricity generation by source", fill = "Source") +
+  theme(axis.title = element_blank(),
+        axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "right")
+
+bar
+```
+
+```{r tree_map}
+palette <- c("#3a3a3a", "#d55E00", "#3366ff", "#9900cc", "#996600", "#ffcc00")
+
+tree <- ggplot(data, aes(area = Percent, fill = Source, layout = "squarified")) +
+  geom_treemap(color = "black", size = 1.5) +
+  scale_fill_manual(values=palette) +
+  labs(title="2018 World electricity generation by source", fill = "Source") +
+  theme(axis.line = element_blank(),
+        panel.border = element_rect(color = "black", fill = NA, size = 1),
+        legend.key = element_rect(fill = NA, color = "black", size = 1))
+
+tree
+```
+
+```{r waffle_chart}
+var <- rep(data$Source, data$Percent)
+df <- expand.grid(y = 1:10, x = 1:10)
+categ_table <- round(table(var) * ((10*10)/(length(var))))
+df$category <- factor(rep(names(categ_table), categ_table))  
+
+palette <- c("#3a3a3a", "#d55E00", "#3366ff", "#9900cc", "#996600", "#ffcc00")
+
+waffle <- ggplot(df, aes(x = x, y = y, fill = category)) + 
+  geom_tile(color = "black", size = 0.5) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), trans = 'reverse') +
+  scale_fill_manual(values=palette) +
+  labs(title="2018 World electricity generation by source", fill = "Source") + 
+  theme(panel.border = element_rect(size = 1, fill = NA),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "right")
+
+waffle + coord_fixed()
+```
+
+## Ankieta
+
+Link do ankiety: https://forms.gle/XNbsDw72KJvaYRV69
+
+Ankietę wypełniło 20 osób, w tym głównie inni studenci.
+
+Podczas tworzenia ankiety przyświecały mi następujące założenia:
+
+* w celu zminimalizowania szansy na nieumyślną pomyłkę ze strony odbiorcy, wykresy należy utrzymać w zbliżonym stylu, używać jednego schematu kolorystycznego, unikać zbędnych ozdobników
+* wykresy należy umieścić w kolejności zgodnej ze spodziewanymi wynikiami, tak, by ankietowany nie sugerował się odpowiedzią udzieloną z użyciem teoretycznie precyzyjniejszego wykresu (i tak pie_chart jest przed bar_plotem, a tree_map przed waffle_chartem)
+* by uzyskać ciekawsze wyniki lepiej nie pytać o zmienne, których udział jest bliski 25% / 50% / 75% (zbyt łatwo byłoby rozpoznać te wartości na wykresie kołowym)
+
+## Wyniki
+
+Poniżej prezentuję wyniki ankiety. Na dwóch wykresach przedstawiłem ilość poszczególnych odpowiedzi dla każdego rodzaju wykresu i obu źródeł energii, o które pytałem ankietowanych. Dodatkowo, kolorem zielonym oznaczyłem odpowiedzi poprawne, niebieskim prawie poprawne, a czerwonym dalekie od rzeczywistości.
+
+```{r, answers, message=FALSE, fig.width=18, fig.height=8, fig.align="center"}
+poll_data <- poll_data %>%
+  melt() %>%
+  mutate(Correct = if_else(source == "Coal" & variable == "X40." | source == "Nuclear" & variable == "X10.", "Yes",
+                           if_else(source == "Coal" & variable %in% c("X35.", "X45.") | source == "Nuclear" & variable %in% c("X5.", "X15."), "Almost", "Not really"))) %>%
+  mutate(wykres = factor(wykres, levels=c("Pie", "Bar", "Tree", "Waffle"))) %>%
+  mutate(Correct = factor(Correct, levels=c("Yes", "Almost", "Not really")))
+
+theme_set(theme_gray())
+
+ggplot(filter(poll_data, source == 'Coal'), aes(x = variable, y = value, fill = Correct)) +
+  geom_col() +
+  scale_y_continuous(limits = c(0,20), breaks = seq(0,20,1), expand = c(0, 0)) +
+  scale_x_discrete(label = paste0(seq(0,100,5), rep("%", 20))) +
+  scale_fill_manual(values = c("#B4AF46", "#4682B4", "#B4464B")) +
+  theme(axis.text.x = element_text(angle = 45, vjust=0.5)) +
+  xlab("Answer") +
+  ylab("Count") +
+  labs(title = "Answers by plot type for source \"Coal\"") +
+  facet_grid(cols = vars(wykres), )
+
+ggplot(filter(poll_data, source == 'Nuclear'), aes(x = variable, y = value, fill = Correct)) +
+  geom_col() +
+  scale_y_continuous(limits = c(0,20), breaks = seq(0,20,1), expand = c(0, 0)) +
+  scale_x_discrete(label = paste0(seq(0,100,5), rep("%", 20))) +
+  scale_fill_manual(values = c("#B4AF46", "#4682B4", "#B4464B")) +
+  theme(axis.text.x = element_text(angle = 45, vjust=0.5)) +
+  xlab("Answer") +
+  ylab("Count") +
+  labs(title = "Answers by plot type for source \"Nuclear\"") +
+  facet_grid(cols = vars(wykres), )
+```
+  
+## Analiza
+
+Wyniki ankiety wydały mi się trudne do dokładnego przeanalizowania wyłącznie "na oko". Z powyższego powodu zdecydowałem się policzyć wymyślony przeze mnie indeks dla każdej kombinacji wykresu i źródla energii, o które pytałem ankietowanych. Wartości wspomnianego indeksu są z przedziału (0, 1) i wyznaczane są w następujący sposób: jest to średnia ważona, w której wartościami są liczby poszczególnych odpowiedzi, a wagami odwrotności odległości tych odpowiedzi od odpowiedzi poprawnej (tak, że odpowiedź poprawna ma wagę 1). Dokładny wzór można odczytać z poniższego kodu:
+
+```{r, index, warning=FALSE,fig.width=12, fig.height=8, fig.align="center"}
+poll_data <- mutate(poll_data, variable = as.numeric(stri_extract(variable, regex = "\\d+")))
+indexes <- data.frame(Type=character(), Source=character(), Index=numeric())
+for (x in unique(pull(poll_data, wykres))) {
+  for (y in unique(pull(poll_data, source))) {
+    data <- filter(poll_data, wykres == x & source == y)
+    mid = pull(filter(data, Correct == "Yes"), variable)
+    index = 0
+    for(z in pull(data, variable)) {
+      weight = ifelse(z == mid, 1, 1/((abs(mid-z)/5)+1))
+      index = index + pull(data, value)[match(z, pull(data, variable))]*weight
+    }
+    index = index/sum(filter(select(data, value), value != 0))
+    indexes <- bind_rows(indexes, tibble(Type=x, Source=y, Index=index))
+  }
+}
+
+indexes <- mutate(indexes, Type = factor(Type, levels=c("Pie", "Bar", "Tree", "Waffle")))
+
+ggplot(indexes, aes(x = Type, y = Index, fill = Source)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1), expand = c(0,0)) +
+  scale_fill_manual(values = c("#3a3a3a", "#9900cc"))
+```
+
+## Wnioski
+
+Myślę, że po przeprowadzonej analizie, śmiało mogę wysnuć następujący wniosek - w przypadku prezentowania proporcji, w kontekście precyzji odczytywania, zachodzi następująca zależność:
+
+<p style="text-align: center; font-size:40px;">pie_chart < tree_map < bar_plot < waffle_chart</p>
+
+Powyższy wniosek jest, między innymi, zgodny z wykładem - człowiek lepiej porównuje długości od kątów (a najlepiej zlicza kratki ;)). Ponadto, za ciekawą uważam obserwację, że odczytywanie niskich frakcji wypadło lepiej od odczytywania wysokich, dla każdego typu wykresu.
+W ankiecie pytałem także o płeć i wiek, ale wpływ tych czynników na odpowiedzi okazał się być marginalny.
