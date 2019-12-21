@@ -1,0 +1,197 @@
+---
+title: "Techniki wizualizacji danych - praca domowa nr 5"
+author: "Marceli Korbin"
+date: "6 grudnia, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE, out.width = "400px")
+library(dplyr)
+library(ggplot2)
+library(knitr)
+statsy <- readRDS("odpowiedzi.rds")
+duel <- function(x) {
+  statsy2 <- statsy %>% cbind(roznica = sign(statsy[, x*3]-statsy[, x*3-1]))
+  ggplot(statsy2, aes(x=roznica), y=..count..) +
+    geom_histogram(bins=5) +
+    scale_x_continuous(breaks=c(-1, 0, 1), labels=c("A", "remis", "B")) +
+    scale_y_continuous(breaks=0:15) +
+    labs(x="lepiej oceniony wykres", y="liczba głosów")
+} # funkcja generująca porównanie wyników głosowania w danej parze wykresów
+```
+
+## Wstęp
+
+_Jaki błąd najbardziej przeszkadza w odczytywaniu informacji z wykresu?_
+
+W swojej pracy domowej postanowiłem pójść trochę niestandardową drogą. Zamiast bezpośrednio sprawdzać, jakie konkretnie informacje odbierają ankietowani na niedobrych wykresach, zdecydowałem się zbadać u nich, jak dobrze potrafią oni rozpoznać tam błędy; czy są świadomi, w jakim stopniu i w jaki sposób odbiór informacji mógł być u nich zaburzony. Zaznajomiwszy się z rodzajami błędów, których należy unikać w wizualizacji danych, wybrałem 5 z nich, a następnie przyporządkowałem do nich po dwie pary złożone ze starego i nowego wykresu - łącznie 10 par. Pary te zestawiłem z kolei za pomocą wykresów swoich znajomych z pracy domowej nr 3 (folder _TYDZIEN4_) i ich oryginalnych, wadliwych wersji.
+
+Sporządziłem potem [ankietę](https://forms.gle/6Xbpta7x7Nh2cNBb6), w której umieściłem wszystkie pary i do każdej dodałem dwa polecenia do wykonania:
+
+* ocenić wykresy po ich obejrzeniu w skali od 1 do 6,
+* wskazać, czym różnił się lepiej oceniony przez ankietowanego wykres.
+
+Ankieta została wypełniona przez 15 osób, wśród których byli moi znajomi zarówno z liceum, jak i z grupy dziekańskiej na PW. Ankietowani są obu płci, ale w podobnym wieku z zakresu 20-21 lat. W tym raporcie przedstawię wyniki ankiety: który wykres był średnio lepiej oceniany i czy w komentarzach były wytykane popełnione/poprawione błędy.
+
+W każdym z wykresów podsumowujących "A" oznacza wyższą ocenę dla wykresu starego, "remis" - tę samą dla obu, a "B" - wyższą dla nowego. Pod każdym wykresem są spisane tłumaczenia, czym różnił się nowy wykres, autorstwa ankietowanych, którzy ocenili go lepiej.
+
+### Problem 1: słupki niezaczynające się od zera
+
+#### Para 1: dług sektora instytucji rządowych i samorządowych do PKB
+
+```{r para1a}
+include_graphics("wykresy/wykres1A.jpg")
+```
+```{r para1b}
+include_graphics("wykresy/wykres1B.jpg")
+```
+```{r para1x, out.width="600px"}
+duel(1)
+kable(statsy[statsy$rankA1<statsy$rankB1, "expl1"])
+```
+
+Lepiej został oceniony wadliwy wykres - tylko 5 osób zwróciło uwagę na złe wyskalowanie lub manipulację ogółem.
+
+#### Para 2: plon ziarna na tle wzorca pszenicy jakościowej
+
+```{r para2a}
+include_graphics("wykresy/wykres2A.jpg")
+```
+```{r para2b}
+include_graphics("wykresy/wykres2B.jpg")
+```
+```{r para2x, out.width="600px"}
+duel(2)
+kable(statsy[statsy$rankA2<statsy$rankB2, "expl2"])
+```
+
+Nowa wizualizacja jest wyżej oceniana nieznacznie częściej - 6 osób wskazuje na prawidłowe dobranie osi.
+
+### Problem 2: niewłaściwie dobrana geometria
+
+#### Para 3: spadek umieralności dzieci na malarię
+
+```{r para3a}
+include_graphics("wykresy/wykres3A.jpg")
+```
+```{r para3b}
+include_graphics("wykresy/wykres3B.jpg")
+```
+```{r para3x, out.width="600px"}
+duel(3)
+kable(statsy[statsy$rankA3<statsy$rankB3, "expl3"])
+```
+
+#### Para 4: liczebność klas społecznych
+
+```{r para4a}
+include_graphics("wykresy/wykres4A.jpg")
+```
+```{r para4b}
+include_graphics("wykresy/wykres4B.jpg")
+```
+```{r para4x, out.width="600px"}
+duel(4)
+kable(statsy[statsy$rankA4<statsy$rankB4, "expl4"])
+```
+
+Poprawienie geometrii zostało bardziej docenione przez ankietowanych - po 9 osób wskazuje na większą czytelność poprawionej wizualizacji.
+
+### Problem 3: niezachowane proporcje
+
+#### Para 5: najbogatsze administracje miejskie w Filipinach
+
+```{r para5a}
+include_graphics("wykresy/wykres5A.jpg")
+```
+```{r para5b}
+include_graphics("wykresy/wykres5B.jpg")
+```
+```{r para5x, out.width="600px"}
+duel(5)
+kable(statsy[statsy$rankA5<statsy$rankB5, "expl5"])
+```
+
+Niezachowane proporcje niewątpliwie są dla odbiorców dużym błędem w wizualizacji danych...
+
+#### Para 6: poparcie dla różnorodności społeczeństwa w USA
+
+```{r para6a}
+include_graphics("wykresy/wykres6A.jpg")
+```
+```{r para6b}
+include_graphics("wykresy/wykres6B.jpg")
+```
+```{r para6x, out.width="600px"}
+duel(6)
+kable(statsy[statsy$rankA6<statsy$rankB6, "expl6"])
+```
+
+...ale nie zawsze dyskwalifikującym - w drugim wypadku już tylko co najmniej 4 osoby zwróciły uwagę na proporcje.
+
+### Problem 4: zwodniczość użycia 3D
+
+#### Para 7: koszty współpracy z mediami gminy Kołobrzeg
+
+```{r para7a}
+include_graphics("wykresy/wykres7A.jpg")
+```
+```{r para7b}
+include_graphics("wykresy/wykres7B.jpg")
+```
+```{r para7x, out.width="600px"}
+duel(7)
+kable(statsy[statsy$rankA7<statsy$rankB7, "expl7"])
+```
+
+#### Para 8: wyniki wyborów do parlamentu w powiecie chojnickim
+
+```{r para8a}
+include_graphics("wykresy/wykres8A.jpg")
+```
+```{r para8b}
+include_graphics("wykresy/wykres8B.jpg")
+```
+```{r para8x, out.width="600px"}
+duel(8)
+kable(statsy[statsy$rankA8<statsy$rankB8, "expl8"])
+```
+
+Wykresy 3D ewidentnie nie przekonały ankietowanych aż tak, jak 2D. W obydwu parach ankietowani odpowiedzieli się za czytelnością, a niektórzy wręcz podkreślili sam fakt wycofania trzeciego wymiaru. Stary wykres w parze numer 8 dodatkowo popełnia błąd w postaci kołowości, który zostanie rozpatrzony osobno.
+
+### Problem 5: wykres kołowy
+
+#### Para 9: Amerykanie, którzy próbowali marihuany
+
+```{r para9a}
+include_graphics("wykresy/wykres9A.jpg")
+```
+```{r para9b}
+include_graphics("wykresy/wykres9B.jpg")
+```
+```{r para9x, out.width="600px"}
+duel(9)
+kable(statsy[statsy$rankA9<statsy$rankB9, "expl9"])
+```
+
+Dziesięć osób lepiej oceniło poprawioną wersję, przy czym niektórzy dodatkowo podkreślili, że wykres nie jest kołowy i nie wprowadza w błąd.
+
+#### Para 10: eksport mięsa drobiowego w I półroczu 2018
+
+```{r para10a}
+include_graphics("wykresy/wykres10A.jpg")
+```
+```{r para10b}
+include_graphics("wykresy/wykres10B.jpg")
+```
+```{r para10x, out.width="600px"}
+duel(10)
+kable(statsy[statsy$rankA10<statsy$rankB10, "expl10"])
+```
+
+Podobnie jednak jak w wypadku proporcji i wyskalowania, wykres kołowy nie zawsze jest odbierany jako wadliwy. Tylko 5 osób wskazało na łatwiejszy odczyt danych.
+
+## Podsumowanie
+
+Spośród najbardziej przeszkadzających błędów w odczycie wykresów można wymienić **niewłaściwą geometrię** i **trójwymiarowość**. Wycofanie tych błędów wpłynęło najlepiej na odbiór danych i poziom wykresu. Wadliwość w postaci słupków nierozpoczynających się od 0 została najmniej dostrzeżona przez ankietowanych, którzy nie zauważyli tak dużych problemów z czytelnością w przypadku starych wykresów.
