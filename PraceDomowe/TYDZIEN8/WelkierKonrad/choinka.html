@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+    <title>Moja choinka</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+  </head>
+  <body>
+  <p><b><font size="+2">Wesołych Świąt!</font></b></p>
+ <p>Wybierz kolor ozdoby na szczycie choinki:</p>
+ <form name="kolorychoinki">
+  <input type="radio" name="kolor" > Łososiowy <br>
+  <input type="radio" name="kolor" > Fuksja 
+</form>
+<p> Zmień liczbę oraz różnorodność kolorystyczną bombek <p>
+  <input type="range" min="0" max="3" id="bombki" value = 3>
+
+<script>
+
+var width = 800;
+var height = 800;
+czubek = [];
+    
+    czubek.push({
+      x: 150,
+    });
+
+var arc = d3.symbol().type(d3.symbolTriangle).size(7400);
+d3.select('body').append('svg').attr('width', width).attr('height',height)
+d3.select('svg')
+    .append("rect")
+    .attr("x", 235)
+    .attr('y',550)
+    .attr("width", 80)
+    .attr("height", 100)
+    .attr('fill', "brown")
+
+
+d3.select('svg').append('circle').attr('cy',500).attr('cx',100).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').append('circle').attr('cy',500).attr('cx',150).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').append("circle").attr('cy',500).attr('cx',200).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',500).attr('cx',250).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',500).attr('cx',300).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',500).attr('cx',350).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',500).attr('cx',400).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',500).attr('cx',450).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',430).attr('cx',140).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',430).attr('cx',200).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',430).attr('cx',260).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',430).attr('cx',320).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',430).attr('cx',410).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',360).attr('cx',180).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',360).attr('cx',230).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',360).attr('cx',300).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',360).attr('cx',370).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',290).attr('cx',220).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',290).attr('cx',280).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',290).attr('cx',330).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',220).attr('cx',260).attr('r',70).attr('fill','darkgreen')
+d3.select('svg').
+append("circle").attr('cy',220).attr('cx',290).attr('r',70).attr('fill','darkgreen')
+d3.select("svg")
+      .selectAll('path')
+      .data(czubek)
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', 'darkgreen')
+      .attr('stroke', 'darkgreen')
+      .attr('transform', function(d) {
+        return "translate(" + 275 + "," + d.x + ")";
+      });
+d3.select('svg')
+    .append("rect")
+    .attr("x", 265)
+    .attr('y',40)
+    .attr("width", 20)
+    .attr("height", 60)
+    .attr('fill', "gold")
+d3.select('svg').append('circle').attr('cy',40).attr('cx',275).attr('r',30).attr('fill','black')
+
+d3.select('svg').append("circle").attr('cy',300).attr('cx',200).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',275).attr('cx',370).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',145).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',405).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',525).attr('cx',410).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',455).attr('cx',450).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',385).attr('cx',135).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',475).attr('cx',150).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',510).attr('cx',335).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',200).attr('cx',250).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',340).attr('cx',400).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',530).attr('cx',200).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',370).attr('cx',240).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',410).attr('cx',390).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',270).attr('cx',300).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',520).attr('cx',80).attr('r',10).attr('fill','blue')
+
+var kolory = document.forms["kolorychoinki"].elements["kolor"];
+kolory[0].onclick = function(){d3.select('svg').append('circle').attr('cy',40).attr('cx',275).attr('r',30).attr('fill','#FA8072')}
+kolory[1].onclick = function(){d3.select('svg').append('circle').attr('cy',40).attr('cx',275).attr('r',30).attr('fill','#FF00FF')}
+
+d3.select("#bombki").on("input", function() {
+    if (this.value == 3){
+    d3.select('svg').append("circle").attr('cy',300).attr('cx',200).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',275).attr('cx',370).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',145).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',405).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',525).attr('cx',410).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',455).attr('cx',450).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',385).attr('cx',135).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',475).attr('cx',150).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',510).attr('cx',335).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',200).attr('cx',250).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',340).attr('cx',400).attr('r',10).attr('fill','lime')
+d3.select('svg').append("circle").attr('cy',530).attr('cx',200).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',370).attr('cx',240).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',410).attr('cx',390).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',270).attr('cx',300).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',520).attr('cx',80).attr('r',10).attr('fill','blue')}
+if (this.value == 2){
+d3.select('svg').append("circle").attr('cy',300).attr('cx',200).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',275).attr('cx',370).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',145).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',405).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',525).attr('cx',410).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',455).attr('cx',450).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',385).attr('cx',135).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',530).attr('cx',200).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',370).attr('cx',240).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',410).attr('cx',390).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',270).attr('cx',300).attr('r',10).attr('fill','blue')
+d3.select('svg').append("circle").attr('cy',520).attr('cx',80).attr('r',10).attr('fill','blue')
+d3.selectAll("circle[fill = lime]").remove()
+}
+    if (this.value == 1){
+    d3.select('svg').append("circle").attr('cy',300).attr('cx',200).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',275).attr('cx',370).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',145).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',405).attr('cx',300).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',525).attr('cx',410).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',455).attr('cx',450).attr('r',10).attr('fill','red')
+d3.select('svg').append("circle").attr('cy',385).attr('cx',135).attr('r',10).attr('fill','red')
+     d3.selectAll("circle[fill = lime]").remove()
+     d3.selectAll("circle[fill = blue]").remove()
+    }
+  if (this.value == 0){
+  d3.selectAll("circle[fill = lime]").remove()
+     d3.selectAll("circle[fill = blue]").remove()
+     d3.selectAll("circle[fill = red]").remove()
+  }
+    });
+  
+</script>
+</body>
+</html>
