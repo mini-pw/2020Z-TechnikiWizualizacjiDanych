@@ -1,47 +1,60 @@
 
-
-
+// długość boku największego trójkąta (dolnego)
 var a = data[0].a;
+// długość boku średniego trójkąta (środkowego)
+var b = 0.8*a;
+// długość boku najmniejszego trójkąta (górnego)
+var c = 0.6*a;
+// rozmiar gwiazdy
+var k = 0.2*a;
+// rozmiar bombek
+var bubleSize = a/40;
+// liczba bombek
 var bublesCount = data[0].bublesCount;
+// gwiazda na czubku
 var starOnTop = data[0].starOnTop;
+// gwiazda świecąca
 var starShining = data[0].starShining;
+// specjalny przycisk mocy
 var babyYoda = data[0].babyYoda;
 
+// usuwamy poprzedni obrazek
 svg.selectAll('*').remove();
 
-
-var b = 0.8*a;
-var c = 0.6*a;
-
+// koordynaty pnia
 var trunk = [{"x": 400 - a/8, "y": 680 + a/4},
-{"x": 400 + a/8, "y": 680 + a/4},
-{"x": 400 + a/8, "y": 680},
-{"x": 400 - a/8, "y": 680}];
+             {"x": 400 + a/8, "y": 680 + a/4},
+             {"x": 400 + a/8, "y": 680},
+             {"x": 400 - a/8, "y": 680}];
 
+// koodrynaty choinki 
+// dolny trójkąt
 var lowertriangle = [{"x": 400, "y": 680 - a*Math.sqrt(3)/2},
-{"x": 400 + a/2 , "y": 680},
-{"x": 400 - a/2 , "y": 680}];
+                     {"x": 400 + a/2 , "y": 680},
+                     {"x": 400 - a/2 , "y": 680}];
 
+// środkowy trójkąt
 var middletriangle = [{"x": 400, "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4},
-{"x": 400 + b/2 , "y": 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4},
-{"x": 400 - b/2 , "y": 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4}];
-
+                      {"x": 400 + b/2 , "y": 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4},
+                      {"x": 400 - b/2 , "y": 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4}];
+                      
+// górny trójkąt
 var uppertriangle = [{"x": 400, "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 - c*Math.sqrt(3)/4},
-{"x": 400 + c/2 , "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/4},
-{"x": 400 - c/2 , "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/4}];
+                     {"x": 400 + c/2 , "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/4},
+                     {"x": 400 - c/2 , "y": 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/4}];
 
+// koordynaty czubka
 var topx = 400;
 var topy = 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 - c*Math.sqrt(3)/4;
 
-var k = 0.2*a;
-
+// kordynaty gwiazdy
 var star = [{"x": topx - k*Math.sin(4*Math.PI/5), "y": topy + k*Math.cos(Math.PI/5)},
-{"x": topx + k*Math.sin(2*Math.PI/5), "y": topy - k*Math.cos(2*Math.PI/5)},
-{"x": topx - k*Math.sin(2*Math.PI/5), "y": topy - k*Math.cos(2*Math.PI/5)},
-{"x": topx + k*Math.sin(4*Math.PI/5), "y": topy + k*Math.cos(Math.PI/5)},
-{"x": topx, "y": topy - k}];
+            {"x": topx + k*Math.sin(2*Math.PI/5), "y": topy - k*Math.cos(2*Math.PI/5)},
+            {"x": topx - k*Math.sin(2*Math.PI/5), "y": topy - k*Math.cos(2*Math.PI/5)},
+            {"x": topx + k*Math.sin(4*Math.PI/5), "y": topy + k*Math.cos(Math.PI/5)},
+            {"x": topx, "y": topy - k}];
 
-
+// rysujemy pień
 svg.append("polygon")
    .data([trunk])
    .attr("fill", "#663300")
@@ -49,7 +62,8 @@ svg.append("polygon")
      return d.map(function(d) {
        return [d.x,d.y].join(",");})
        .join(" ");});
-       
+
+// rysujemy choinkę       
 svg.append("polygon")
    .data([lowertriangle])
    .attr("fill", "#33cc33")
@@ -57,7 +71,6 @@ svg.append("polygon")
      return d.map(function(d) {
        return [d.x,d.y].join(",");})
        .join(" ");});
-       
        
 svg.append("polygon")
    .data([middletriangle])
@@ -67,8 +80,6 @@ svg.append("polygon")
        return [d.x,d.y].join(",");})
        .join(" ");});
        
-       
-              
 svg.append("polygon")
    .data([uppertriangle])
    .attr("fill", "#33cc33")
@@ -77,23 +88,23 @@ svg.append("polygon")
        return [d.x,d.y].join(",");})
        .join(" ");});
        
-    
-   function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
+// funkcja generująca randomowe kolory -  do pokolorowania bombek    
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
        
-
-
+// bombeczki       
 var bubles = d3.range(bublesCount).map(function(){
-  t = Math.random()*3;
+  t = Math.random()*3; // losujemy trójkąt choinki
   w = Math.random()*700;
   z = Math.random()*700;
-  if(t<=1){  //dolny trojkat
+  // wpadające w dolny trójkąt choinki
+  if(t<=1){  
     x = Math.random()*a + 400 - a/2;
     if(x<400){
        y = 680 - Math.random()*(x - (400 - a/2))*Math.sqrt(3);
@@ -101,7 +112,8 @@ var bubles = d3.range(bublesCount).map(function(){
     else{
        y = 680 - Math.random()*((400 + a/2) - x)*Math.sqrt(3);     }
   }
-  else if(t<=2 & t>1){ //srodkowy trojkat choinki
+  // wpadające w środkowy trójkąt choinki
+  else if(t<=2 & t>1){ 
     x = Math.random()*b + 400 - b/2;
     if(x<400){
       y = 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4 - Math.random()*(x - (400 - b/2))*Math.sqrt(3);
@@ -110,7 +122,8 @@ var bubles = d3.range(bublesCount).map(function(){
       y = 680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/4 - Math.random()*((400 + b/2) - x)*Math.sqrt(3);
     }
   }
-  else { //górny trojkat
+  // wpadające w górny trójkąt choinki
+  else { 
     x = Math.random()*c + 400 - c/2;
     if(x<400){
       y = 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/4 - Math.random()*(x - (400 - c/2))*Math.sqrt(3);
@@ -120,8 +133,7 @@ var bubles = d3.range(bublesCount).map(function(){
     }
 return {x, y, w, z, color: getRandomColor()  }});
 
-var bubleSize = a/40;
-
+// użycie mocy
 if (babyYoda){
   svg.selectAll('circle')
     .data(bubles)
@@ -141,6 +153,7 @@ if (babyYoda){
     
 }else{
 
+// normalne rozmieszczenie bombek (losowe, ale tak, żeby wpadały na choinke)
 svg.selectAll('circle')
     .data(bubles)
     .enter()
@@ -152,6 +165,7 @@ svg.selectAll('circle')
     
 }
     
+// dodanie gwiazdki   
 if (starOnTop) {
   svg.append("polygon")
    .data([star])
@@ -161,6 +175,8 @@ if (starOnTop) {
        return [d.x,d.y].join(",");})
        .join(" ");});
 }
+
+// gwiazdka świeci
 if (starShining){
    svg.append("polygon")
    .data([star])
