@@ -14,9 +14,9 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-11-07 W: [Kolory](http://biecek.pl/Eseje/indexKolory.html); L: [Inkscape](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/blob/master/Materia%C5%82y/TYDZIEN5/export.R).
 * 2019-11-14 W: [Historia grafiki statystycznej](http://biecek.pl/Eseje/indexHistoria.html); L: [Obrazy rastrowe i glify. Interaktywne dokumenty .Rmd](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN6).
 * 2019-11-21 W: Prezentacje projektów; L: [Wstęp do Shiny. Interaktywne wizualizacje.](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN7).
-* 2019-11-28 W: Omówienie projektu I;
-* 2019-12-05 
-* 2019-12-12 W: Prezentacje studentów cz 1;
+* 2019-11-28 W: Omówienie projektu I; L: [Shiny: reaktywność i izolacja](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN8).
+* 2019-12-05 L: [r2d3](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN9)
+* 2019-12-12 W: Prezentacje studentów cz 1; L: [Wstęp do d3](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN9)
 * 2019-12-19
 * 2020-01-09
 * 2020-01-16
