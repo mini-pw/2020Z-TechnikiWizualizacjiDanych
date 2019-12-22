@@ -8,9 +8,13 @@ var c = 0.6*a;
 // rozmiar gwiazdy
 var k = 0.2*a;
 // rozmiar bombek
-var bubleSize = a/40;
+var bubleSize = a/28;
 // liczba bombek
 var bublesCount = data[0].bublesCount;
+// łańcuchy
+var addChain = data[0].addChain;
+// kolor łańcucha
+var chainColour = data[0].chainColour;
 // gwiazda na czubku
 var starOnTop = data[0].starOnTop;
 // gwiazda świecąca
@@ -97,6 +101,40 @@ function getRandomColor() {
     }
     return color;
   }
+  
+// łańcuchy  
+
+if (addChain){
+// dolny łańcuch
+svg.append('line')
+    .style('stroke', chainColour)
+    .style('stroke-width', 10)
+    .style('stroke-linecap', 'round')
+    .attr('x1', 400+a/4)
+    .attr('y1', 680 - a*Math.sqrt(3)/4)
+    .attr('x2',400 - 3*a/8)
+    .attr('y2',680 - a*Math.sqrt(3)/8);
+    
+// środkowy łańcuch
+svg.append('line')
+    .style('stroke', chainColour)
+    .style('stroke-width', 10)
+    .style('stroke-linecap', 'round')
+    .attr('x1', 400 - b/4)
+    .attr('y1', 680 - a*Math.sqrt(3)/2)
+    .attr('x2',400 + 3*b/8)
+    .attr('y2',680 - a*Math.sqrt(3)/2 + b*Math.sqrt(3)/8);
+    
+// górny łańcuch    
+svg.append('line')
+    .style('stroke', chainColour)
+    .style('stroke-width', 10)
+    .style('stroke-linecap', 'round')
+    .attr('x1', 400+c/4)
+    .attr('y1', 680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4)
+    .attr('x2',400 - 3*c/8)
+    .attr('y2',680 - a*Math.sqrt(3)/2 - b*Math.sqrt(3)/4 + c*Math.sqrt(3)/8);
+}
        
 // bombeczki       
 var bubles = d3.range(bublesCount).map(function(){

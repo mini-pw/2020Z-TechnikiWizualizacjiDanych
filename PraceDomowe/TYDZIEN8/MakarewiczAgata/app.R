@@ -6,10 +6,19 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       sliderInput(
-      "a", label = "Powiększ swoją choinkę", min = 100, max = 400, value = 200
+      "a", label = "Powiększ swoją choinkę", min = 100, max = 400, value = 300
     ),
     numericInput(
-      "bublesCount", label = "Wybierz liczbę bombek", value = 50
+      "bublesCount", label = "Wybierz liczbę bombek", value = 0
+    ),
+    checkboxInput(
+      "addChain", label = "Zawieś łańcuchy", value = FALSE, width = "50px"
+    ),
+    conditionalPanel(
+      "input.addChain",
+      colourInput("chainColour",
+                  label = "Wybierz kolor łańcucha",
+                  value = "blue"),
     ),
     checkboxInput(
       "starOnTop", label = "Dodaj gwiazdkę", value = FALSE, width = "50px"
@@ -38,6 +47,8 @@ server <- function(input, output) {
       data.frame(
         a = input[["a"]],
         bublesCount = round(input[["bublesCount"]]),
+        addChain = input[["addChain"]],
+        chainColour = input[["chainColour"]],
         starOnTop = input[["starOnTop"]],
         starShining = input[["starShining"]],
         babyYoda = input[["babyYoda"]]
