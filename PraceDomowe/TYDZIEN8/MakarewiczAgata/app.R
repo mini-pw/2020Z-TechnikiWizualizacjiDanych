@@ -1,5 +1,6 @@
 library(shiny)
 library(r2d3)
+library(colourpicker)
 
 ui <- fluidPage(
   titlePanel("Praca domowa 7"),
