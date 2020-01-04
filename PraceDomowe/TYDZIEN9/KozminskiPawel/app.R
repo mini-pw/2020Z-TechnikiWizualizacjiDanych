@@ -1,27 +1,16 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 library(r2d3)
 library(shiny)
 library(reshape2)
 library(dplyr)
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
 
-    # Application title
     titlePanel("Lok Sabha general elections turnout by sex"),
 
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
             sliderInput("bins",
-                        "Choose Lok Sabhas you are interested in:",
+                        "Choose Lok Sabha's terms of office you are interested in:",
                         min = 3,
                         max = 17,
                         value = c(3, 17)),
@@ -32,19 +21,17 @@ ui <- fluidPage(
                                selected = c("man", "woman"))
         ),
 
-        # Show a plot of the generated distribution
         mainPanel(
           d3Output("d3")
         )
     )
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  dataToPlot <- melt(read.csv("data.csv"), id.vars = c("lok_sabha", "year"))
+  dataToPlot <- melt(read.csv("data.csv"), id.vars = c("lok_sabha", "year", "term"))
   dataToPlot <-  dataToPlot %>%
-    mutate(color = ifelse(dataToPlot[["variable"]] == 'man', "steelblue", "green"))
+    mutate(color = ifelse(dataToPlot[["variable"]] == 'man', "#FA9E31", "#148606"))
   dataToPlot <- dataToPlot[complete.cases(dataToPlot),]
   dataToPlot <- dataToPlot[order(dataToPlot[["year"]]),]
   
