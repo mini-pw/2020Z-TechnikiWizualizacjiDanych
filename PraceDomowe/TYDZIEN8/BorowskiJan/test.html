@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+ 
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}
+ 
+</style>
+<body>
+  <input type="checkbox" id="myCheckbox"> Święta?    
+  Kolor tła:
+  <button type="button" onclick="changeColor('blue')">Niebieski</button>
+ <button type="button" onclick="changeColor('pink')">Różowy</button>
+<button type="button" onclick="changeColor('yellow')">Żółty</button>
+ <svg width="960" height="600"></svg>
+
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var width = 960,
+    height = 700;
+    
+    function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+// Nwm czasem działa 
+
+var myMusic;
+myMusic = new sound("muzyka.mp3");
+ 
+var svg = d3.select("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var scaleX = d3.scale.linear()
+        .domain([0,70]) 
+        .range([0,width]);
+
+var scaleY = d3.scale.linear()
+        .domain([0,100]) 
+        .range([height,0]);
+
+d3.json("polygons.json", function(data) {
+  svg.selectAll("polygon")
+    .data(data.Polygons)
+    .enter().append("polygon")
+    .attr("points",function(d) { 
+          return d.points.map(function(d) { return [scaleX(d.x),scaleY(d.y)].join(","); }).join(" ");})
+      .attr("stroke","green")
+      .attr("stroke-width",2)
+      .attr("fill","green"); 
+});
+
+poly = [{"x":0, "y":25},
+        {"x":8.5,"y":23.4},
+        {"x":13.0,"y":21.0},
+        {"x":19.0,"y":15.5}];
+
+d3.selectAll("polygon")
+    .data(poly)
+    .enter()
+    .append("polygon")
+    .attr("points",function(d) { 
+        return [scaleX(d.x),scaleY(d.y)].join(",")})
+    .attr("stroke","black")
+    .attr("stroke-width",2);
+      svg.append("rect")
+      
+    var allGroup = ["yellow", "blue", "red", "green", "purple", "black"]
+
+
+    var dropdownButton = d3.select("#dataviz_builtWithD3")
+       .append('select')  
+
+svg.append('rect')
+  .attr('x', 450)
+  .attr('y', 665)
+  .attr('width', 50)
+  .attr('height', 50)
+  .attr('fill', 'brown');
+    var color = 'green'
+    var Bombki = [
+            [470,300],
+            [550,400],
+            [350,480],
+            [600,600],
+            [350,620],
+            [470,600]]
+  d3.select("#myCheckbox").on("change",function() {
+				if(d3.select("#myCheckbox").property("checked")){
+					 color = 'red';
+				svg.selectAll('circle')
+				.data(Bombki)
+				.enter()
+				.append('circle')
+        .attr('cx', d => d[0])
+        .attr('cy', d => d[1])
+        .attr('r', 20)
+        .attr('fill', color)
+        myMusic.play();
+				} else {
+					 color = 'green';
+					 svg.selectAll('circle').remove();
+					 myMusic.stop();
+     
+				}	
+    
+  });
+  
+  var changeColor = function(color){
+
+    
+    svg.select("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", color);
+}
+
+
+  
+  
+
+ 
+ 
+ 
+   
+      
+</script>
+ </body>
+</html>
