@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<style type="text/css">
+body{
+ background-color:#F5F5F5; 
+font-family: 'Lato', sans-serif;
+}
+.wrapper{
+  display:block;
+  width:100%;
+}
+.right{
+  display:block;
+  float:left;
+  width:25%;
+}
+.right-block{
+  padding:20px;
+}
+p.title{
+  color:#000;
+  font-size:1.5em;
+}
+
+</style>
+    <title>Podstawy d3</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+  </head>
+  <body>
+    <style>
+body {
+  background-image: url('snow.jpg');
+  background-repeat: no-repeat;
+}
+</style>
+   <div class="tree-color">
+Kolor drzewka: <select id="tree">
+<option value="red">red</option>
+<option value="black">black</option>
+<option value="green" selected >green</option>
+
+</select>
+</div>
+<div class="trunk-color">
+Kolor pnia: <select id="trunk">
+<option value="black" >black</option>
+<option value="brown"selected >brown</option>
+</select>
+</div>
+<div class="star-color">
+Kolor gwiazdy: <select id="star">
+<option value="red" >red</option>
+<option value="gold"selected >gold</option>
+</select>
+</div>
+<audio src="a.mp3" controls></audio>
+<p>Podaj liczbę bombek:
+<input type="number"  min=0 max=50 id = 'input' value = 10></p>
+
+
+
+<svg height="500" width="400">
+<polygon points="160.7,403.2 160.7,403.2 205.1,403.2 205.1,403.2 365.9,403.2 283.2,320.6 352,320.6 267.3,235.8 323.8,235.8 
+253.2,165.1 290.9,165.1 182.9,57.2 74.9,165.1 112.7,165.1 42,235.8 98.6,235.8 13.8,320.6 82.6,320.6 0,403.2 " class="tree"  fill="green"/>
+
+<polygon points="165.6,57.2 182.9,48 200.3,57.2 197,37.8 211.1,24.1 191.6,21.3 182.9,3.7 174.2,21.3 154.8,24.1 168.9,37.8 " class="star" fill = "gold" />
+
+<rect x="160.4" y="403.2" width="45" height="83.3" class="trunk" fill = "brown" />
+
+
+  <script>
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = 20;
+   
+   
+function bombki (amount){   
+var circles = d3.range(amount).map(function() {
+  return {
+    x: Math.round(Math.random() * (width - radius * 2) + radius),
+    y: Math.round(Math.random() * (height - radius * 2) + radius)
+  };
+});
+
+var color = d3.scaleOrdinal()
+    .range(d3.schemeCategory20);
+    
+function dragstarted(d) {
+  d3.select(this).raise().classed("active", true);
+}
+
+function dragged(d) {
+  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+}
+
+function dragended(d) {
+  d3.select(this).classed("active", false);
+}
+
+
+
+svg.selectAll("circle")
+  .data(circles)
+  .enter().append("circle")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", radius)
+    .style("fill", function(d, i) { return color(i); })
+    .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+}
+bombki(10)
+ 
+   	d3.select('#tree').on('change', function() {
+		  d3.selectAll('.tree')
+			.style('fill', d3.select("#tree").property("value"))
+		})
+			d3.select('#trunk').on('change', function() {
+		  d3.selectAll('rect')
+			.style('fill', d3.select("#trunk").property("value"))
+		})
+		d3.select('#star').on('change', function() {
+		  d3.selectAll('.star')
+			.style('fill', d3.select("#star").property("value"))
+		})
+		d3.select('#input').on('change', function(){
+    svg.selectAll('circle').remove()
+    ilosc= d3.select('#input').property('value')
+    bombki(ilosc)
+		})
+		 
+
+		
+
+</script>
+
