@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Praca domowa 6</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+</head>
+
+<body>
+
+    <h1>Wesołych świąt!</h1>
+    <h3>Michał Wdowski</h3>
+    <h3>Praca domowa 6</h3>
+
+    <p>Można zmienić liczbę bombek</p>
+    <input type="range" min=0 max=100 step=1 id="baubleNumberRange">
+
+    <p>Albo włączyć/wyłączyć ciemniejszy kolor drzewka<input type="checkbox" id="changeColorCheckbox"></p>
+
+    <!-- TODO -->
+    <p>Można też zmienić rozmiar bombek</p>
+    <form id="sizeRadioBox">
+        <input type="radio" name="size" value="male" checked>Małe<br>
+        <input type="radio" name="size" value="srednie">Średnie<br>
+        <input type="radio" name="size" value="duze">Duże
+    </form>
+    
+    <script>
+    
+    var koloryBombek = ["#A8005A", "#FFD957", "#FF5E30", "#2951AD"]
+    var rozmiarBombek = 5
+    
+    // Stworzenie pierwotnej choinki
+    var choinka = 
+        d3.select("body")
+        .append("svg")
+        .attr('height', 600)
+        .attr('width', 375)
+        .append("polygon")
+        .attr("fill", "#0F6719")
+        .attr("points", "0,400 125,0 250,400")
+      
+    // Dane z pozycjami i kolorami bombek
+    var cd = d3.range(document.getElementById("baubleNumberRange").value).map(function() {
+        y = Math.random()*400;
+        x = 125 - y*5/16 + Math.random()*y*5/8;
+        color = koloryBombek[ Math.floor( Math.random()*4 ) ];
+        return {x, y, color}
+    })
+    
+    // bombki
+    var obrazek = 
+        d3.selectAll("svg")
+        .selectAll("circle")
+        .data(cd)
+        .enter()
+        .append("circle")
+        .attr('cx', function(d) {return d.x;})
+        .attr('cy', function(d) {return d.y;})
+        .attr("fill", function(d) {return d.color;})
+        .attr('r', rozmiarBombek)
+
+    // Zmiana liczby bombek -reakcja na zmiany na kontrolce baubleNumberRange
+    d3.select('#baubleNumberRange').on("change", function() {
+        cd = d3.range(document.getElementById("baubleNumberRange").value).map(function() {
+            y = Math.random()*400;
+            x = 125 - y*5/16 + Math.random()*y*5/8;
+            color = koloryBombek[ Math.floor( Math.random()*4 ) ];
+            return {x, y, color}
+        })
+        d3.selectAll("svg")
+            .selectAll("circle")
+            .remove();
+        d3.selectAll("svg")
+            .selectAll("circle")
+            .data(cd)
+            .enter()
+            .append("circle")
+            .attr('cx', function(d) {return d.x;})
+            .attr('cy', function(d) {return d.y;})
+            .attr("fill", function(d) {return d.color;})
+            .attr('r', rozmiarBombek);
+    })
+    
+    // Zmiana koloru - reakcja na zmiany w kontrolce changeColorCheckbox
+    d3.select('#changeColorCheckbox').on('change', function() {
+        if(d3.select('#changeColorCheckbox').property('checked')) {
+            choinka.transition()
+            .duration(500)
+            .attr('fill', '#0F4430');
+        } else {
+            choinka.transition()
+            .duration(500)
+            .attr('fill', '#0F6719');
+        }
+    });
+    
+    // Zmiana rozmiaru - reakcja na zmiany w radioboxie
+    var choiceList = document.forms["sizeRadioBox"].elements["size"]
+    choiceList[0].onclick = function() {
+        rozmiarBombek = 5
+        d3.selectAll("svg")
+            .selectAll("circle")
+            .transition()
+            .duration(500)
+            .attr('r', rozmiarBombek);
+    }
+    choiceList[1].onclick = function() {
+        rozmiarBombek = 7.5
+        d3.selectAll("svg")
+            .selectAll("circle")
+            .transition()
+            .duration(500)
+            .attr('r', rozmiarBombek);
+    }
+    choiceList[2].onclick = function() {
+        rozmiarBombek = 10
+        d3.selectAll("svg")
+            .selectAll("circle")
+            .transition()
+            .duration(500)
+            .attr('r', rozmiarBombek);
+    }
+    
+    </script>
+</body>
+</html>
