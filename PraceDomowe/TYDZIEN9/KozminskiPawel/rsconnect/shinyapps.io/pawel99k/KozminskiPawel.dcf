@@ -5,8 +5,8 @@ account: pawel99k
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1626996
-bundleId: 2706466
+bundleId: 2706531
 url: https://pawel99k.shinyapps.io/KozminskiPawel/
-when: 1578158387.51739
+when: 1578161701.71698
 asMultiple: FALSE
 asStatic: FALSE

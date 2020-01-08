@@ -56,6 +56,7 @@ bars.enter().append('rect')
     .attr('x', function(d, i) { return i * barwidth; })
     .attr('y', function(d) { return 0.9 * height - d.value/100* 0.9 * height; })
     .attr('fill', function(d) { return d.color; });
+    .attr('color', 'red')
     
 textlabels
     .enter().append("text")
@@ -64,7 +65,8 @@ textlabels
     .text(function(d) { return d.value.toString().concat("%"); })
     .attr("font-size", (0.0255*(data.length-30)*(data.length-30)+10).toString().concat("px"));
     
-/*r2d3.svg.append("g")
+/*
+r2d3.svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height - 100 + ")")
       .call(xAxis)
