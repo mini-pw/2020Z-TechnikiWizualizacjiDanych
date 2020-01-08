@@ -1,0 +1,12 @@
+name: CSGO_Visualizer
+title: CSGO_Visualizer
+username:
+account: plentycoups
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1636261
+bundleId: 2714049
+url: https://plentycoups.shinyapps.io/CSGO_Visualizer/
+when: 1578481442.99214
+asMultiple: FALSE
+asStatic: FALSE
