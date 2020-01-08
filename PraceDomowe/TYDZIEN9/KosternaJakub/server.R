@@ -3,13 +3,15 @@ library(jpeg)
 library(grid)
 library(ggplot2)
 
+data <- data.frame(names = rev(c("1. Makati City", "2. Quezon City",
+                                 "3. City of Manila", "4. Pasig City", "5. Cebu province", "6. Cebu City",
+                                 "7. Taguig City", "8. Compostela Valley", "9. Caloocan City", "10. Pasay City")),
+                   values = rev(c(230833, 87285, 40711, 38985, 35659, 33884, 24535, 19615, 18381, 18278)))
+data$names <- factor(data$names, levels = data$names)
+
 function(input, output){
   dataset <- reactive({
-    
-    data.frame(names = rev(c("1. Makati City", "2. Quezon City",
-                                        "3. City of Manila", "4. Pasig City", "5. Cebu province", "6. Cebu City",
-                                        "7. Taguig City", "8. Compostela Valley", "9. Caloocan City", "10. Pasay City")),
-                          values = rev(c(230833, 87285, 40711, 38985, 35659, 33884, 24535, 19615, 18381, 18278)))
+    data
   })
   
   output$plot <- renderPlot({
