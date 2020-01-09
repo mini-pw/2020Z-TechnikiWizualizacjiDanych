@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Christmas Tree</title>
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script src='tree.js'></script>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+<div id="wrapper">
+    <div id="control">
+        <h1>
+            Ubierz choinkę!
+        </h1>
+        <br/>
+        <h4> Dodaj bombkę: </h4>
+        <button type="button" onclick="addBauble(image, 'red')"><font color="red"><b>CZERWONĄ</b></font></button><br/><br/>
+        <button type="button" onclick="addBauble(image, 'blue')"><font color="blue"><b>NIEBIESKĄ</b></font></button><br/><br/>
+        <button type="button" onclick="addBauble(image, 'yellow')"><font color="yellow"><b>ŻÓŁTĄ</b></font></button><br/><br/>
+        <p> Tylko ostrożnie! Bombki łatwo się tłuką. </p>
+        <br/>
+        <p> Możesz też kliknąć na już dodaną bombkę, <br/> żeby się jej pozbyć. </p>
+    </div>
+    <div id="tree">
+        <script>
+            var image = d3.select('#tree')
+                .append('svg')
+                .attr('height', svgHeight)
+                .attr('width', svgWidth);
+
+            printTree(image);
+        </script>
+    </div>
+</div>
+</body>
+</html>
