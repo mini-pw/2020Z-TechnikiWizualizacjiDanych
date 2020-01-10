@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Choinka w d3</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+  </head>
+  <body>
+  
+    <p>Choinka w d3</p>
+    <p>Kliknij przycisk, żeby dodać bombki na drzewko</p>
+
+    <button id="bombki">Dodaj bombki</button>
+    <button id="usun">Usuń bombki</button>
+    <p>Kolor bombek:
+          <select id="kolor">
+          <option value="white" selected>biały</option>
+          <option value="red">czerwony</option>
+          <option value="yellow">żółty</option>
+          <option value="blue" selected>niebieski</option>
+          </select>
+          </p>
+    <script>
+    
+    var svg = 
+    d3.select('body')
+      .append('svg')
+      .attr('height', 500)
+      .attr('width', 500)
+      
+    triangles = [];
+    triangles.push({
+      x: 400,
+    });
+    triangles.push({
+      x: 300,
+    });
+    triangles.push({
+      x: 200,
+    });
+    
+    babki = [];
+    babki.push({
+      x: 145,
+      y: 270
+    })
+    babki.push({
+      x: 155,
+      y: 300
+    })
+    babki.push({
+      x: 125,
+      y: 310
+    })
+    babki.push({
+      x: 180,
+      y: 325
+    })
+    babki.push({
+      x: 145,
+      y: 380
+    })
+    babki.push({
+      x: 175,
+      y: 400
+    })
+    babki.push({
+      x: 120,
+      y: 410
+    })
+    babki.push({
+      x: 152,
+      y: 420
+    })
+    babki.push({
+      x: 145,
+      y: 180
+    })
+    babki.push({
+      x: 175,
+      y: 200
+    })
+    babki.push({
+      x: 120,
+      y: 210
+    })
+    babki.push({
+      x: 152,
+      y: 220
+    })
+
+
+
+
+    var arc = d3.symbol().type(d3.symbolTriangle).size(8000);
+    
+    var choinka =   
+    d3.select("svg")
+      .selectAll('path')
+      .data(triangles)
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', 'green')
+      .attr('stroke', 'green')
+      .attr('transform', function(d) {
+        return "translate(" + 150 + "," + d.x + ")";
+      });
+    
+    var rect =   
+    d3.select('svg')
+    .append("rect")
+    .attr("x", 135)
+    .attr("y", 440)
+    .attr("width", 30)
+    .attr("height", 30)
+    .attr('fill', "brown")
+      
+      
+    d3.select('#bombki').on('click', function() {
+    
+    d3.select('svg')
+      .selectAll('circle')
+      .data(babki)
+      .enter()
+      .append('circle')
+      .attr('cx', function(d) {return d.x;})
+      .attr('cy', function(d) {return d.y;})
+      .attr('r', 8)
+      .attr('fill', d3.select("#kolor").property("value"));
+    })
+      
+    d3.select('#kolor').on('change', function() {
+      d3.selectAll('circle')
+        .transition()
+        .duration(1000)
+        .style('fill', d3.select("#kolor").property("value"))
+      })
+    
+    d3.select('#usun').on('click', function() {
+      d3.select('svg')
+      .selectAll('circle').remove()
+    })
+      
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<head>
+  <style>
+    body {
+      font-family: verdana;
+      background-color: floralwhite;
+
+    }
+    h1 {
+      text-align: center;
+      color: brown;
+      font-size: 0;
+
+    }
+    svg{
+      margin-left: auto;
+      display: inline-block;
+    }
+    #menu{
+      width: 560px;
+      height: 100%;
+      float: left;
+      text-align: center;
+    }
+    .btn{
+      width: 200px;
+      height: 50px;
+      font-size: 30px;
+      color: goldenrod;
+      border: transparent;
+      margin-top: 20px;
+      border-radius: 10px;
+      vertical-align: middle;
+    }
+
+    .btn:hover{
+      background-color: gray;
+      transition: all 0.5s;
+    }
+
+    #star {
+        size: 80%;
+    }
+
+
+    .snowflake {
+          color: #fff;
+          font-size: 1em;
+          font-family: Arial, sans-serif;
+          text-shadow: 0 0 5px #000;
+        }
+    .snowflakes {
+        visibility: hidden;
+    }
+        
+    @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%,100%{-webkit-transform:translateX(0);transform:translateX(0)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%,100%{transform:translateX(0)}50%{transform:translateX(80px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}.snowflake:nth-of-type(10){left:25%;-webkit-animation-delay:2s,0s;animation-delay:2s,0s}.snowflake:nth-of-type(11){left:65%;-webkit-animation-delay:4s,2.5s;animation-delay:4s,2.5s}
+    
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">
+        ❅
+        </div>
+        <div class="snowflake">
+        ❆
+        </div>
+        <div class="snowflake">
+        ❅
+        </div>
+        <div class="snowflake">
+        ❆
+        </div>
+        <div class="snowflake">
+        ❅
+        </div>
+        <div class="snowflake">
+        ❆
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+        </div>
+        <h1>Wesołych świąt</h1>
+
+        <div id="menu">
+            <div id="buttons">      
+            <button type="button" id= "bombki" class="btn"> Bombki!</button> <br/> 
+            <button type="button" id= "gwiazdka" class="btn"> Gwiazdka!</button> <br/> 
+            <button type="button" id ="lancuchy" class="btn"> Łańcuchy!</button> <br/>
+            <button type="button" id="muzyczka" class="btn">Muzyczka</button> <br/>
+            <button type="button" id= "snow" class="btn">Let it snow!</button> <br/>
+            </div>
+            
+            <audio id="audio" src="Jingle-Bells.mp3" ></audio>
+        </div>
+        <div>
+            <svg width="800" height="800">
+            <polygon fill="green" 
+                points="
+                        420,760
+                        700,780
+                        450,560
+                        650,580
+                            425,360
+                            600,380
+                                400,160
+                            200,380
+                            375,360
+                        150,580
+                        350,560
+                        100,780
+                        380,760
+                " />
+            <polygon fill="brown"
+                points="
+                    420,760
+                    420,800
+                    400,800
+                    380,800
+                    380,760
+                "
+            />
+
+            <polygon fill="gold" id="star" display = "none"
+                points="
+                400,60
+                458.78,240.9
+                305,129.1
+                495,129.1
+                341.22,240.9
+                "
+            />
+            </svg>
+        </div>
+
+
+        <script>
+        // Generowanie obiektów do wyświetlenia
+
+            //3 opcje wyskości 
+            // 160-380 / 360 - 580 / 560-780
+            // 200-600 / 150 - 650 / 100-700
+
+            function losujPunkt(){
+                height= Math.floor(Math.random()*3)
+
+                if (height==0){
+                    y=Math.random()*180 + 200
+                    x_min=(600-y)/1.1
+                    x=Math.random()*2*(400-x_min)+x_min
+                    return [x,y];
+
+                }else if(height==1) {
+                    y=Math.random()*220 + 360
+                    x_min=(550-y+175)/0.98
+                    x=Math.random()*2*(400-x_min)+x_min
+                    return [x,y];
+                }
+                else if(height==2) {
+                    y=Math.random()*220 + 560
+                    x_min=(500-y+375)/0.88
+                    x=Math.random()*2*(400-x_min)+x_min
+                    return [x,y];
+                }
+            }
+            
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            
+            
+            var sampleSVG = d3.select("svg")
+            .append("svg") 
+
+
+            // AUDIO i jego ustawienia
+            var audio = document.getElementById('audio'); 
+                audio.volume=0.05;
+                audio.loop=true;
+
+            function losujPunktŁancuch(side){
+                height= Math.floor(Math.random()*3)
+                if(side=="L"){
+                x_add=0
+                }else x_add=2;
+
+                if (height==0){
+                    y=Math.random()*220 + 160
+                    x_min=(600-y)/1.1
+                    x=x_add*(400-x_min)+x_min
+                    return [x,y];
+
+                }else if(height==1) {
+                    y=Math.random()*220 + 360
+                    x_min=(550-y+175)/0.98
+                    x=x_add*(400-x_min)+x_min
+                    return [x,y];
+                }
+                else if(height==2) {
+                    y=Math.random()*220 + 560
+                    x_min=(500-y+375)/0.88
+                    x=x_add*(400-x_min)+x_min
+                    return [x,y];
+                }
+            }
+
+            
+
+
+        </script>
+
+        <script>
+
+        // Sterowanie wyświetlaniem elementów
+        d3.select("h1").transition().delay(2000).duration(2000).style("font-size","50px");
+        
+            
+
+        d3.selectAll("#lancuchy").on('click', function(){
+            sampleSVG.selectAll("path").remove()
+            var dataset =[],
+            i=0;
+
+            for(i=0; i<5; i++){
+                dataset=[],
+
+                [x1,y1]=losujPunktŁancuch("L");
+                dataset.push({"x": x1, "y": y1});
+
+                [x2,y2]=losujPunktŁancuch("P");
+
+                x3=Math.floor(Math.random()*(Math.abs(x1-x2)))+Math.min(x1,x2)
+                y3=Math.min(Math.max(y1,y2)+Math.random()*Math.abs(y1-y2),760)
+                dataset.push({"x": x3, "y": y3});
+                
+                dataset.push({"x": x2, "y": y2});
+
+                var lineFunction = d3.line()
+                .curve(d3.curveBasis)
+                .x(function(d){ return d.x })
+                .y(function(d){ return d.y })
+
+            sampleSVG.append("path")
+                .attr("d",lineFunction(dataset))
+                .attr("stroke",getRandomColor())
+                .attr("stroke-width","10")
+                .attr("stroke-linecap","round")
+                .attr("fill","none")
+                
+            }
+
+
+            })
+
+        var old_data = [];
+        for(i=0; i<40; i++){
+            old_data.push({"x": 400, "y": 160,"r": Math.random()*6+8});
+        }
+
+        d3.selectAll("#bombki").on('click', function(){
+            sampleSVG.selectAll("circle").remove()
+            sampleSVG.selectAll('radialGradient').remove()
+            var dataset = [],
+            i = 0;
+
+            for(i=0; i<40; i++){
+                [x,y]=losujPunkt();
+                dataset.push({"x": x, "y": y,"r": Math.random()*6+8});
+            }
+
+            var grads = sampleSVG.append("defs").selectAll("radialGradient")
+            .data(dataset)
+            .enter()
+            .append("radialGradient")
+            .attr("gradientUnits", "objectBoundingBox")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", "100%")
+            .attr("id", function(d, i) { return "grad" + i; });
+
+            grads.append("stop")
+                .attr("offset", "0%")
+                .style("stop-color", "white");
+
+            grads.append("stop")
+                .attr("offset", "100%")
+                .style("stop-color",  function(d,i) {return getRandomColor() });
+
+
+            sampleSVG.selectAll("circle")
+            .data(dataset)
+            .enter().append("circle")
+            .attr("cx",function(d,i){return old_data[i].x})
+            .attr("cy",function(d,i){return old_data[i].y})
+            .attr("r",function(d,i) {return old_data[i].r})
+            .attr("fill", function(d, i) {return "url(#grad" + i + ")";})
+            .transition().duration(800)
+            .attr("fill", function(d, i) {return "url(#grad" + i + ")";})
+            .attr("r",function(d,i) {return dataset[i].r})
+            .attr("cx",function(d,i){return dataset[i].x})
+            .attr("cy",function(d,i){return dataset[i].y})
+            
+
+
+
+            
+
+            old_data=dataset;
+        }) 
+
+
+        visible=false
+        d3.selectAll("#gwiazdka").on('click', function(){
+            if (visible==false){
+                d3.select("#star")
+                .attr('transform','translate(-500,-50)')
+                .attr('display',1)
+                .attr("opacity", 0)
+                .transition().duration(1000)
+                .attr("opacity", 1)
+                .attr('transform','translate(0,0)')
+
+            } else 
+                d3.select("#star")
+                .transition().duration(1000)
+                .attr("opacity", 0)
+                .attr('transform','translate(500,-50)')
+                
+
+            
+            visible=!visible
+
+            })
+
+
+        d3.selectAll("#muzyczka").on('click', function(){
+            if (audio.paused) {
+                audio.play();
+            }else{
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        
+            })
+        
+            show=false
+            d3.selectAll("#snow").on('click', function(){
+                if (!show){
+                document.getElementsByClassName("snowflakes")[0].style.visibility="visible";
+                show=true
+                }else{
+                document.getElementsByClassName("snowflakes")[0].style.visibility="hidden";    
+                show=false        
+                }
+            })
+        </script>
+
+    </div>
+</body>
+</html>

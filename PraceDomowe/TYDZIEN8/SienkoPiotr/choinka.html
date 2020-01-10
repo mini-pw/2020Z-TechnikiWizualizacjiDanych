@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+    <title>Podstawy d3</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+  </head>
+  <body>
+  
+  <!--Tworzenie kontrolek-->
+  Zapal lampki <input type="checkbox" id="lampki">
+  <p> Zmień liczbę bombek <p>
+  <input type="range" min="0" max="3" id="bombki">
+  <p> Zmień rozmiar gwiazdki <p>
+  <input type="range" min="5" max="50" id="gwiazda">
+
+ 
+  
+  <script>
+  
+  // Tworzenie kontenera do którego będę wsadzać figury geometryczne
+  var container = d3.select('body')
+      .append('svg')
+      .attr('height', 1500)
+      .attr('width', 1000)
+      
+  var rect = container.append("rect")
+  .attr("x", 600)
+  .attr("y", 400)
+  .attr("width", 60)
+  .attr("height", 120)
+  .attr("fill", "brown")
+  
+      
+  // Dane to utworzenia 4 trójkątów
+  var Data1 = [{ "x": 800, "y": 420},  { "x": 630,  "y": 240},
+              { "x": 630, "y": 240},  { "x": 460,  "y": 420},
+              { "x": 460, "y": 420},  { "x": 800,  "y": 420}];
+              
+  var Data2 = [{ "x": 770, "y": 340},  { "x": 630,  "y": 190},
+              { "x": 630, "y": 190},  { "x": 490,  "y": 340},
+              { "x": 490, "y": 340},  { "x": 770,  "y": 340}];
+              
+  var Data3 = [{ "x": 730, "y": 260},  { "x": 630,  "y": 150},
+              { "x": 630, "y": 150},  { "x": 530,  "y": 260},
+              { "x": 530, "y": 260},  { "x": 730,  "y": 260}];
+              
+  var Data4 = [{ "x": 700, "y": 190},  { "x": 630,  "y": 100},
+              { "x": 630, "y": 100},  { "x": 560,  "y": 190},
+              { "x": 560, "y": 190},  { "x": 700,  "y": 190}];
+  
+  // Funkcja do odczytu tych danych        
+  var lineFunction = d3.line()
+                         .x(function(d) { return d.x; })
+                         .y(function(d) { return d.y; })
+                         .curve(d3.curveLinear);
+                      
+  // Tworzenie trójkątów                    
+  var Triangle1 = container.append("path")
+                        .attr("d", lineFunction(Data1))
+                        .attr("stroke", "darkgreen")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "darkgreen");
+                        
+  var Triangle2 = container.append("path")
+                        .attr("d", lineFunction(Data2))
+                        .attr("stroke", "darkgreen")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "darkgreen");
+                        
+  var Triangle3 = container.append("path")
+                        .attr("d", lineFunction(Data3))
+                        .attr("stroke", "darkgreen")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "darkgreen");
+                        
+  var Triangle4 = container.append("path")
+                        .attr("d", lineFunction(Data4))
+                        .attr("stroke", "darkgreen")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "darkgreen");
+   
+   // Tworzenie światełek, nic ciekawego
+  var circle1 = container.append("circle")
+  .attr("cx", 630)
+  .attr("cy", 380)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle2 = container.append("circle")
+  .attr("cx", 600)
+  .attr("cy", 370)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle3 = container.append("circle")
+  .attr("cx", 660)
+  .attr("cy", 370)
+  .attr("r", 4)
+  .attr("fill", "black")
+
+  var circle2 = container.append("circle")
+  .attr("cx", 570)
+  .attr("cy", 360)
+  .attr("r", 4)
+  .attr("fill", "black")
+
+  var circle3 = container.append("circle")
+  .attr("cx", 690)
+  .attr("cy", 360)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle4 = container.append("circle")
+  .attr("cx", 545)
+  .attr("cy", 345)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle5 = container.append("circle")
+  .attr("cx", 715)
+  .attr("cy", 345)
+  .attr("r", 4)
+  .attr("fill", "black")
+  
+  
+  var circle6 = container.append("circle")
+  .attr("cx", 630)
+  .attr("cy", 280)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle7 = container.append("circle")
+  .attr("cx", 600)
+  .attr("cy", 270)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle8 = container.append("circle")
+  .attr("cx", 660)
+  .attr("cy", 270)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle9 = container.append("circle")
+  .attr("cx", 570)
+  .attr("cy", 260)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle10 = container.append("circle")
+  .attr("cx", 690)
+  .attr("cy", 260)
+  .attr("r", 4)
+  .attr("fill", "black")
+  
+  
+  var circle11 = container.append("circle")
+  .attr("cx", 630)
+  .attr("cy", 200)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle12 = container.append("circle")
+  .attr("cx", 600)
+  .attr("cy", 190)
+  .attr("r", 4)
+  .attr("fill", "black")
+  var circle13 = container.append("circle")
+  .attr("cx", 660)
+  .attr("cy", 190)
+  .attr("r", 4)
+  .attr("fill", "black")
+    </script>
+	    
+	    
+	    <script>
+	    // Włączanie światełek
+	    d3.select('#lampki').on('change', function() {
+      if(d3.select('#lampki').property('checked')) {
+        d3.selectAll("circle[fill=black]").style('fill', 'yellow');
+      } else {
+        d3.selectAll("circle[fill=black]").style('fill', 'initial');
+
+      }
+    });
+    
+    </script>
+    
+    <script>
+    // Tworzenie wstępnych bombek
+    var bombka3 = container.append("circle")
+      .attr("cx", 690)
+      .attr("cy", 310)
+      .attr("r", 10)
+      .attr("fill", "red");
+      
+      var bombka4 = container.append("circle")
+      .attr("cx", 570)
+      .attr("cy", 310)
+      .attr("r", 10)
+      .attr("fill", "red");
+      var bombka5 = container.append("circle")
+      .attr("cx", 630)
+      .attr("cy", 235)
+      .attr("r", 10)
+      .attr("fill", "red");
+      
+      var bombka1 = container.append("circle")
+      .attr("cx", 545)
+      .attr("cy", 390)
+      .attr("r", 10)
+      .attr("fill", "lightblue");
+      
+    var bombka2 = container.append("circle")
+      .attr("cx", 715)
+      .attr("cy", 390)
+      .attr("r", 10)
+      .attr("fill", "lightblue"); 
+    
+    // Wybór liczby bombek
+    d3.select("#bombki").on("input", function() {
+    if (this.value == 0){
+    d3.selectAll("circle[fill = lightblue]").remove()
+    d3.selectAll("circle[fill = red]").remove()
+    d3.selectAll("circle[fill = silver]").remove()
+    }
+    // Dana liczba wskazuje na to, którego koloru bombki zlikwidować
+    if (this.value == 1){  
+    
+    d3.selectAll("circle[fill = red]").remove()
+    d3.selectAll("circle[fill = silver]").remove()
+    
+    var bombka1 = container.append("circle")
+      .attr("cx", 545)
+      .attr("cy", 390)
+      .attr("r", 10)
+      .attr("fill", "lightblue");
+      
+    var bombka2 = container.append("circle")
+      .attr("cx", 715)
+      .attr("cy", 390)
+      .attr("r", 10)
+      .attr("fill", "lightblue");
+      }
+    if (this.value == 2){
+    
+      d3.selectAll("circle[fill = silver]").remove()
+    
+      var bombka3 = container.append("circle")
+      .attr("cx", 690)
+      .attr("cy", 310)
+      .attr("r", 10)
+      .attr("fill", "red");
+      
+      var bombka4 = container.append("circle")
+      .attr("cx", 570)
+      .attr("cy", 310)
+      .attr("r", 10)
+      .attr("fill", "red");
+      var bombka5 = container.append("circle")
+      .attr("cx", 630)
+      .attr("cy", 235)
+      .attr("r", 10)
+      .attr("fill", "red");
+    }
+    if (this.value == 3){
+      var bombka5 = container.append("circle")
+      .attr("cx", 630)
+      .attr("cy", 155)
+      .attr("r", 10)
+      .attr("fill", "silver");
+      
+      var bombka5 = container.append("circle")
+      .attr("cx", 630)
+      .attr("cy", 320)
+      .attr("r", 10)
+      .attr("fill", "silver");
+    }
+    });
+
+// Funkcja wylicza nam kolejne współrzędne punktów gwiazdki
+function PunktyGwiazdka(X, Y, r, i)
+{
+   var angle = Math.PI / 5;
+      var currX = X + Math.sin(i * angle) * r;
+      var currY = Y - Math.cos(i * angle) * r;
+      var result = [currX, currY];
+      return result;
+}
+
+// Tworzenie wstępnej gwiazdki
+var tablica1 = PunktyGwiazdka(630, 100, 20, 0)
+var tablica2 = PunktyGwiazdka(630, 100, 10, 1)
+var tablica3 = PunktyGwiazdka(630, 100, 20, 2)
+var tablica4 = PunktyGwiazdka(630, 100, 10, 3)
+var tablica5 = PunktyGwiazdka(630, 100, 20, 4)
+var tablica6 = PunktyGwiazdka(630, 100, 10, 5)
+var tablica7 = PunktyGwiazdka(630, 100, 20, 6)
+var tablica8 = PunktyGwiazdka(630, 100, 10, 7)
+var tablica9 = PunktyGwiazdka(630, 100, 20, 8)
+var tablica10 = PunktyGwiazdka(630, 100, 10, 9)
+
+var results =  [{ "x": tablica1[0], "y": tablica1[1]},  { "x": tablica2[0],  "y": tablica2[1]},
+                { "x": tablica2[0], "y": tablica2[1]},  { "x": tablica3[0],  "y": tablica3[1]},
+                { "x": tablica3[0], "y": tablica3[1]},  { "x": tablica4[0],  "y": tablica4[1]},
+                { "x": tablica4[0], "y": tablica4[1]},  { "x": tablica5[0],  "y": tablica5[1]},
+                { "x": tablica5[0], "y": tablica5[1]},  { "x": tablica6[0],  "y": tablica6[1]},
+                { "x": tablica6[0], "y": tablica6[1]},  { "x": tablica7[0],  "y": tablica7[1]},
+                { "x": tablica7[0], "y": tablica7[1]},  { "x": tablica8[0],  "y": tablica8[1]},
+                { "x": tablica8[0], "y": tablica8[1]},  { "x": tablica9[0],  "y": tablica9[1]},
+                { "x": tablica9[0], "y": tablica9[1]},  { "x": tablica10[0],  "y": tablica10[1]}];    
+
+var gwiazdka = container.append("path")
+                        .attr("d", lineFunction(results))
+                        .attr("stroke", "gold")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "gold");
+
+// Wybieranie rozmiaru gwiazdki
+d3.select("#gwiazda").on("input", function() {
+
+d3.selectAll("path[fill = gold]").remove()
+
+var tablica1 = PunktyGwiazdka(630, 100, this.value, 0)
+var tablica2 = PunktyGwiazdka(630, 100, this.value/2, 1)
+var tablica3 = PunktyGwiazdka(630, 100, this.value, 2)
+var tablica4 = PunktyGwiazdka(630, 100, this.value/2, 3)
+var tablica5 = PunktyGwiazdka(630, 100, this.value, 4)
+var tablica6 = PunktyGwiazdka(630, 100, this.value/2, 5)
+var tablica7 = PunktyGwiazdka(630, 100, this.value, 6)
+var tablica8 = PunktyGwiazdka(630, 100, this.value/2, 7)
+var tablica9 = PunktyGwiazdka(630, 100, this.value, 8)
+var tablica10 = PunktyGwiazdka(630, 100, this.value/2, 9)
+
+var results =  [{ "x": tablica1[0], "y": tablica1[1]},  { "x": tablica2[0],  "y": tablica2[1]},
+                { "x": tablica2[0], "y": tablica2[1]},  { "x": tablica3[0],  "y": tablica3[1]},
+                { "x": tablica3[0], "y": tablica3[1]},  { "x": tablica4[0],  "y": tablica4[1]},
+                { "x": tablica4[0], "y": tablica4[1]},  { "x": tablica5[0],  "y": tablica5[1]},
+                { "x": tablica5[0], "y": tablica5[1]},  { "x": tablica6[0],  "y": tablica6[1]},
+                { "x": tablica6[0], "y": tablica6[1]},  { "x": tablica7[0],  "y": tablica7[1]},
+                { "x": tablica7[0], "y": tablica7[1]},  { "x": tablica8[0],  "y": tablica8[1]},
+                { "x": tablica8[0], "y": tablica8[1]},  { "x": tablica9[0],  "y": tablica9[1]},
+                { "x": tablica9[0], "y": tablica9[1]},  { "x": tablica10[0],  "y": tablica10[1]}];    
+
+var gwiazdka = container.append("path")
+                        .attr("d", lineFunction(results))
+                        .attr("stroke", "gold")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "gold");});
+    </script>
+  </body>
+</html>
