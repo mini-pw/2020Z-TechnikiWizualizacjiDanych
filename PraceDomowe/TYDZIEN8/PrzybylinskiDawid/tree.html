@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Choinka</title>
+    <meta charset="utf-8">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+  </head>
+  <body>
+  
+  <h1>Wesołych Świąt!</h1>
+  <h4>Kliknij na bombkę by zmienić jej kolor!</h4>
+  <div class="slidecontainer">
+    Liczba bombek (0-15):
+  <input type="range" min="0" max="15" value="0" class="slider" id="myRange">
+  </div>
+  <div id = "svgcontainer"></div>
+   <script>
+    width = 800,
+    height = 800;
+    var bombki;
+    var colors = ['red','yellow','blue','brown', 'white', 'black', 'magenta', 'steelbue', 'navyblue']
+    
+    var c = d3.select('#svgcontainer')
+      .append('svg')
+      .attr('height', height)
+      .attr('width', width);
+    
+    var x = d3.scaleLinear().range([0, 800]);
+  	var y = d3.scaleLinear().range([0, 800]);
+  
+    x.domain([0, 800]);
+    y.domain([0, 800]);
+  
+    var poly1 = [{"x": 177, "y":610},
+        {"x":264,"y":497},
+        {"x":199,"y":497},
+        {"x":296,"y":391},
+        {"x":233,"y":391},
+        {"x":307,"y":293},
+        {"x":260,"y":293},
+        {"x":393,"y":106},
+        {"x":526,"y":293},
+        {"x":476,"y":293},
+        {"x":550,"y":391},
+        {"x":488,"y":391},
+        {"x":582,"y":497},
+        {"x":514,"y":497},
+        {"x":600,"y":610}];
+  
+    var poly2 = [{"x": 340, "y":610},
+        {"x":440,"y":610},
+        {"x":440,"y":710},
+        {"x":340,"y":710}];
+        
+ 
+  c.selectAll("polygon")
+    .data([poly1])
+    .enter()
+    .append("polygon")
+    .attr('fill', '#108525')
+    .attr("points",function(d) { return d.map(function(d) {return [x(d.x),y(d.y)].join(",");}).join(" ");});
+    
+  c.selectAll("rect")
+    .data([poly2])
+    .enter()
+    .append("polygon")
+    .attr('fill', '#4f422a')
+    .attr("points",function(d) { return d.map(function(d) {return [x(d.x),y(d.y)].join(",");}).join(" ");});
+  
+  d3.select('#myRange').on('change', function() {
+     bombki = d3.range(d3.select('#myRange').property('value')).map(function() {return {x: Math.random()*310+230, y: Math.random()*450+170, col: colors[Math.floor(Math.random()*8.99)]}});
+     
+     c.selectAll('circle').remove();
+     c.selectAll('circle')
+        .data(bombki)
+        .enter()
+        .append('circle')
+        .attr('cx', function(d) { return d.x;})
+        .attr('cy', function(d) { return d.y;})
+        .attr('r', 10)
+        .attr('fill',  function(d) { return d.col;})
+        .on("click", function(){d3.select(this).style("fill", colors[Math.floor(Math.random()*8.99)])});
+    });
+
+    </script>
+
+  </body>
+</html>

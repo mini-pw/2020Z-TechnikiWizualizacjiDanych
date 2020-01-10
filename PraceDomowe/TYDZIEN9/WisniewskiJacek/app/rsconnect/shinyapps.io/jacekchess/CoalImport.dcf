@@ -1,0 +1,12 @@
+name: CoalImport
+title: CoalImport
+username:
+account: jacekchess
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1640800
+bundleId: 2717508
+url: https://jacekchess.shinyapps.io/CoalImport/
+when: 1578591744.43581
+asMultiple: FALSE
+asStatic: FALSE
