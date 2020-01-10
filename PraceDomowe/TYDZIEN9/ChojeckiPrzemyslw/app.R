@@ -15,6 +15,9 @@ ui <- fluidPage(
                div(id = "miejsce",
                    checkboxInput("miejsce", "Pokaz miejsce", value = TRUE)
                ),
+               div(id = "siatka",
+                   checkboxInput("siatka", "Pokaz siatkę", value = TRUE)
+               ),
                div(id= "form", actionButton("Reset", "Reset") )
   ),
   mainPanel(d3Output("d3"))
@@ -54,6 +57,7 @@ server <- function(input, output) {
                      czy_rekord = input[["rekord"]],
                      czy_czas = input[["czas"]],
                      czy_miejsce = input[["miejsce"]],
+                     czy_siatka = input[["siatka"]],
                      miejsce1 = "Hamburg",
                      miejsce2 = "Berlin",
                      miejsce3 = "Roterdam",
