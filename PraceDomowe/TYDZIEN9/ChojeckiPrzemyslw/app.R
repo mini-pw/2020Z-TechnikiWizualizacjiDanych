@@ -17,16 +17,12 @@ ui <- fluidPage(
                ),
                div(id = "siatka",
                    checkboxInput("siatka", "Pokaz siatkę", value = TRUE)
-               ),
-               div(id= "form", actionButton("Reset", "Reset") )
+               )
   ),
   mainPanel(d3Output("d3"))
 )
 
 server <- function(input, output) {
-  observeEvent(input$Reset, {
-    shinyjs::reset("form")})
-  
   output[["d3"]] <- renderD3({
     df <- data.frame(czas1 = "2:05:30",
                      time1 = 7530,
