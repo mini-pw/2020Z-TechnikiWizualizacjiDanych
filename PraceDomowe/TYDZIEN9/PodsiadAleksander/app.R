@@ -18,12 +18,12 @@ ui <- fluidPage(
 
 server <- function(input, output){
   
-  dane <- read.csv("~/Dokumenty/Techniki Wizualizacji Danych/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN9/PodsiadAleksander/dane.csv")
+  dane <- read.csv("dane.csv")
   
   output[["d3"]] <- renderD3({r2d3(data = data.frame(dane, gend = input[["gender"]], 
                                                      lab = input[["lab"]], man = input[["man"]],
                                                      sen = input[["sen"]], com = input[["com"]],
-                                                     topp = input[["top"]], ceo = input[["ceo"]]), script = "skrypt.js", width = 2000, height = 600)})
+                                                     topp = input[["top"]], ceo = input[["ceo"]]), script = "skrypt.js", width = 1000, height = 600)})
 }
 
 
