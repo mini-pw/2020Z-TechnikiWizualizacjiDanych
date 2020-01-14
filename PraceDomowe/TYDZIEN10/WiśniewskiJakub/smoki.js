@@ -11,8 +11,6 @@ var yMax = data[0].Y_max;
 var xMin = data[0].X_min;
 var yMin = data[0].Y_min;
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-
 var margin = {top: 0, right: width / 24, bottom: height / 30, left: 0},
     width = width - margin.left - margin.right,
     height = height - margin.top - margin.bottom,
@@ -68,8 +66,24 @@ svg.append("text")
 .attr("y", 40)
 .attr("x", -170)
 .style("text-anchor", "middle")
-.style("font-size", "15px")
+.style("font-size", "20px")
+.text(yAxis);
+
+svg.append("text")
+.attr("class", "title")
+.attr("y", 350)
+.attr("x", 850)
+.style("text-anchor", "middle")
+.style("font-size", "20px")
 .text(xAxis);
+
+
+
+  var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+
 
 svg.selectAll(".dot")
       .data(data)
@@ -81,9 +95,44 @@ svg.selectAll(".dot")
       .attr("cy", function(d) { return 320; })
       .style("fill", function(d) {return d.colour} )
       .style("stroke", "black")
-      .transition()
+      .on("mouseover", function(d) {
+       div.transition()
+         .duration(200)
+         .style("opacity", .9);
+       div.html("<b>" +yAxis +": " +  d[yAxis] + "</b><br/>" +"<b>" 
+                        + xAxis + " :" + d[xAxis] + "</b><br/>")
+         .style("left", (d3.event.pageX) + "px")
+         .style("top", (d3.event.pageY - 28) + "px");
+       })
+     .on("mouseout", function(d) {
+       div.transition()
+         .duration(500)
+         .style("opacity", 0);
+       })
+       .transition()
       .duration(function(d) {return 500})
       .delay(function(d) {return 500  *Math.random() } )
       .attr("cx", function(d) { return x(d[xAxis])+100 ; })
       .attr("cy", function(d) { return y(d[yAxis]); })
       
+svg.append('image')
+    .attr('xlink:href', 'https://i.ytimg.com/vi/2FD7Krmfawo/maxresdefault.jpg')
+    .attr('width', 200)
+    .attr('height', 200)
+    .attr('x',1680)
+    .attr('y',220)
+    .style('opacity', 0);
+    
+if(data[0].beauty === "Naaaah"){
+  svg.selectAll("image")
+  .style('opacity', 0)
+  
+}
+else{
+  svg.selectAll("image")
+  .transition(10000)
+  .delay(100)
+  .style('opacity', 1)
+  .transition(1000)
+  .delay(100);
+}
