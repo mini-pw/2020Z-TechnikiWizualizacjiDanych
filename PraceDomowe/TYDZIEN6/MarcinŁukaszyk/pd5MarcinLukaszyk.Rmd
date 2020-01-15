@@ -1,0 +1,92 @@
+---
+title: "Nie takie pie-charty straszne jak je plotuja."
+author: "Marcin Lukaszyk"
+date: "December 6, 2019"
+output: html_document
+---
+
+
+
+## Czy wykresy kolowe sa tak zle?
+
+Wiele osób uwaza pie-charty za zly sposób prezentacji danych.
+Wsród nich znajduja sie tez takie które uwazaja ze zawsze istnieje lepsza metoda do pokazania danych niz wykres kolowy.
+Osobiscie nie jestem zwolennikiem tej tezy i uwazam ze wykresy kolowe maja swoje miejsce w swiecie wykresów.
+Uwazam ze wykresy kolowe sa idealne jesli dane dopelniaja sie do pewnej jasnej do zrozumienia calosci jak np sklad produktu.
+Pie charty sa równiez stosunkowe proste do czytania i daja jasny wynik na pierwszy rzut oka co moze byc przydatne gdy kierujemy je do osób nie czytajacych wielu wykresów.
+Obie te cechy moga negatywnie wplynac na nasze dzielo ale chcialbym udowodnic ze da sie to zrobic dobrze.
+Kolejna zaleta jest ich mnogosc w masowych srodkach przekazu.
+Dzieki temu uzytkowanik jest przyzwyczajony do takich form i nie ma problemu z szybkim zrozumieniem i przyswojeniem danych.
+Mozna to wykorzystac do przedstawienia wiekszej ilosci danych w bardziej dostepnej formie. 
+
+
+## Mój Eksperyment.
+
+Zamiast tworzyc ankiete i testowac na "losowo ankietowanych"" wplyw wyhiperbolizowanych  wykresów chcailbym sie odniesc do mojego autorskiego posta na stronie reddit.
+Na forum r/borderlands3 umiescilem wyniki w formie graficznej mojej ankiety dotyczacej woboru postaci która ankietowana grala w poprzednich czesciach gry i która zamierza grac w nastepnej czesci(trzeciej).
+Bylo to moje pierwsze powazne spotkanie z pakietem ggplot2 jak i pierwsze próby zebrania danych.
+
+
+Ankiete mozna zobaczyc pod [tym postem](https://www.reddit.com/r/Borderlands/comments/cqsv0v/what_are_your_mains_in_borderlands_games/)
+
+Sam post mozna zobaczyc wraz z komentarzami pod [tym postem](https://www.reddit.com/r/borderlands3/comments/cs2im7/hey_ive_made_few_plots_out_of_my_last_post_i_hope/)
+
+
+
+## Uzyte wykresy
+
+Z racji tego ze wykresy byly robione w czasie letnich wakacji, kiedy nie bylem jeszcze zaznajomiony z wieloma technikami wizualizacji danych , nie sa one najlepszej jakosci.
+Moja infografika sklada sie glownie z wykresów kolowych.
+16 wykresów z 18 jest tej postaci.
+Zawiera równiez jedna tabele jak i jeden wykres strumieniowy.
+Tak jak dwa ostatnie typy wykresów sa bardzo proste w swoim wykonaniu tak wykrsy kolowe maja swoja specyfike.
+Wszystkie sa tak samo wykonane i sa podzielone na 4 lub 6 czesci.
+Na kazdym kawalku jest wypisany procent udzialu konkretnej postaci w dananej czesci gry.
+
+
+
+
+## Komentarze od uzytkowników 
+
+Ogólne komentarze sa pozytywne.
+Sam post zdobyl ponad 1100 glosów w czym 98% bylo pozytywnych.
+Pomimo pokazaniu siedemnastu wykrsów uzytkownicy nie mieli z nimi problemu.
+Wydaje mi sie ze odbiorcy  zrozumieli ich sens i jaka historie opisuja.
+Uzytkownicy nie mieli róWniez problemu zrozumiec trudniejszy wykres strumieniowy.
+
+Problemem okazala sie uzyta paleta kolorów.
+Kilku uzytowników mialo z problem z rozrózniemiem kolorów.
+Zaskakujacym jest natomiast brak zglaszanych problemów z bialymi liczbami na wykresach.
+Liczby te przedstawiaja procent udzialu postaci w calosci i pomimo nienajlepszego sposobu prezentacji (biale na kolorowym wykresie na bialy tle) i nie okreslenia co reprezentuje ta liczba explicite uzytkownicy nie mieli problemu ze zrozumieniem czym sa te liczby.
+
+Czesciowym problemem okazaly sie tytuly wykrsów.
+Spolecznosc nie odebrala tak samo tych wykresóW i dla niektórych osób wykresy te przedstawialy inne dane.
+Problem polegal na definicji slowa "main" zwiazanego z grami komputerowymi.
+Dla niektórych  te stwierdzenie oznaczalo cos innego.
+Sam blad wystepuje równiez w ankiecie, co pokazuje ze nalezy starannie planowac swoje dzialania.
+
+Kilkoro uzytkowników mialo problemy ze zrozumieniem drugiej serii wykrsów kolowych.
+W nich wystepowala róznica pomiedzy procentem osó b grajacych dana postacia i procentem osób grajacych dana postacia jak i grajaca konkretna postacia w nastepnej czesci gry.
+Pokazuje to ze bardziej skomplikowane rzeczy, nawet te proste do zrowumienia dla twórcy, nalezy odpowiednio zdefiniowac i wytlumaczyc odbiorcy.
+
+
+## Podumowanie
+
+Tym przykladem chcailbym pokazac ze wykesy kolowe maja swoje miejsce w swiecie wykresów i ze da sie je przedstawic w prosty a zarazem zrozumialy sposób.
+Pomimo kilku bledów jak i nie najlepszego wykonanaia technicznego i graficznego wykresy spotkaly sie z duzym zainteresowaniem i zostaly cieplo przyjete.
+Uzytkowików nie przestarszyla ilosc wykresów czy troszke bardziej skomplikowany wykres strumieniowy.
+Mam nadzieje ze powyzsze przyklady przekonaja pana ze wykresy kolowe nie sa takie straszne na jakie sie wydaja!
+
+
+
+
+
+
+
+
+
+
+
+
+
+

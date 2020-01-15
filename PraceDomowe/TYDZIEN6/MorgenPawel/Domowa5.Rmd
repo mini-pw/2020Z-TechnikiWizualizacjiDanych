@@ -1,0 +1,115 @@
+---
+title: "Domowa_5"
+author: "Paweł Morgen"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+df <- read.csv("Wyniki.csv")
+library(ggplot2)
+library(bbplot)
+theme_set(theme_classic())
+```
+
+## Struktura ankiety
+
+![](Rplot.jpeg)
+
+Badanie przeprowadzono bezpośrednio na próbce złożonej z 18 osób zróżnicowanych pod względem wieku i płci. Badany miał przez cały czas dostęp do zdjęcia dwóch wykresów (zamieszczone powyżej). Badany odpowiadał na 4 pytania:
+
+1. Który wykres uważasz za ładniejszy? (Bardziej estetyczny, elegencki itp)
+2. Jaki element wykresów zauważyłeś najpierw?
+3. Z którego wykresu łatwiej odczytać różnicę między Firmą C i Firmą D?
+4. Czy zauważyłeś, że wartości liczbowe nie sumują się do 100?
+
+## Pytanie 1
+
+```{r q1}
+ggplot(df, aes(x = Preference)) +
+  geom_bar() +
+  labs(title = "Which plot is more estetic?") +
+  ylab("Amount of answers") +
+  theme(axis.title.x = element_blank())
+```
+
+Jak widzimy, zdecydowana większość ankietowanych uważa wykres kołowy za ładniejszy.
+
+## Pytanie 2
+
+```{r q2}
+ggplot(df, aes(x = First_notice)) +
+  geom_bar() +
+  labs(title = "Which element of the plots did you notice at first?") +
+  ylab("Amount of answers")+
+  theme(axis.title.x = element_blank())
+```
+
+Zdecydowana większość ankietowanych najpierw zauważyła kolor zielony (zajmujący na zdjęciu najwięcej miejsca).
+
+## Pytanie 3
+
+```{r q3}
+ggplot(df, aes(x = Readibility)) +
+  geom_bar(width = 0.5) +
+  labs(title = "On which plot can you estimate the difference \nbetween Firm C and Firm D better?") +
+  ylab("Amount of answers")+
+  theme(axis.title.x = element_blank())
+```
+
+Prawie wszyscy zgadzają się, że dane łatwiej odczytać z wykresu słupkowego.
+
+## Pytanie 4 
+```{r q4}
+ggplot(df, aes(x = Noticed)) +
+  geom_bar(width = 0.5) +
+  labs(title = "Did you notice, that the numeric values don't add up to 100?") +
+  ylab("Amount of answers")+
+  theme(axis.title.x = element_blank())
+```
+
+Prawie nikt nie zauważył nieprawidłowości. Mało tego - niewiele osób w ogóle zwróciło uwagę na dane liczbowe.
+
+## Komentarz
+
+Praca potwierdza tezy stawiane na wykładach - kolory jako pierwsze rzucają się w oczy (a więc niepotrzebne kolorowanie wykresów rozprasza uwagę) oraz dane łatwiej czytać z wykresów słupkowych. Warto zwrócić uwagę na fakt, że pomimo tego ludzie traktują wykresy kołowe jako ładniejsze. Tłumaczy to ich sporą obecność w mediach oraz oznacza, że prędko one nie znikną. Stawia również pytanie, czy w określonych przypadkach warto *odrobinę* zmniejszyć czytelność, by zyskać na estetyce.
+
+## Źródła
+
+Wyniki mam udokumentowane w formie listy z podpisami ankietowantch.
+Kod generujący wykresy do ankiety znajduje się poniżej:
+
+```{r eval = FALSE, echo = TRUE}
+data2 <- data.frame(value = c(70, 17.5, 12.5, 10, 5, 3) + rnorm(6, sd = 3),
+                    name = paste("Firma", LETTERS[1:6]))#,
+data2$labpos <- cumsum(data2$value) - data2$value / 2
+
+p1 <- ggplot(data2, aes(x = "", 
+                        y = value, 
+                        fill = name, 
+                        label = paste0(round(value), "%"))) + 
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+  geom_label(aes(x = 1.5, y = labpos),show.legend = FALSE) +
+  scale_fill_brewer(type = "qual") +
+  labs(fill="Udział w rynku", 
+       x=NULL, 
+       y=NULL,
+       title = "Firma A stanowczym liderem na rynku!") +
+  coord_polar(theta = "y") +
+    theme(axis.line = element_blank(), 
+          axis.text = element_blank(), 
+          axis.ticks = element_blank(),
+          plot.title = element_text(hjust=0.5))
+    
+p2 <- ggplot(data2, aes(x = name, y = value, fill = name)) +
+  geom_bar(stat = "identity") +
+  scale_fill_brewer(type = "qual") +
+  xlab("Nazwa firmy") +
+  ylab("Udział w rynku") +
+  labs(title = "Firma A stanowczym liderem na rynku!") +
+  geom_label(aes(label = paste0(round(value), "%"), y = value / 2)) +
+  theme(legend.position = "none") 
+p <- gridExtra::grid.arrange(p2, p1, ncol = 2)
+ggsave("plot_to_show.png")
+
+```
