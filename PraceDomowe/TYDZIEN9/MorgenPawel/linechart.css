@@ -1,0 +1,15 @@
+.Ygrid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.Ygrid path {
+  stroke-width: 0;
+}
+.legend {
+    font-size: 12px;
+  }
+  rect {
+    stroke-width: 2;
+  }
