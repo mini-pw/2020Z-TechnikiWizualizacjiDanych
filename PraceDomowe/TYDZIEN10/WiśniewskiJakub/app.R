@@ -101,3 +101,8 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+setwd(
+"/home/jakwisn/github/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN10/")
+
+library(rsconnect)
+deployApp(appDir = "/home/jakwisn/github/2020Z-TechnikiWizualizacjiDanych/PraceDomowe/TYDZIEN10/", appName = "Dragons" )
