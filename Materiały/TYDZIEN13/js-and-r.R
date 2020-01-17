@@ -21,7 +21,7 @@ rpivotTable(countries, cols = "continent",
 
 # Zadanie 1
 # a) Wygenerować plik R Markdown z trzema różnymi tabelami przestawnymi.
-# b) Przygotować aplikację Shiny pozwalającą załadować własny zbiór danych.
+# b) Przygotować aplikację Shiny pozwalającą załadować własny zbiór danych. (użyć funkcji `renderRpivotTable()` oraz `rpivotTableOutput()`)
 
 
 
