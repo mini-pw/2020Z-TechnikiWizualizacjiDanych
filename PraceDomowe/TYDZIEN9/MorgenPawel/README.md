@@ -1,0 +1,1 @@
+[link do aplikacji](https://mrdomani.shinyapps.io/Domowa8/)
