@@ -1,0 +1,13 @@
+name: Dragons
+title: Dragons
+username:
+account: maroonblue
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1674787
+bundleId: 2737994
+url: https://maroonblue.shinyapps.io/Dragons/
+when: 1579388798.99623
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: dragonscpirt.R
