@@ -48,9 +48,9 @@ server <- function(input, output, session) {
   }, r = 3, color = "purple")
   
   output[["regression"]] <- renderPrint({
-    if (!is.null(input$JsData)) {
+    if (!is.null(input[["JsData"]])) {
       mat <- matrix(
-        data = as.integer(input$JsData), 
+        data = as.integer(input[["JsData"]]), 
         ncol = 2, 
         byrow = TRUE
       )
@@ -61,7 +61,7 @@ server <- function(input, output, session) {
       
     } else {
       summary(
-        object = lm(df$y ~  df$x)
+        object = lm(df[["y"]] ~  df[["x"]])
       )
     }
   })
