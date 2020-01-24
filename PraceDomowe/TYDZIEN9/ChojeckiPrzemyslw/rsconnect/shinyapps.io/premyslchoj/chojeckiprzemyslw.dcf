@@ -1,0 +1,12 @@
+name: chojeckiprzemyslw
+title:
+username:
+account: premyslchoj
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1643889
+bundleId: 2719172
+url: https://premyslchoj.shinyapps.io/chojeckiprzemyslw/
+when: 1578655780.26395
+asMultiple: FALSE
+asStatic: FALSE
