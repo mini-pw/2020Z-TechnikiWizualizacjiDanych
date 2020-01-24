@@ -11,7 +11,7 @@ var xText = xTexts[r2d3.data[0].measN];
 var yTexts = {"scars": "scars", "number_of_lost_teeth": "lost teeth"};
 var yText = "number of " + yTexts[r2d3.data[0].impN];
 
-d3.selectAll("svg *").remove();
+r2d3.svg.selectAll("*").remove();
 
 r2d3.svg
     .attr("width", width + margin.left + margin.right)
