@@ -26,7 +26,7 @@ server = function(input, output, session) {
 
   output$pivot <- renderRpivotTable({
     rpivotTable(data = data   ,  rows = c("country"), cols="year",
-                vals = "suicides_no", aggregatorName = "Sum", rendererName = "Area Chart"
+                vals = "suicides_no", aggregatorName = "Sum", rendererName = "Heatmap"
                 , width="50%", height="550px")
   })
   
