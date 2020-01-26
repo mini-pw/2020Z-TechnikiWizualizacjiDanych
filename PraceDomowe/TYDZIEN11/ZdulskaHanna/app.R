@@ -66,7 +66,7 @@ server <- function(input, output, session) {
             this.moveTo({scale:0.37})}") %>%
             visPhysics(stabilization = FALSE) %>%
             visLayout(randomSeed = 667)  %>%
-            visGroups(groupname = "Stable", color = "lightblue") %>%
+            visGroups(groupname = "Stable", color = "#43a2ca") %>%
             visGroups(groupname = "Killed", color = "red") %>%
             visGroups(groupname = "Disrupted", color = "orange") %>%
             visLegend()
