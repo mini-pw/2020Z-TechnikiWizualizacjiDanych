@@ -3,7 +3,7 @@ library("visNetwork")
 
 ###
 #
-#   App can take about minute to display nodes and it's quite laggy 
+#   App can take a few minutes to display nodes and it's quite laggy 
 #   Since data provided by http://networkrepository.com/ contained only edges 
 #   (and that seems to be the case for all datasets),
 #   nodes display only numbers, which have no meaning. 
@@ -20,10 +20,14 @@ server <- function(input,output){
   #Create edges data frame
   edges <- read.table("inf-euroroad.edges", skip=2, sep=" ")
   colnames(edges) <- c("from","to")
+  edges$color="black"
   
   #Create node dataframe
   max_nodes <- max(dat[1])
-  nodes <- data.frame(id = 1:max_nodes)
+  nodes <- data.frame(id = 1:max_nodes,
+                      label=paste("ID:",1:max_nodes),
+                      color="grey"
+                      )
   
   
   output$network <- renderVisNetwork({
