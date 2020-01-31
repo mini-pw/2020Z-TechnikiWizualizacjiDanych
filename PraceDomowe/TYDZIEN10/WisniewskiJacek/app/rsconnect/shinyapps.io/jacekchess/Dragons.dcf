@@ -1,0 +1,12 @@
+name: Dragons
+title: Dragons
+username:
+account: jacekchess
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1674255
+bundleId: 2737696
+url: https://jacekchess.shinyapps.io/Dragons/
+when: 1579368274.71257
+asMultiple: FALSE
+asStatic: FALSE
