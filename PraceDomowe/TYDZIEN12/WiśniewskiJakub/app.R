@@ -2,7 +2,6 @@ library(shiny)
 library(rpivotTable)
 library(dplyr)
 library(shinydashboard)
-
 data <- read.csv("StudentsPerformance.csv")
 
 ui <- dashboardPage(
@@ -37,11 +36,18 @@ ui <- dashboardPage(
                                      min = 0,max = 100,step = 1, value = c(0,100))),
     
     
-    dashboardBody(fluidRow(
-        rpivotTableOutput("myPivot")
-        ))
-        
-    
+    dashboardBody(
+                  box(title="Pivot Table", solid = TRUE,
+                      footer =
+                          "With this box, averything fits in one page, always! Feel free to scroll right if content exceeds the screen. \n 
+                           Be sure to firstly filter your data, and than play with data table!", 
+                      width = 20, 
+                      height = 850,
+                      # secret to fitting even when out of bounds
+                      # but integration of pivot table with shiny is hard
+                      tags$div(style = 'overflow-x: scroll' , rpivotTableOutput("myPivot",height = "800px",width = "90%" )))
+                  )
+
 )
 
 server <- function(input, output) {
@@ -61,8 +67,8 @@ server <- function(input, output) {
                                  filter(writing.score >= min(input[["writing.score"]]) & math.score <= max(input[["writing.score"]]))
             
         colnames(dataFiltered)[2:5] <- c("race/eth.", "par.lvl.of.edu","lunch","tst.prep.cour.")
-        rpivotTable(dataFiltered,rows = "gender",cols = c("math.score") ,width="50%", 
-                                height="400px", rendererName = "Stacked Bar Chart")
+        rpivotTable(dataFiltered,rows = "gender",cols = c("math.score") ,width="90%", 
+                                 rendererName = "Stacked Bar Chart")
     
         })
 }
