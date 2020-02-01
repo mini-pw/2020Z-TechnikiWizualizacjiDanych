@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+  <head>
+  <meta charset="utf-8">
+    <title>Christmastree</title>
+    </head>
+    <body>
+      Kolor: <select id="kolor">
+		<option value="Chartreuse">jasnozielony</option>
+		<option value="darkgreen">ciemnozielony</option>
+		<option value="green" selected>zielony</option>
+	</select>
+	<button id="gwiazda">Dodaj gwiazde</button>
+	<button id="usun_gwiazde"> Usun gwiazde</button>
+
+          <p></p>
+                      <script src='https://d3js.org/d3.v4.min.js'></script>
+                        <script>
+                        var area = d3.area(); //generowanie kszta³tow
+                        var height = 800;//wymiary obrazka
+                        var width = 800;
+                        var liczbabombek = 50;
+                        var wysokosc = 100
+                        //ksztalty:
+                        
+                        var bombki = [];
+                        
+                        bombki.push({
+                          x:500,
+                          y:500
+                        })
+                        
+                        bombki.push({
+                          x:480,
+                          y:300
+                        })
+                        
+                        
+                        bombki.push({
+                          x:500,
+                          y:500
+                        })
+                        
+                        bombki.push({
+                          x:400,
+                          y:620
+                        })
+                        
+                        bombki.push({
+                          x:390,
+                          y:450
+                        })
+                        
+                        bombki.push({
+                          x:550,
+                          y:400
+                        })
+                        
+                        bombki.push({
+                          x:520,
+                          y:200
+                        })
+                        
+                        bombki.push({
+                          x:580,
+                          y:630
+                        })
+                        var choinkak = [
+                          
+                          [500, 110],
+                          [380, 300],
+                          [470, 300],
+                          [350, 500],
+                          [450, 500],
+                          [320, 700],
+                          [680, 700],
+                          [550, 500],
+                          [650, 500],
+                          [530, 300],
+                          [620, 300],
+                          [500, 110]
+                          ];
+                        var pienk = [
+                          [480, 700],
+                          [480, 780],
+                          [520, 780],
+                          [520, 700],
+                          [480, 700]
+                          ];
+                        var gwiazdak = [
+                          [500, 70],
+                          [490, 90],
+                          [470, 90],
+                          [488, 104],
+                          [480, 127],
+                          [500, 111],
+                          [520, 127],
+                          [512, 104],
+                          [530, 90],
+                          [510, 90],
+                          [500, 70]
+                          ];
+                       
+                        var drzewko = area(choinkak);
+                        var pieniek = area(pienk);
+                        var gwiazda = area(gwiazdak);
+                        
+                        //szkielet obrazka
+                        var svgcreat = d3.select('body')
+                        .append('svg')
+                        .attr('height', height)
+                        .attr('width', width)
+                        //pieñ
+                
+                        
+                        var svg_pieniek = svgcreat.selectAll('path')
+                            .data(pieniek)
+                            .enter()
+                            .append('path')
+                            .attr('d', pieniek)
+                            .style('fill', 'SaddleBrown')
+                        //gwiazda
+
+
+                        var svg_gwiazda= svgcreat.selectAll('path')
+                            .data(gwiazda)
+                            .enter()
+                            .append('path')
+                            .attr('d', gwiazda)
+                            .style('fill', 'white')
+
+                        
+                        //choinka
+                        var svg_drzewko = svgcreat.selectAll('path')
+                        .data(drzewko)
+                        .enter()
+                        .append('path')
+                        .attr('d', drzewko)
+                        .style('fill', d3.select('#kolor').property('value'))
+                        
+                        var svg_bombki = svgcreat.selectAll('circle')
+                        .data(bombki)
+                        .enter()
+                        .append('circle')
+                        .attr('cx', function(d) {return d.x;})
+                        .attr('cy', function(d) {return d.y;})
+                        .attr('r', 20)
+                        .attr('fill', 'blue')
+                        
+                        d3.select('#kolor').on('change', function() {
+		                    svg_drzewko
+			                  .transition()
+			                  .duration(1000)
+			                  .style('fill', d3.select("#kolor").property("value"))
+		                    })
+		                    d3.select('#gwiazda').on('click', function() {
+		                      svg_gwiazda
+		                      .transition()
+		                      .duration(1000)
+		                      .style('fill', 'yellow')
+		                      
+		                    })
+		                    d3.select('#usun_gwiazde').on('click', function(){
+		                      svg_gwiazda
+		                      .transition()
+		                      .duration(1000)
+		                      .style('fill', 'white')
+		                    })
+		                    
+		                      
+                        </script>
+                          
+                          </body>
+                          </html>

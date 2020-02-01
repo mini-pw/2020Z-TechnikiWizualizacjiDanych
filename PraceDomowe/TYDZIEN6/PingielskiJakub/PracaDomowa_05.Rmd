@@ -1,0 +1,46 @@
+---
+title: "TWD Praca domowa 5"
+author: "Jakub Pingielski"
+date: "4/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(plotrix)
+
+data <- PlantGrowth %>%
+    group_by(group) %>%
+    summarise(mean_weight = mean(weight))
+
+data$group <- c("Control group", "Treatment 1", "Treatment 2")
+```
+   
+## 1 Introduction
+#### Aim of this project was to examine influence of using good and bad practices of data visualisation on understanding the data. Two plots based on the same data were prepared and shown to group of 15 students via online survey: https://docs.google.com/forms/d/e/1FAIpQLSfzBnycfpm43iNYrWNNq4ZaV57z5yPDTI3aSuz6HdC6UM79Dg/viewform
+
+## 2 First plot - 3D Pie chart
+#### Humans have hard times comparing angles, especially in three dimensional space. If values are similar, it might be impossible to find out which one is the biggest. Results of survey confirmed that, with only 50% of students correctly guessing which one of the treatment groups have the biggest mean value.
+
+```{r piechart}
+pie3D(data$mean_weight, labels = data$group,
+      main = "Mean weight per treatment group", 
+      explode=0.3, radius=1.5, labelcex = 1.2,  start=1.5)
+```
+
+## 3 Second plot - Bar chart
+#### On the opposite spectrum, lengths of bars in bar charts are easily comparable, with 100% students correctly guessing which one of the treatment groups have the biggest mean value.
+
+```{r barchart}
+ggplot(data, aes(y=mean_weight, x=group, fill=group))+
+    geom_bar(stat="identity") +
+    theme_minimal() + coord_flip() +
+    ggtitle("Mean weight per treatment group")
+
+```
+
+
+## 4 Conclusion
+#### Don't use pie charts, fool! Use bar charts instead.

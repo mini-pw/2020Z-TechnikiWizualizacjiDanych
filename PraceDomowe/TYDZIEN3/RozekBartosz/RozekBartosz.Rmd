@@ -1,0 +1,86 @@
+---
+title: 'Praca Domowa #2'
+author: "Bartosz Rożek"
+date: "24 października 2019"
+geometry: margin= 2cm
+output: html_document
+---
+
+## Kod Funkcji
+```{r setup, include=TRUE, message = FALSE}
+library("ggplot2")
+library("dplyr")
+library("gridExtra")
+#Tworzenie ramki dancyh
+stats <- data.frame(Season = c("2002-03", "2003-04", "2004-05", "2005-06", "2006-07", "2007-08", "2008-09", 
+                               "2009-10", "2010-11", "2011-12", "2012-13", "2013-14", "2014-15", "2015-16",
+                               "2016-17", "2017-18", "2018-19"),
+                    Matches = c(30, 40, 50, 47, 53, 49, 53, 35, 53, 55, 55, 47, 54, 48, 46, 44, 43),
+                    Goals = c(5, 6, 9, 12, 23, 42, 26, 33, 53, 60, 55, 51, 61, 51, 42, 44, 28))
+
+stats <- stats %>% mutate(Average = stats$Goals/stats$Matches, Perfect = 1) 
+#Dodaje aktualny klub
+levels(stats$Season)[1] <- paste(levels(stats$Season)[1], "Sporting", sep="\n")
+levels(stats$Season)[2:7] <- paste(levels(stats$Season)[2:7], "MU", sep="\n")
+levels(stats$Season)[8:16] <- paste(levels(stats$Season)[8:16], "Real", sep="\n")
+levels(stats$Season)[17] <- paste(levels(stats$Season)[17], "Juve", sep="\n")
+
+#Tworze podstawy pod kolorowe prostokaty na wykresie
+rects <- data.frame(xstart = c(0.5,1.5,7.5,16.5), xend = c(1.5,7.5,16.5,17.5), 
+                    col = c("Sporting", "Manchester", "Real", "Juventus"))
+
+plot1 <- ggplot(stats) +
+  geom_line(aes(x = Season, y = Matches, group = "Matches", color = "Games"), size = 1.5, alpha = 1) +
+  geom_line(aes(x = Season, y = Goals, group = "Goals", color = "Goals"), size = 1.5) + 
+  theme(axis.title.x = element_text(size = 15, face = 'bold')) +
+  geom_rect(data=rects, aes(ymin=0, ymax=70, xmin=xstart, xmax=xend),
+            fill = c("#0abf2e", "#cc0007", "#2d83cf", "#e831eb"), alpha =0.15) +
+  scale_color_manual(name="", values=c("Games"="deepskyblue4",  
+                                       "Goals"="red")) + 
+  scale_fill_manual(name="", values=c("Games"="deepskyblue4",
+                                      "Goals"="red")) +
+  scale_y_continuous(limits = c(0,70), breaks = seq(0,70,10)) +
+  labs(title = "Ronaldo games and goals per season", x = NULL, y = NULL) +
+  theme(legend.position = "top", legend.justification = c(0,0), legend.key = element_blank(), 
+      legend.text = element_text(size = 16)) +
+  theme(axis.text.x.bottom = element_text(colour = "black",size = 9, angle = 45), axis.ticks = element_blank()) +
+  theme(axis.text.y = element_text(colour = "black", size = 16), axis.ticks = element_blank()) +
+  theme(plot.title = element_text(size = 22, face = "bold")) 
+
+
+plot2 <- ggplot(stats) +
+  geom_line(aes(x = Season, y = Average, group = "Average", color = "Average"), size = 1.5, alpha = 1) +
+  geom_line(aes(x = Season, y = Perfect, group = "Perfect", color = "Perfect"), size = 1.5, linetype = "dashed") + 
+  theme(axis.title.x = element_text(size = 15, face = 'bold')) +
+  geom_rect(data=rects, aes(ymin=0, ymax=1.2, xmin=xstart, xmax=xend),
+            fill = c("#0abf2e", "#cc0007", "#2d83cf", "#e831eb"), alpha =0.15) +
+  scale_color_manual(name="", values=c("Average"="deepskyblue4",  
+                                       "Perfect"="grey")) + 
+  scale_fill_manual(name="", values=c("Average"="deepskyblue4",
+                                      "Perfect"="grey")) +
+  scale_y_continuous(limits = c(0,1.2), breaks = seq(0,1.2,0.1)) +
+  labs(title = "Ronaldo goals/games per season", x = NULL, y = NULL) +
+  theme(legend.position = "top", legend.justification = c(0,0), legend.key = element_blank(), 
+        legend.text = element_text(size = 16)) +
+  theme(axis.text.x.bottom = element_text(colour = "black",size = 9, angle = 45), axis.ticks = element_blank()) +
+  theme(axis.text.y = element_text(colour = "black", size = 16), axis.ticks = element_blank()) +
+  theme(plot.title = element_text(size = 22, face = "bold")) 
+
+
+```
+## Wykres
+Wykres przedstawia statystyki Cristiano Ronaldo na przestrzeni sezonow. 
+
+```{r, include=TRUE, echo=FALSE, fig.align="center"}
+#złożenie pojedyńczych wykresów w jedną wspólną grafikę
+plot1
+plot2
+
+```
+
+## Uwagi
+Do wykresu dodałem linie pionowe, które ułatwiają dokładnie określić wartość dla danego sezonu. Dodałem także informację o klubie w którym wtedy grał Ronaldo oraz kolorowe prostokąty zazaczające te okresy. Stworzyłem też drugi wykres - średnią goli na sezon, czyli informacja która tak naprawdę jest kluczowa w ocenianiu wydajności piłkarza w kolejnych sezonach. Ten wykres zawiera prostą zazanaczającą wartość 1, jest to wartość której przekroczenie jest uważanane w piłce nożnej za wielkie osiągnięcie.
+
+## Wykres przed
+![](/home/bartosz/studia/Semestr_3/TWD/PracaDomowa2/Ronaldo_goals.png)
+

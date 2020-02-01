@@ -1,0 +1,493 @@
+---
+title: "Borderlands Stats"
+author: "u/Marcin15_10"
+output:
+  html_document:
+    fig_width: 10
+    fig_height: 10
+---
+```{r include=FALSE}
+options(stringsAsFactors = FALSE)
+library("dplyr")
+library("ggplot2")
+library("scales")
+library("networkD3")
+library("gridExtra")
+library("knitr")
+
+```
+
+
+# Mains across Borderlands franchise
+
+
+
+
+```{r echo=FALSE,warning=FALSE}
+MyData <- read.csv(file="C:/Users/lukas/Documents/Borderlands/Data.csv", header=TRUE, sep=",")
+
+brd1<-select(MyData,Borderlands.1)
+data<-count(brd1,Borderlands.1)
+data<-slice(data,2:5)
+data<-arrange(data,desc(Borderlands.1))
+data<-mutate(data,real = 100*n/sum(n))
+data<-mutate(data,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+data<-mutate(data,pos = cumsum(real) - 0.5*real)
+
+
+
+#mycols <- c("#0073C2FF", "#EFC000FF", "#00cc00", "#cc0000","#00ffff","#6600ff")
+mycols <- c("#FF0000", "#007ED6", "#ffcc00", "#52D726","#FF7300","#7CDDDD")
+
+a1<-ggplot(data, aes(x = "", y = real, fill = Borderlands.1)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos, label = proc), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 1 ", title.position = "top")) +
+  theme(legend.position="bottom")
+
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+brd2<-select(MyData,Borderlands.2)
+data2<-count(brd2,Borderlands.2)
+data2<-slice(data2,2:7)
+data2<-arrange(data2,desc(Borderlands.2))
+data2<-mutate(data2,real = 100*n/sum(n))
+data2<-mutate(data2,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+data2<-mutate(data2,pos = cumsum(real) - 0.5*real)
+
+
+a2<-ggplot(data2, aes(x = "", y = real, fill = Borderlands.2)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos, label = proc), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 2", title.position = "top")) +
+  theme(legend.position="bottom")
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+brdps<-select(MyData,Borderlands.Pre.Sequel.)
+brdps<-count(brdps,Borderlands.Pre.Sequel.)
+dataps<-slice(brdps,2:7)
+dataps<-arrange(dataps,desc(Borderlands.Pre.Sequel.))
+dataps<-mutate(dataps,real = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real)-0.5*real)
+dataps1<-dataps
+
+a3<-ggplot(dataps, aes(x = "", y = real, fill = Borderlands.Pre.Sequel.)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos, label = proc), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands Pre-Sequel", title.position = "top"))+
+  theme(legend.position="bottom")
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+
+brdps<-select(MyData,Borderlands.3)
+brdps<-count(brdps,Borderlands.3)
+dataps<-slice(brdps,2:5)
+dataps<-arrange(dataps,desc(Borderlands.3))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+
+a4<-ggplot(dataps, aes(x = "", y = real_values, fill = Borderlands.3)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos, label = proc), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 3", title.position = "top")) +
+  theme(legend.position="bottom")
+
+grid.arrange(a1,a2,a3,a4,nrow=2,ncol=2)
+
+```
+
+# My siren name is Brick!
+
+This plot shows  players that played Lilith and how many of them picked Maya and then Amara. Ther are four times more this type of  players as it is statistically supposed to be!
+
+```{r echo=FALSE,warning=FALSE,fig.width=10, fig.height=2.5}
+sirens<-select(MyData,Borderlands.1,Borderlands.2,Borderlands.3)
+siren1<-filter(sirens,Borderlands.1 == "Lilith")
+lilith<-count(siren1)
+lil<-first(lilith)
+axton<-filter(siren1,Borderlands.2 == "Axton")
+axton<-count(axton)
+axe<-first(axton)
+gaige<-filter(siren1,Borderlands.2 == "Gaige")
+gaige<-count(gaige)
+gai<-first(gaige)
+krieg<-filter(siren1,Borderlands.2 == "Krieg")
+krieg<-count(krieg)
+kri<-first(krieg)
+salvador<-filter(siren1,Borderlands.2 == "Salvador")
+salvador<-count(salvador)
+sal<-first(salvador)
+zer0<-filter(siren1,Borderlands.2 == "Zer0")
+zer0<-count(zer0)
+zer<-first(zer0)
+
+
+siren2<-filter(siren1,Borderlands.2 == "Maya")
+maya<-count(siren2)
+may<-first(maya)
+flak<-filter(siren2,Borderlands.3 == "Fl4k")
+flak<-count(flak)
+fla<-first(flak)
+moze<-filter(siren2,Borderlands.3 == "Moze")
+moze<-count(moze)
+moz<-first(moze)
+zane<-filter(siren2,Borderlands.3 == "Zane")
+zane<-count(zane)
+zan<-first(zane)
+siren3<-filter(siren2,Borderlands.3 == "Amara")
+amara<-count(siren3)
+ama<-first(amara)
+
+Lilith <-paste("Lilith"," (",lil,")",sep = "")
+Maya<-paste("Maya"," (",may,")",sep = "")
+Axton<-paste("Axton"," (",axe,")",sep = "")
+Gaige<-paste("Gaige"," (",gai,")",sep = "")
+Krieg<-paste("Krieg"," (",kri,")",sep = "")
+Salvador<-paste("Salvador"," (",sal,")",sep = "")
+Zer0<-paste("Zer0"," (",zer,")",sep = "")
+Amara<-paste("Amara"," (",ama,")",sep = "")
+Fl4k<-paste("Fl4k"," (",fla,")",sep = "")
+Moze<-paste("Moze"," (",moz,")",sep = "")
+Zane<-paste("Zane"," (",zan,")",sep = "")
+
+links <- data.frame(
+  source=c(Lilith,Lilith,Lilith ,Lilith, Lilith, Lilith,Maya,Maya,Maya,Maya), 
+  target=c(Maya,Axton, Gaige, Krieg, Salvador, Zer0,Amara,Fl4k,Moze,Zane), 
+  value=c(may,axe,gai, kri,sal, zer,ama,fla,moz,zan)
+)
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+  as.character(links$target)) %>% unique()
+)
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+
+p <- sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name", 
+              sinksRight=FALSE)
+
+p
+
+
+
+```
+
+# Who picked Borderlands 3 Mains in other games?
+
+
+```{r echo=FALSE,warning=FALSE}
+
+
+data1<-select(MyData,Borderlands.1,Borderlands.2,Borderlands.Pre.Sequel.,Borderlands.3)
+
+armada<-filter(data1,Borderlands.3 == "Amara")
+armada1<-count(armada,Borderlands.1)
+armada1<-slice(armada1,2:5)
+dataps<-arrange(armada1,desc(Borderlands.1))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data,by="Borderlands.1")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.1," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+
+p1<-ggplot(data_test, aes(x = "Borderlands", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 1 (Difference)", title.position = "top")) +
+  ggtitle("Amara Mains")
+
+
+armada2<-count(armada,Borderlands.2)
+dataps<-arrange(armada2,desc(Borderlands.2))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data2,by="Borderlands.2")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.2," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+p2<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 2 (Difference)", title.position = "top"))
+
+
+armada3<-count(armada,Borderlands.Pre.Sequel.)
+armada3<-slice(armada3,2:7)
+dataps<-arrange(armada3,desc(Borderlands.Pre.Sequel.))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,dataps1,by="Borderlands.Pre.Sequel.")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.Pre.Sequel.," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+
+
+p3<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands Pre-Sequel (Difference)", title.position = "top"))
+
+
+
+
+```
+
+
+
+
+```{r echo=FALSE,warning=FALSE}
+
+
+data1<-select(MyData,Borderlands.1,Borderlands.2,Borderlands.Pre.Sequel.,Borderlands.3)
+
+armada<-filter(data1,Borderlands.3 == "Fl4k")
+armada1<-count(armada,Borderlands.1)
+armada1<-slice(armada1,2:5)
+dataps<-arrange(armada1,desc(Borderlands.1))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data,by="Borderlands.1")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.1," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+p4<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 1 (Difference)", title.position = "top")) +
+  ggtitle("Fl4k Mains")
+
+
+armada2<-count(armada,Borderlands.2)
+armada2<-slice(armada2,2:7)
+dataps<-arrange(armada2,desc(Borderlands.2))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data2,by="Borderlands.2")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.2," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+p5<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 2 (Difference)", title.position = "top"))
+
+
+armada3<-count(armada,Borderlands.Pre.Sequel.)
+armada3<-slice(armada3,2:7)
+dataps<-arrange(armada3,desc(Borderlands.Pre.Sequel.))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,dataps1,by="Borderlands.Pre.Sequel.")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.Pre.Sequel.," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+p6<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands Pre-Sequel (Difference)", title.position = "top"))
+
+grid.arrange(p1,p4,p2,p5,p3,p6,nrow = 3,ncol = 2)
+```
+
+
+
+
+```{r echo=FALSE,warning=FALSE}
+
+
+data1<-select(MyData,Borderlands.1,Borderlands.2,Borderlands.Pre.Sequel.,Borderlands.3)
+
+armada<-filter(data1,Borderlands.3 == "Moze")
+armada1<-count(armada,Borderlands.1)
+armada1<-slice(armada1,2:5)
+dataps<-arrange(armada1,desc(Borderlands.1))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data,by="Borderlands.1")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.1," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+d1<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 1 (Difference)", title.position = "top")) +
+  ggtitle("Moze Mains")
+
+
+armada2<-count(armada,Borderlands.2)
+dataps<-arrange(armada2,desc(Borderlands.2))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data2,by="Borderlands.2")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.2," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+d2<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 2 (Difference)", title.position = "top"))
+
+
+armada3<-count(armada,Borderlands.Pre.Sequel.)
+armada3<-slice(armada3,2:7)
+dataps<-arrange(armada3,desc(Borderlands.Pre.Sequel.))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,dataps1,by="Borderlands.Pre.Sequel.")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.Pre.Sequel.," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+d3<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands Pre-Sequel (Difference)", title.position = "top"))
+```
+
+
+
+```{r echo=FALSE,warning=FALSE}
+
+
+data1<-select(MyData,Borderlands.1,Borderlands.2,Borderlands.Pre.Sequel.,Borderlands.3)
+
+armada<-filter(data1,Borderlands.3 == "Zane")
+armada1<-count(armada,Borderlands.1)
+armada1<-slice(armada1,2:5)
+dataps<-arrange(armada1,desc(Borderlands.1))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data,by="Borderlands.1")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.1," (",format(round(diff,1),nsmall = 1),")",sep = "")) 
+
+
+d4<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 1 (Difference)", title.position = "top")) +
+  ggtitle("Zane Mains")
+
+
+armada2<-count(armada,Borderlands.2)
+dataps<-arrange(armada2,desc(Borderlands.2))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,data2,by="Borderlands.2")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.2," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+d5<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands 2 (Difference)", title.position = "top"))
+
+
+armada3<-count(armada,Borderlands.Pre.Sequel.)
+armada3<-slice(armada3,2:7)
+dataps<-arrange(armada3,desc(Borderlands.Pre.Sequel.))
+dataps<-mutate(dataps,real_values = 100*n/sum(n))
+dataps<-mutate(dataps,proc = format(round(100*n/sum(n),1),nsmall = 1) )
+dataps<-mutate(dataps,pos = cumsum(real_values)-0.5*real_values)
+data_test<-left_join(dataps,dataps1,by="Borderlands.Pre.Sequel.")
+data_test<-mutate(data_test, diff = real_values - real)
+data_test<-mutate(data_test, names = paste(Borderlands.Pre.Sequel.," (",format(round(diff,1),nsmall = 1),")",sep = ""))
+
+d6<-ggplot(data_test, aes(x = "", y = real_values, fill = names)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = pos.x, label = proc.x), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void() +
+  guides(fill = guide_legend(title = "Borderlands Pre-Sequel (Difference)", title.position = "top"))
+
+
+grid.arrange(d1,d4,d2,d5,d3,d6,nrow = 3,ncol = 2)
+```
+
+
+
+# Most Popular Picks
+
+```{r echo=FALSE,warning=FALSE}
+popular<-count(MyData,Borderlands.1,Borderlands.2,Borderlands.Pre.Sequel.,Borderlands.3)
+popular<-filter(popular,Borderlands.1 != "",Borderlands.2 != "",Borderlands.Pre.Sequel. != "",Borderlands.3 != "")
+popular<-arrange(popular,desc(n))
+popular<-slice(popular,1:8)
+kable(popular,col.names = c("Borderlands 1","Borderlands 2","Borderlands Pre-Sequel","Borderlands 3"," Number of picks"))
+
+
+
+```
+
+
+
+
+
+
+

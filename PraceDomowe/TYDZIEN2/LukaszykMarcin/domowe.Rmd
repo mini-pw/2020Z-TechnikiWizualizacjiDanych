@@ -1,0 +1,66 @@
+---
+title: "Domowa1"
+author: "Marcin Lukaszyk"
+date: "October 12, 2019"
+output:
+  html_document:
+    fig_width: 14
+    fig_height: 14
+---
+
+# Wykrez Zródlowy
+
+https://rockandice.com/inside-beta/the-height-of-injustice-is-being-tall-an-advantage-in-your-climbing-career/?cn-reloaded=1&cn-reloaded=1
+
+# Stworzenie Danych
+```{r warning=FALSE}
+library(ggplot2)
+library(dplyr)
+options(stringsAsFactors = FALSE)
+# Zimportowanie bibliotek
+data<-data_frame(height = 150:46:200) #Przygotowanie kolejnych punktów z wykresu odpowiadajacych wzrostów
+
+#Funkcja która "dopasowuje" wynik (czyli wycene drogi)
+#Do wzrostu kolejno dla prowadzenia (Sport Climbing)
+#I potem bulderingu (Bulder)
+rope_data_build<-function(x){
+  grade = (-7/200)*x^2 + (227/20)*x - 845
+  return(grade)
+}
+buld_data_bulid<-function(x){
+  grade = (-29/600)*x^2 + (1003/60)*x - 1380
+  return(grade)
+}
+
+# Dopasowanie wyceny do wzrostu
+data = mutate(data, rope = rope_data_build(height))
+data = mutate(data, buld = buld_data_bulid(height))
+```
+
+# Tworzenie Wykresu
+
+```{r warning=FALSE}
+ggplot(data = data) + #Deklaracja tworzenia wykresu z danych "Data"
+  theme( 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), #Wyczyszczenie wyresu z szarego tla
+    legend.title = element_blank(), #Usuniecie tytulu legendy
+    legend.text = element_text(size = 25), #Zwiekszenie tekstu w legendzie
+    legend.position = c(0.86,0.9), # Ustawienie pozycji legendy
+    plot.title = element_text(hjust = 0.5), # Ustawienie tytulu na srodku 
+    axis.line = element_line(colour = "grey"), #Pokolorowanie lini skali na szaro
+    axis.text.x = element_text(color = "black", size = 20, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+    axis.text.y = element_text(color = "black", size = 20, angle = 0, hjust = .5, vjust = .5, face = "plain") #Zwiekszenie wielskosci tekstu w skali
+  ) +
+  labs(title = "Model Estimate of Hardest Grade Climbed for \n Different Heights") + #Nazwanie wykresu
+  geom_rect(data=data.frame(xmin = 161, xmax = 188, ymin = -Inf, ymax = Inf),
+    aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="grey", alpha=0.8)+ #Stworzenie szarego pola 
+  geom_point(aes(y = buld,x = height,colour = "Sport Climbing")) + # Nalozenie punktów od Sport Climbing
+  geom_point(aes(y = rope,x = height,colour = "Boulder")) + # Nalozenie punktów od Bulder
+  scale_color_manual(values = c("blue", "orange")) + #Dopisanie kolorów
+  scale_y_continuous(name = "",limits = c(0,100),breaks = c(0,25,50,75,100),labels = c("5.11d/V6","5.12a/V7","5.12b/V8","5.12c/V8-V9","5.12d/V9")) + # Nazwanie osi odpowiednio
+  scale_x_continuous(name = "Height(feet)",breaks = c(150,166,183,200),labels = c("5","5.5","6","6.5")) +
+  geom_text(x=173.5, y=0, label="80% of Heights",size = 13,fontface = "italic") # Nazwanie osi odpowiednio
+
+```

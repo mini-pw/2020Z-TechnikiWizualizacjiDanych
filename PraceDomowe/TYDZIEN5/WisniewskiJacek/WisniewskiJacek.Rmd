@@ -1,0 +1,55 @@
+---
+title: "TWD pd 4"
+author: "Jacek Wiśniewski"
+date: "14/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(svglite)
+```
+### Opis
+W tej pracy domowej ulepszam wykres drugi Mariusza Słapka. Zmiany, które chciałbym wprowadzić, to dodanie różnych grafik do wykresu. Efekt końcowy powinnien być "ciekawszy" od pierwowzoru.
+
+### Wykres przed
+```{r echo = FALSE}
+
+data <- read.csv('C:/Users/jwisn/Downloads/2020Z-TechnikiWizualizacjiDanych-master/2020Z-TechnikiWizualizacjiDanych-master/PraceDomowe/TYDZIEN4/SlapekMariusz/data/plot1.csv', encoding="UTF-8")
+
+
+
+order <- c("Niemcy", "RPA","Czechy", "Mozambik", "Kazachstan",
+           "USA", "Kolumbia", "Austalia", "Rosja")
+
+
+extrafont::loadfonts(device="win")
+windowsFonts(Calibri=windowsFont("Calibri"))
+
+plot2 <- ggplot(data, aes(x=country, y=value)) +
+  geom_bar(stat="identity", fill="#f68060", alpha=.6, width=.4) +
+  scale_x_discrete(limits = order) +
+  scale_y_continuous(breaks = seq(0, 5000, by=500)) +
+  labs(x="", 
+       y="",
+       title = "Import węgla do Polski w okresie styczeń-maj 2019 r. (w tys. ton)",
+       caption="źródło: GUS") +
+  geom_text(aes(label = value), size = 3, vjust = -1, color = "#444444") +
+  theme_minimal() +
+  theme(plot.title = element_text(color="black", size = 15, hjust=0.5)) +
+  theme(axis.text.x =element_text(face = "bold", size=10)) +
+  theme(axis.text.y=element_text(face = "bold"))
+
+svglite("p1.svg", width = 10, height = 10)
+plot2
+dev.off()
+plot2
+```
+
+
+### Wykres po
+
+
+![](C:/Users/jwisn/wegiel.svg)

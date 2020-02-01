@@ -1,0 +1,102 @@
+---
+title: "Praca domowa tydzień 3"
+author: "Piotr Fic"
+date: "25 października 2019"
+output: html_document
+---
+
+## Wykres wybrany do modyfikacji
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width=10}
+library(ggplot2)
+library(ggpubr)
+library(scales) #udostępniające działanie na wartościach procentowych i jednostkach - dolarach
+
+#z braku łatwego dostępu do danych, na podstawie oryginalnego wykresu ręcznie stworzyłem odpowiadającą mu ramkę danych
+degree <- c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college, no degree", "High school diploma", "Less than a high school diploma")
+#wartosci "unemployment" z przedziału 0-1, później podawane w procentach
+unemployment <- c(0.017, 0.015, 0.024, 0.028, 0.038, 0.050, 0.054, 0.080) 
+median <- c(1623, 1730, 1341, 1137, 798, 738, 678, 493)
+dataset <- data.frame(degree, unemployment, median)
+dataset$degree <- factor(dataset$degree, levels = rev(c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college, no degree", "High school diploma", "Less than a high school diploma")))
+#podczas tworzenia ramki danych zapewnienie przy użyciu factorów pożądanej kolejności przedstawianych danych na wykresie
+
+plot1 <- ggplot(data = dataset, aes(x = degree, y = unemployment)) +
+  ggtitle("Unemployment rate(%)") +
+  geom_line() +
+  geom_hline(yintercept = 0.043, linetype = "dotted") +
+  geom_col(fill = "blue") +
+  coord_flip() +
+  scale_y_continuous(breaks = c(0, 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08), labels=scales::percent_format(accuracy = 1), limits = c(0, 0.08), expand = c(0, 0)) +
+  geom_text(aes(label = percent(unemployment, 0.1), y = 0.001), color = "white", position = position_dodge(1), hjust = "left", size = 3) +
+  theme_classic() + 
+  theme(axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.x = element_blank()) +
+  labs(y = "Average: 4,3%")
+plot2 <- ggplot(data = dataset, aes(x = degree, y = median)) +
+  ggtitle("Median usual weekly earnings($)") +
+  geom_line() +
+  geom_hline(yintercept = 860, linetype = "dotted") +
+  geom_col(fill = "darkgrey") +
+  geom_text(aes(label = median, y = 10), color = "white", position = position_dodge(1), hjust = "left", size = 3) +
+  coord_flip() +
+  scale_y_continuous(breaks = c(400, 800, 1200, 1600), labels = dollar(c(400, 800, 1200, 1600)), limits = c(0, 1800), expand = c(0, 0)) +
+  theme_classic() +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_blank()) +
+  labs(y = "Average: $860")
+ggarrange(plot1, plot2)
+```
+
+##Wykres mojego autorstwa
+Praca mojego kolegi była w 100% wiernym odwzorowaniem oryginalnego wykresu z artykułu. Stwierdziłem jednak, że zestawienie
+tych dwóch barplot-ów w jeden wykres może być ciekawym rozwiązaniem: 
+
+* zyskujemy lepsze porównanie dla zależności mediany zarobków i bezrobocia względem grupy wykształcenia
+* mediana zarobków przedstawiona jest w interesującej linii trendu
+* poprawiamy estetykę (przyjazne barwy, czytelne podpisy wartości)
+
+```{r, echo=FALSE, fig.width=10}
+library(ggrepel)
+
+#Drobna modyfikacja danych w celu ładnego podpisywania labeli
+degree <- c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college,\nno degree", "High school diploma", "Less than\na high school diploma")
+unemployment <- c(0.017, 0.015, 0.024, 0.028, 0.038, 0.050, 0.054, 0.080) 
+median <- c(1623, 1730, 1341, 1137, 798, 738, 678, 493)
+dataset <- data.frame(degree, unemployment, median)
+dataset$degree <- factor(dataset$degree, levels = rev(c("Doctoral degree", "Professional degree", "Master's degree", "Bachelor's degree", "Associate's degree", "Some college,\nno degree", "High school diploma", "Less than\na high school diploma")))
+
+dataset$unemployment <- dataset$unemployment*100 #uzyskanie wartosci procentowych dla danych o bezrobociu
+
+#Wykres
+ggplot(dataset, aes(x = degree)) +
+  #barplot dla stopy bezrobocia
+  geom_bar(aes(y = unemployment), stat = "identity", fill = "#734f24") +
+  #podpisy wartosci na barplocie
+  geom_text(aes(label = paste(unemployment, "%"), y=0.2), color = "white") +
+  #punkty dla mediany zarobkow, wartosci przeskalowane aby wspolgraly z wartosciami bezrobocia
+  #("wykres sie nie rozjedzal w pionie")
+  geom_point(aes(y = median/200), shape = 19, size = 4, color = "#2ca830") + 
+  #dodanie skali dla zarobkow po prawej stronie wykresu, przeskalowanie aby odpowiadala skalowaniu wartosci powyzej
+  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "Median usual weekly earnings ($)")) +
+  #linia dla wykresu punktowego median zarobkow oraz linia przerywana sredniej z median zarobkow
+  geom_line(aes(x = degree, y = median/200), group = 1, size = 1, color = "#2ca830") + 
+  geom_hline(yintercept = 860/200, linetype = "dotted", color = "#2ca830", size = 1) + 
+  labs(y = "Unemployment rate(%)") +
+  geom_text(aes(x = "Doctoral degree", y = 4.5), label = "Average earnings", fontface = "italic", size = 4, alpha = 0.2) +
+  #podpisy wartosci do punktow
+  geom_label_repel(aes(x = degree, y = median/200), label = paste("$", median, sep = ""), nudge_y = -0.5, segment.size = 0) +
+  ggtitle("Earnings and unemployment rates by education lavel") +
+  xlab("Education level") +
+  theme(axis.line.y = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(colour = "#c5f299"),
+        panel.background = element_rect(fill = "white", colour = "white"),
+        plot.title = element_text(hjust = 0.5, size = 15))
+
+```
+

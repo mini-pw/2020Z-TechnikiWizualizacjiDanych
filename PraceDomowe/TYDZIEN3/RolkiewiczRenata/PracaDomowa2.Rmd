@@ -1,0 +1,54 @@
+---
+author: "Renata Rólkiewicz"
+date: "25/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Praca domowa nr2 - Renata Rólkiewicz
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# wczytanie danych
+data <- data.frame(events=c("Zabici \n w wypadkach","  Wypadki \n drogowe"," Ranni \n w wypadkach"," Zatrzymani \n nietrzeŸwi \n kieruj¹cy", " Zatrzymani \n poszukiwani","  Zatrzymani na \n gor¹cym uczynku"), number=c(7,86,106,206,278,514), stringsAsFactors = FALSE)
+
+```
+
+### Poprawiany wykres
+#### Autor: Miko³aj Malec
+#### Dane: Statystyki policyjne
+
+![](C:/Users/acer/Desktop/miko³ajmalec.png)
+
+
+### Mój wykres - co zmieniono i dlaczego?
+1. Dodanie tytu³u.
+2. Zmienienie orientacji podpisów na osi x by by³y ³atwiejsze do odczytania i usuniêcie znaczników.
+3. Przeciêcie osi w (0,0) - usuwamy niepotrzebne wolne miejsce pod s³upkami wykresu.
+4. Sortowanie wyników (od najmniejszego do najwiêkszego) - poprawa czytelnoœci wykresu.
+5. Wyniki nad s³upkami odpowiednio ustawione, by by³y widoczne i czytelne.
+6. Dodanie gradacji kolorów - podkreœlenie ró¿nic pomiêdzy wielkoœciami wyników i uatrakcyjnienie wykresu.
+
+```{r warning=FALSE,message=FALSE}
+library(ggplot2)
+
+ggplot(data,aes(x=reorder(events,number), y=number, fill = number))+
+  geom_bar(position = 'dodge', stat = "identity", width=0.8)+
+  scale_y_continuous(expand = c(0,0), limits = c(0,550), breaks = seq(0,500,100))+
+  labs(x="",y="",title="Statystyki policyjne - 10 paŸdziernika 2019")+
+  scale_fill_gradient(low = "midnightblue", high = "skyblue2")+
+  theme(legend.title = element_blank(), legend.position = "",
+        axis.ticks.x = element_blank())+
+  geom_text(aes(y = number, label = number), position = position_dodge(width = 1),
+            size = 4 , vjust= -0.4, color = "black")
+  
+```
+
+
+
+
+
+

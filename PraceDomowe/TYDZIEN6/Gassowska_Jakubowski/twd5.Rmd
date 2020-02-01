@@ -1,0 +1,75 @@
+---
+title: "PD5"
+author: "Ada G¹ssowska i Miko³aj Jakubowski"
+date: "6 grudnia 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wprowadzenie 
+
+Celem ankiety by³o sprawdzenie jak odczytujemy dane z bardzo z³ych wykresów. Ankietê rozes³aliœmy wœród naszych znajomych, mo¿na wiêc za³o¿yæ, ¿e grup¹ docelow¹ byli ludzie w wieku 20-22 lata.
+
+
+## Wykres pierwszy
+
+```{r pressure1 , echo=FALSE}
+knitr::include_graphics("C:/Users/Ada/Desktop/pd5.png")
+```
+
+Najpierw ankietowani mieli odpowiedzieæ na pytania dotycz¹ce wykresów reprezentuj¹cych sprzeda¿ w jakimœ sklepie sprzedaj¹¹cym produkty Apple'a. Dane zosta³y przedstawione na wykresach ko³owych 3D. Ten typ wykresu uwa¿any jest za jeden z najgorszych i najmniej czytelnych, chcieliœmy wiêc sprawdzic na ile dobrze odczytuj¹ go nasi ankietowani. 
+
+Pierwszym zadaniem ankietowanych by³o odpowiedzenie na pytanie o ró¿nicê miêdzy udzia³em "Services", a udzia³em sprzeda¿y Mac'ów w ca³ym dochodzie w 2018 roku. Udzia³ sprzeda¿y Mac'ów wynosi³ 10%, a udzia³ "Services" - 15% (tak wiêc by³ 1,5 raza wiêkszy). Ankietowani mogli zaznaczyæ jedn¹ z trzech odpowiedzi: "udzia³ "Services" by³ 1,5 raza wiêkszy", "Udzia³  "Services" by³ mniej wiêcej taki sam (+/- 1%)" oraz "Udzia³ "Services" by³ 1,5 raza mniejszy". Poprawenie odpowiedzia³o 56% ankietowanych, jednak dosyæ du¿o bo 37% odpowiedziao, ¿e udzia³ ten by³ mniej wiêcej taki sam. 
+
+Drugim zadaniem by³o porównanie zysków z IPhone'ów w 2018 i 2019 roku. W 2018 roku wyniós³ on 62% ca³ego zysku, a w 2019 - 68%. Ankietowani mieli odpowiedzieæ, czy zysk ten wzrós³, zmala³, czy nie zminie³ siê. Tu ankietowani odpowiedzieli wyj¹tkowo dobrze, bo a¿ 88% osób odpowiedzia³o ¿e zysk wzrós³. Pozosta³e 12 zaznaczy³o, ¿e siê nie zmieni³. 
+
+W trzecim pytaniu trzeba by³o okreœliæ ile procent wed³ug ankietowanego wnios³a sprzeda¿ Mac'ów w 2018 roku (wnios³a ona 10%). Do wyboru by³y 4 odpowiedzi: 5, 10, 15 i 20 procent. Tu jedynie po³owa osób odpowiedz³a poprawnie. 38% osób uzna³o ¿e by³o to 15%, natomiast odpowiedzi 5% i 20% zadeklarowa³o po 6% ankietowanych. Ciekawe jest, ¿e du¿o wiêcej osób zawy¿y³o wynik, ni¿ go obni¿y³o (a przecie¿ odpowiedzi 5% i 15% ró¿ni¹ siê o tyle samo od 10%).
+
+Podsumowuj¹c, mo¿emy z czystym sumieniem napisaæ, ¿e prawd¹ jest stwierdzenie "Wykresy ko³owe s¹ ma³o czytelne". Mimo wszystko, przewidywaliœmy, ¿e ankietowani poradz¹ sobie jeszcze gorzej. Mo¿e osoby w naszym wieku s¹ przyzwyczajone do wykresów ko³owych, i nauczy³y siê "mniej wiêcej" odczytywaæ z nich dane? Nawet jeœli, na przysz³oœæ raczej nie bêdziemy u¿ywac tego rodzaju przedstawiania danych.
+
+## Wykres drugi
+
+```{r pressure, echo=FALSE}
+knitr::include_graphics("C:/Users/Ada/Desktop/pd52.png")
+```
+
+Wykres przedstawia iloœæ prób samobójczych w poszczególnych województwach (czarny s³upek - mê¿czyŸni, bia³y kobiety) oraz œmiertelnoœæ tych prob (¿ó³ty s³upek w œrodku).
+
+Wykres zosta³ celowo stworzony w sposób nieczytelny:
+-ma³e napisy
+-mêczoce dla oczu zestawienie kolorów
+-s³upki nachodz¹ce na siebie
+
+W ankiecie zadane zosta³o 5 prostych pytañ kontrolnych(typu prawda/fa³sz), maj¹cych na celu sprawdziæ jak dane z wykresu zapadaj¹ odbiorcy w pamiêæ.
+
+1) W ka¿dym z województw wiêcej prób podejmuj¹ mê¿czyŸni. (PRAWDA)
+
+Tutaj 93.8% ankietowanych siê nie pomyli³o. Jak mo¿na siê by³o domyœliæ najwiêkszy s³upek rzuca siê w oczy niezale¿nie od okolicznoœci.
+
+2) Najwiêcej prób samobójczych zakoñczonych zgonem, odnotowano w województwie Œl¹skim. (FA£SZ)
+
+Pytanie to mia³o na celu sprawdziæ czytelnoœæ ¿ó³tego cienkiego s³upka w œrodku. 43.8% ankietowanych odpowiedzia³o na nie b³êdnie. Jest to prawie po³owa, wiêc mo¿na wnioskowaæ ¿e umieszczanie go w œrodku tak w¹skim nie jest najlepszym pomys³em.
+
+3) Wiêkszoœæ kobiet podejmuj¹cych próby samobójcze, robi to ze skutkiem œmiertelnym. (FA£SZ)
+
+To tak naprawdê pytanie sprawdzaj¹c¹ wiarygodnoœæ ankietowanego. Takiej informacji nie ma przedstawionej nigdzie na wykresie i tylko jedna osoba zaznaczy³a j¹ jako poprawn¹.
+
+4) Najwiêcej mê¿czyzn podejmuje próby w województwie Mazowieckim. (FA£SZ)
+
+100% poprawnych odpowiedzi. Tutaj zmy³k¹ mia³ byæ najwy¿szy ¿ó³ty s³upek w tej kategorii.
+
+5) Najmniej prób odnotowano w województwie Opolskim. (PRAWDA)
+
+Oczywistym jest, ¿e ankietowani zwracaj¹ uwagê na to co najwiêksze, ale czy na to co najmniejsze równie¿? Na to pytanie poprawnie odpowiedzia³a tylko po³owa ankietowanych. Prawdopodobnie mo¿naby zwiekszyæ zapamiêtywalnoœæ tego fragmentu gdybyœmy posortowali s³upki w kolejnoœci malej¹cej.
+
+Podsumowanie:
+Jak mo¿na zauwa¿yæ, niektóre "dobre" praktyki tworzenia wykresów s¹ przydatne a niektóre nieco mniej i nie maj¹ tak du¿ego wp³ywu na czytelnoœæ. Po tak ra¿¹cym w oczy kolorami wykresie mo¿na by³o siê spodziewaæ du¿o gorszych wyników, ale jednak ankietowani poradzili sobie stosunkowo dobrze z zadanymi pytaniami.
+
+
+
+
+
+
