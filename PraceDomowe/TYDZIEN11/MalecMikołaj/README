@@ -1,0 +1,4 @@
+This dataset was collected by Davis and colleague in the 1930s. It contains the observed attendance at 14 social events by 18 Southern women.
+
+twd_11.R - zwykłe zwizualizownie grafu znajomości
+app.R - interaktywe wizaualizacja grafu z możliwością wyboru podgrupy kobiet
