@@ -1,0 +1,1370 @@
+{
+    "nodes": [
+      {
+        "Id": "France",
+        "Year": 2017,
+        "Value": 16600134513,
+        "x": 320,
+        "y": 570,
+        "Emission": 292.7
+      },
+      {
+        "Id": "Germany",
+        "Year": 2017,
+        "Value": 40321506702,
+        "x": 325,
+        "y": 400,
+        "Emission": 741.62
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2017,
+        "Value": 17376434291,
+        "x": 320,
+        "y": 230,
+        "Emission": 358.46
+      },
+      {
+        "Id": "France",
+        "Year": 2012,
+        "Value": 16598345315,
+        "x": 320,
+        "y": 570,
+        "Emission": 317.1
+      },
+      {
+        "Id": "Germany",
+        "Year": 2012,
+        "Value": 39852621736,
+        "x": 325,
+        "y": 400,
+        "Emission": 759.58
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2012,
+        "Value": 18937193094,
+        "x": 320,
+        "y": 230,
+        "Emission": 467.04
+      },
+      {
+        "Id": "France",
+        "Year": 2013,
+        "Value": 16509019531,
+        "x": 320,
+        "y": 570,
+        "Emission": 317.5
+      },
+      {
+        "Id": "Germany",
+        "Year": 2013,
+        "Value": 38150556506,
+        "x": 325,
+        "y": 400,
+        "Emission": 777.78
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2013,
+        "Value": 17158889122,
+        "x": 320,
+        "y": 230,
+        "Emission": 453.05
+      },
+      {
+        "Id": "France",
+        "Year": 2014,
+        "Value": 16279152483,
+        "x": 320,
+        "y": 570,
+        "Emission": 285.5
+      },
+      {
+        "Id": "Germany",
+        "Year": 2014,
+        "Value": 39699867198,
+        "x": 325,
+        "y": 400,
+        "Emission": 737.58
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2014,
+        "Value": 18807700064,
+        "x": 320,
+        "y": 230,
+        "Emission": 414.88
+      },
+      {
+        "Id": "France",
+        "Year": 2015,
+        "Value": 15222387275,
+        "x": 320,
+        "y": 570,
+        "Emission": 292.2
+      },
+      {
+        "Id": "Germany",
+        "Year": 2015,
+        "Value": 34805120287,
+        "x": 325,
+        "y": 400,
+        "Emission": 743.81
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2015,
+        "Value": 18530293800,
+        "x": 320,
+        "y": 230,
+        "Emission": 399.93
+      },
+      {
+        "Id": "France",
+        "Year": 2016,
+        "Value": 15376164709,
+        "x": 320,
+        "y": 570,
+        "Emission": 292.9
+      },
+      {
+        "Id": "Germany",
+        "Year": 2016,
+        "Value": 35736346892,
+        "x": 325,
+        "y": 400,
+        "Emission": 745.74
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2016,
+        "Value": 19756525706,
+        "x": 320,
+        "y": 230,
+        "Emission": 377.62
+      },
+      {
+        "Id": "France",
+        "Year": 2007,
+        "Value": 14226034393,
+        "x": 320,
+        "y": 570,
+        "Emission": 354.3
+      },
+      {
+        "Id": "Germany",
+        "Year": 2007,
+        "Value": 34202402000,
+        "x": 325,
+        "y": 400,
+        "Emission": 783.28
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2007,
+        "Value": 19729794258,
+        "x": 320,
+        "y": 230,
+        "Emission": 529.13
+      },
+      {
+        "Id": "France",
+        "Year": 2008,
+        "Value": 16945645979,
+        "x": 320,
+        "y": 570,
+        "Emission": 350.1
+      },
+      {
+        "Id": "Germany",
+        "Year": 2008,
+        "Value": 39630498458,
+        "x": 325,
+        "y": 400,
+        "Emission": 790.86
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2008,
+        "Value": 20413302602,
+        "x": 320,
+        "y": 230,
+        "Emission": 514.42
+      },
+      {
+        "Id": "France",
+        "Year": 2009,
+        "Value": 13649716802,
+        "x": 320,
+        "y": 570,
+        "Emission": 336.8
+      },
+      {
+        "Id": "Germany",
+        "Year": 2009,
+        "Value": 29909246596,
+        "x": 325,
+        "y": 400,
+        "Emission": 734.67
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2009,
+        "Value": 16236621007,
+        "x": 320,
+        "y": 230,
+        "Emission": 465.13
+      },
+      {
+        "Id": "France",
+        "Year": 2010,
+        "Value": 15271759706,
+        "x": 320,
+        "y": 570,
+        "Emission": 341
+      },
+      {
+        "Id": "Germany",
+        "Year": 2010,
+        "Value": 35527681550,
+        "x": 325,
+        "y": 400,
+        "Emission": 772.87
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2010,
+        "Value": 19112619549,
+        "x": 320,
+        "y": 230,
+        "Emission": 481.76
+      },
+      {
+        "Id": "France",
+        "Year": 2011,
+        "Value": 17983387016,
+        "x": 320,
+        "y": 570,
+        "Emission": 314
+      },
+      {
+        "Id": "Germany",
+        "Year": 2011,
+        "Value": 44063998017,
+        "x": 325,
+        "y": 400,
+        "Emission": 746.34
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2011,
+        "Value": 20941792579,
+        "x": 320,
+        "y": 230,
+        "Emission": 444.45
+      },
+      {
+        "Id": "France",
+        "Year": 2002,
+        "Value": 6431727275,
+        "x": 320,
+        "y": 570,
+        "Emission": 362.5
+      },
+      {
+        "Id": "Germany",
+        "Year": 2002,
+        "Value": 13408542000,
+        "x": 325,
+        "y": 400,
+        "Emission": 833.18
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2002,
+        "Value": 9465004989,
+        "x": 320,
+        "y": 230,
+        "Emission": 530.25
+      },
+      {
+        "Id": "France",
+        "Year": 2003,
+        "Value": 7988840982,
+        "x": 320,
+        "y": 570,
+        "Emission": 368.3
+      },
+      {
+        "Id": "Germany",
+        "Year": 2003,
+        "Value": 16638367000,
+        "x": 325,
+        "y": 400,
+        "Emission": 836.56
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2003,
+        "Value": 10702757731,
+        "x": 320,
+        "y": 230,
+        "Emission": 542.1
+      },
+      {
+        "Id": "France",
+        "Year": 2004,
+        "Value": 9392592946,
+        "x": 320,
+        "y": 570,
+        "Emission": 369.1
+      },
+      {
+        "Id": "Germany",
+        "Year": 2004,
+        "Value": 20402340000,
+        "x": 325,
+        "y": 400,
+        "Emission": 820.9
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2004,
+        "Value": 13347040037,
+        "x": 320,
+        "y": 230,
+        "Emission": 542.33
+      },
+      {
+        "Id": "France",
+        "Year": 2005,
+        "Value": 10148094993,
+        "x": 320,
+        "y": 570,
+        "Emission": 371.9
+      },
+      {
+        "Id": "Germany",
+        "Year": 2005,
+        "Value": 23362518000,
+        "x": 325,
+        "y": 400,
+        "Emission": 801.94
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2005,
+        "Value": 14469476739,
+        "x": 320,
+        "y": 230,
+        "Emission": 540.55
+      },
+      {
+        "Id": "France",
+        "Year": 2006,
+        "Value": 11574181833,
+        "x": 320,
+        "y": 570,
+        "Emission": 362.6
+      },
+      {
+        "Id": "Germany",
+        "Year": 2006,
+        "Value": 27820062000,
+        "x": 325,
+        "y": 400,
+        "Emission": 814.67
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2006,
+        "Value": 16326718565,
+        "x": 320,
+        "y": 230,
+        "Emission": 541.64
+      },
+      {
+        "Id": "France",
+        "Year": 1996,
+        "Value": 4557239776,
+        "x": 320,
+        "y": 570,
+        "Emission": 359.5
+      },
+      {
+        "Id": "Germany",
+        "Year": 1996,
+        "Value": 11766748000,
+        "x": 325,
+        "y": 400,
+        "Emission": 902.79
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1996,
+        "Value": 4969325888,
+        "x": 320,
+        "y": 230,
+        "Emission": 544.65
+      },
+      {
+        "Id": "France",
+        "Year": 1997,
+        "Value": 4821865216,
+        "x": 320,
+        "y": 570,
+        "Emission": 351
+      },
+      {
+        "Id": "Germany",
+        "Year": 1997,
+        "Value": 12422347520,
+        "x": 325,
+        "y": 400,
+        "Emission": 870.88
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1997,
+        "Value": 5585589692,
+        "x": 320,
+        "y": 230,
+        "Emission": 522.33
+      },
+      {
+        "Id": "France",
+        "Year": 1998,
+        "Value": 5252563520,
+        "x": 320,
+        "y": 570,
+        "Emission": 372.5
+      },
+      {
+        "Id": "Germany",
+        "Year": 1998,
+        "Value": 13156239296,
+        "x": 325,
+        "y": 400,
+        "Emission": 863.1
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1998,
+        "Value": 5710400079,
+        "x": 320,
+        "y": 230,
+        "Emission": 525
+      },
+      {
+        "Id": "France",
+        "Year": 1999,
+        "Value": 5359043264,
+        "x": 320,
+        "y": 570,
+        "Emission": 366.6
+      },
+      {
+        "Id": "Germany",
+        "Year": 1999,
+        "Value": 12992997120,
+        "x": 325,
+        "y": 400,
+        "Emission": 833.4
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1999,
+        "Value": 5843230319,
+        "x": 320,
+        "y": 230,
+        "Emission": 522.32
+      },
+      {
+        "Id": "France",
+        "Year": 2000,
+        "Value": 5981616973,
+        "x": 320,
+        "y": 570,
+        "Emission": 364.7
+      },
+      {
+        "Id": "Germany",
+        "Year": 2000,
+        "Value": 12911384000,
+        "x": 325,
+        "y": 400,
+        "Emission": 830.07
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2000,
+        "Value": 8276980418,
+        "x": 320,
+        "y": 230,
+        "Emission": 530.16
+      },
+      {
+        "Id": "France",
+        "Year": 2001,
+        "Value": 6279398986,
+        "x": 320,
+        "y": 570,
+        "Emission": 368.2
+      },
+      {
+        "Id": "Germany",
+        "Year": 2001,
+        "Value": 12997392000,
+        "x": 325,
+        "y": 400,
+        "Emission": 847.52
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 2001,
+        "Value": 8675742724,
+        "x": 320,
+        "y": 230,
+        "Emission": 544.48
+      },
+      {
+        "Id": "France",
+        "Year": 1994,
+        "Value": 4178855168,
+        "x": 320,
+        "y": 570,
+        "Emission": 335.7
+      },
+      {
+        "Id": "Germany",
+        "Year": 1994,
+        "Value": 10068929000,
+        "x": 325,
+        "y": 400,
+        "Emission": 875.81
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1994,
+        "Value": 3869944320,
+        "x": 320,
+        "y": 230,
+        "Emission": 535.37
+      },
+      {
+        "Id": "France",
+        "Year": 1995,
+        "Value": 4565482944,
+        "x": 320,
+        "y": 570,
+        "Emission": 343.6
+      },
+      {
+        "Id": "Germany",
+        "Year": 1995,
+        "Value": 11708283000,
+        "x": 325,
+        "y": 400,
+        "Emission": 873.09
+      },
+      {
+        "Id": "United Kingdom",
+        "Year": 1995,
+        "Value": 4627082432,
+        "x": 320,
+        "y": 230,
+        "Emission": 524.3
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2017,
+        "Value": 14908619445,
+        "x": 640,
+        "y": 480,
+        "Emission": 460.4
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2017,
+        "Value": 8297610717,
+        "x": 620,
+        "y": 635,
+        "Emission": 501.73
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2017,
+        "Value": 14298043383,
+        "x": 620,
+        "y": 165,
+        "Emission": 472.1
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2017,
+        "Value": 36793801961,
+        "x": 640,
+        "y": 320,
+        "Emission": 382.56
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2012,
+        "Value": 24021312736,
+        "x": 640,
+        "y": 480,
+        "Emission": 450.04
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2012,
+        "Value": 9536674186,
+        "x": 620,
+        "y": 635,
+        "Emission": 449.54
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2012,
+        "Value": 9725651908,
+        "x": 620,
+        "y": 165,
+        "Emission": 483.11
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2012,
+        "Value": 32104521315,
+        "x": 640,
+        "y": 320,
+        "Emission": 328.85
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2013,
+        "Value": 20739193686,
+        "x": 640,
+        "y": 480,
+        "Emission": 479.11
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2013,
+        "Value": 8946628202,
+        "x": 620,
+        "y": 635,
+        "Emission": 454.44
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2013,
+        "Value": 8692850445,
+        "x": 620,
+        "y": 165,
+        "Emission": 472.26
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2013,
+        "Value": 33439792826,
+        "x": 640,
+        "y": 320,
+        "Emission": 318.19
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2014,
+        "Value": 19947496834,
+        "x": 640,
+        "y": 480,
+        "Emission": 504.21
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2014,
+        "Value": 8953964867,
+        "x": 620,
+        "y": 635,
+        "Emission": 493.03
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2014,
+        "Value": 9294519091,
+        "x": 620,
+        "y": 165,
+        "Emission": 460.14
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2014,
+        "Value": 36590738953,
+        "x": 640,
+        "y": 320,
+        "Emission": 340.67
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2015,
+        "Value": 15880138797,
+        "x": 640,
+        "y": 480,
+        "Emission": 477.96
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2015,
+        "Value": 8156495751,
+        "x": 620,
+        "y": 635,
+        "Emission": 493.4
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2015,
+        "Value": 9901579286,
+        "x": 620,
+        "y": 165,
+        "Emission": 470
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2015,
+        "Value": 34619587528,
+        "x": 640,
+        "y": 320,
+        "Emission": 351.62
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2016,
+        "Value": 14724875400,
+        "x": 640,
+        "y": 480,
+        "Emission": 440.18
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2016,
+        "Value": 7948488528,
+        "x": 620,
+        "y": 635,
+        "Emission": 495.09
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2016,
+        "Value": 11065994048,
+        "x": 620,
+        "y": 165,
+        "Emission": 473.1
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2016,
+        "Value": 37129679331,
+        "x": 640,
+        "y": 320,
+        "Emission": 374.52
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2007,
+        "Value": 21436692049,
+        "x": 640,
+        "y": 480,
+        "Emission": 350.46
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2007,
+        "Value": 8433132953,
+        "x": 620,
+        "y": 635,
+        "Emission": 381.27
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2007,
+        "Value": 8502554579,
+        "x": 620,
+        "y": 165,
+        "Emission": 464.98
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2007,
+        "Value": 29785851070,
+        "x": 640,
+        "y": 320,
+        "Emission": 288.99
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2008,
+        "Value": 25695895137,
+        "x": 640,
+        "y": 480,
+        "Emission": 370.77
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2008,
+        "Value": 9479001099,
+        "x": 620,
+        "y": 635,
+        "Emission": 377.14
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2008,
+        "Value": 10545009942,
+        "x": 620,
+        "y": 165,
+        "Emission": 479.7
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2008,
+        "Value": 31269540861,
+        "x": 640,
+        "y": 320,
+        "Emission": 287.25
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2009,
+        "Value": 18983689025,
+        "x": 640,
+        "y": 480,
+        "Emission": 349.72
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2009,
+        "Value": 7654867084,
+        "x": 620,
+        "y": 635,
+        "Emission": 391.3
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2009,
+        "Value": 7238132129,
+        "x": 620,
+        "y": 165,
+        "Emission": 464.26
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2009,
+        "Value": 25918896167,
+        "x": 640,
+        "y": 320,
+        "Emission": 287.87
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2010,
+        "Value": 23819253083,
+        "x": 640,
+        "y": 480,
+        "Emission": 396.32
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2010,
+        "Value": 9179796606,
+        "x": 620,
+        "y": 635,
+        "Emission": 386.9
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2010,
+        "Value": 8471974046,
+        "x": 620,
+        "y": 165,
+        "Emission": 471.28
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2010,
+        "Value": 28441037070,
+        "x": 640,
+        "y": 320,
+        "Emission": 297.09
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2011,
+        "Value": 27586976621,
+        "x": 640,
+        "y": 480,
+        "Emission": 416.01
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2011,
+        "Value": 10942426445,
+        "x": 620,
+        "y": 635,
+        "Emission": 421.87
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2011,
+        "Value": 10489069115,
+        "x": 620,
+        "y": 165,
+        "Emission": 483.34
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2011,
+        "Value": 33970705431,
+        "x": 640,
+        "y": 320,
+        "Emission": 317.73
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2002,
+        "Value": 8256325802,
+        "x": 640,
+        "y": 480,
+        "Emission": 316.57
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2002,
+        "Value": 5363527271,
+        "x": 620,
+        "y": 635,
+        "Emission": 306.44
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2002,
+        "Value": 2802852858,
+        "x": 620,
+        "y": 165,
+        "Emission": 390.72
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2002,
+        "Value": 12882568333,
+        "x": 640,
+        "y": 320,
+        "Emission": 208.12
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2003,
+        "Value": 9950038262,
+        "x": 640,
+        "y": 480,
+        "Emission": 308.55
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2003,
+        "Value": 5740399231,
+        "x": 620,
+        "y": 635,
+        "Emission": 335.73
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2003,
+        "Value": 3597094905,
+        "x": 620,
+        "y": 165,
+        "Emission": 409.02
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2003,
+        "Value": 16042433315,
+        "x": 640,
+        "y": 320,
+        "Emission": 219.12
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2004,
+        "Value": 12045409019,
+        "x": 640,
+        "y": 480,
+        "Emission": 325.75
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2004,
+        "Value": 6468192959,
+        "x": 620,
+        "y": 635,
+        "Emission": 343.6
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2004,
+        "Value": 4114376837,
+        "x": 620,
+        "y": 165,
+        "Emission": 416.08
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2004,
+        "Value": 20513994168,
+        "x": 640,
+        "y": 320,
+        "Emission": 224.61
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2005,
+        "Value": 14451256525,
+        "x": 640,
+        "y": 480,
+        "Emission": 329.49
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2005,
+        "Value": 6471013354,
+        "x": 620,
+        "y": 635,
+        "Emission": 345.69
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2005,
+        "Value": 5352423316,
+        "x": 620,
+        "y": 165,
+        "Emission": 434.33
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2005,
+        "Value": 21705396537,
+        "x": 640,
+        "y": 320,
+        "Emission": 235.03
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2006,
+        "Value": 16746219126,
+        "x": 640,
+        "y": 480,
+        "Emission": 332.93
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2006,
+        "Value": 7433822164,
+        "x": 620,
+        "y": 635,
+        "Emission": 365.57
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2006,
+        "Value": 6776403925,
+        "x": 620,
+        "y": 165,
+        "Emission": 451.99
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2006,
+        "Value": 24764517183,
+        "x": 640,
+        "y": 320,
+        "Emission": 261.15
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1996,
+        "Value": 6622787744,
+        "x": 640,
+        "y": 480,
+        "Emission": 262.62
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1996,
+        "Value": 4737216768,
+        "x": 620,
+        "y": 635,
+        "Emission": 238.47
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1996,
+        "Value": 1693979568,
+        "x": 620,
+        "y": 165,
+        "Emission": 327.76
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1996,
+        "Value": 8239329584,
+        "x": 640,
+        "y": 320,
+        "Emission": 185.47
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1997,
+        "Value": 7218464410,
+        "x": 640,
+        "y": 480,
+        "Emission": 281.27
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1997,
+        "Value": 5063469787,
+        "x": 620,
+        "y": 635,
+        "Emission": 261.87
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1997,
+        "Value": 1851264137,
+        "x": 620,
+        "y": 165,
+        "Emission": 350.96
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1997,
+        "Value": 8696604094,
+        "x": 640,
+        "y": 320,
+        "Emission": 193.56
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1998,
+        "Value": 7341608332,
+        "x": 640,
+        "y": 480,
+        "Emission": 290.49
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1998,
+        "Value": 4925615586,
+        "x": 620,
+        "y": 635,
+        "Emission": 265.77
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1998,
+        "Value": 2244066577,
+        "x": 620,
+        "y": 165,
+        "Emission": 374.96
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1998,
+        "Value": 9607912400,
+        "x": 640,
+        "y": 320,
+        "Emission": 193.85
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1999,
+        "Value": 6776435710,
+        "x": 640,
+        "y": 480,
+        "Emission": 300.24
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1999,
+        "Value": 4796855964,
+        "x": 620,
+        "y": 635,
+        "Emission": 285.87
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1999,
+        "Value": 2669878916,
+        "x": 620,
+        "y": 165,
+        "Emission": 362.28
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1999,
+        "Value": 9952100113,
+        "x": 640,
+        "y": 320,
+        "Emission": 192.91
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2000,
+        "Value": 7850425263,
+        "x": 640,
+        "y": 480,
+        "Emission": 312.22
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2000,
+        "Value": 5839669211,
+        "x": 620,
+        "y": 635,
+        "Emission": 280.73
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2000,
+        "Value": 3307705856,
+        "x": 620,
+        "y": 165,
+        "Emission": 386.28
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2000,
+        "Value": 10172181061,
+        "x": 640,
+        "y": 320,
+        "Emission": 216.6
+      },
+      {
+        "Id": "Brazil",
+        "Year": 2001,
+        "Value": 8231499524,
+        "x": 640,
+        "y": 480,
+        "Emission": 318.99
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 2001,
+        "Value": 5557438759,
+        "x": 620,
+        "y": 635,
+        "Emission": 302.28
+      },
+      {
+        "Id": "Mexico",
+        "Year": 2001,
+        "Value": 3350128256,
+        "x": 620,
+        "y": 165,
+        "Emission": 384.69
+      },
+      {
+        "Id": "Turkey",
+        "Year": 2001,
+        "Value": 10813467171,
+        "x": 640,
+        "y": 320,
+        "Emission": 197.8
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1994,
+        "Value": 6471560904,
+        "x": 640,
+        "y": 480,
+        "Emission": 222.56
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1994,
+        "Value": 3862782008,
+        "x": 620,
+        "y": 635,
+        "Emission": 200.91
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1994,
+        "Value": 1420434504,
+        "x": 620,
+        "y": 165,
+        "Emission": 327.64
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1994,
+        "Value": 6362951072,
+        "x": 640,
+        "y": 320,
+        "Emission": 153.9
+      },
+      {
+        "Id": "Brazil",
+        "Year": 1995,
+        "Value": 7026592328,
+        "x": 640,
+        "y": 480,
+        "Emission": 241.3
+      },
+      {
+        "Id": "Indonesia",
+        "Year": 1995,
+        "Value": 4326135816,
+        "x": 620,
+        "y": 635,
+        "Emission": 227.1
+      },
+      {
+        "Id": "Mexico",
+        "Year": 1995,
+        "Value": 1609330184,
+        "x": 620,
+        "y": 165,
+        "Emission": 307.91
+      },
+      {
+        "Id": "Turkey",
+        "Year": 1995,
+        "Value": 7938790048,
+        "x": 640,
+        "y": 320,
+        "Emission": 168.24
+      }
+    ]
+    
+    
+,
+    "links": [
+      {"source": "Germany", "target": "Turkey", "type": "#9b9b9b", "len": 320, "width": 1},
+      {"source": "Germany", "target": "Indonesia", "type": "#9b9b9b", "len": 380, "width": 1},
+      {"source": "Germany", "target": "Mexico", "type": "#9b9b9b", "len": 380, "width": 1},
+      {"source": "Germany", "target": "Brazil", "type": "#9b9b9b", "len": 320, "width": 1},
+      {"source": "Germany", "target": "France", "type": "#00 00ffff", "len": 175, "width": 0},
+      {"source": "Germany", "target": "United Kingdom", "type": "#00 00ffff", "len": 175, "width": 0},
+      {"source": "France", "target": "Turkey", "type": "#9b9b9b", "len": 400, "width": 1},
+      {"source": "France", "target": "Indonesia", "type": "#9b9b9b", "len": 300, "width": 1},
+      {"source": "France", "target": "Mexico", "type": "#9b9b9b", "len": 500, "width": 1},
+      {"source": "France", "target": "Brazil", "type": "#9b9b9b", "len": 350, "width": 1},
+      {"source": "United Kingdom", "target": "Turkey", "type": "#9b9b9b", "len": 350, "width": 1},
+      {"source": "United Kingdom", "target": "Indonesia", "type": "#9b9b9b", "len": 500, "width": 1},
+      {"source": "United Kingdom", "target": "Mexico", "type": "#9b9b9b", "len": 300, "width": 1},
+      {"source": "United Kingdom", "target": "Brazil", "type": "#9b9b9b", "len": 400, "width": 1},   
+      {"source": "Turkey", "target": "Brazil", "type": "#00 00ffff", "len": 170, "width": 0},
+      {"source": "Brazil", "target": "Indonesia", "type": "#0D ffffff", "len": 150, "width": 0},
+      {"source": "Mexico", "target": "Turkey", "type": "#0D ffffff", "len": 150, "width": 0}
+    ]
+  }
