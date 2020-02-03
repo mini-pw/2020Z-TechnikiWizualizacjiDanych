@@ -1,0 +1,94 @@
+html *{
+  font-family: 'Roboto';
+}
+
+#tytul1, #tytul2, #tytul3 {
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #3f88b2;
+  color: white;
+  padding: 0px 0px 0px 0px;
+}
+
+#tytul1 .small-box {
+  padding: 0px 0px 0px 0px;
+  height: 40px;
+}
+#tytul2 .small-box {
+  padding: 0px 0px 0px 0px;
+  height: 40px;
+}
+#tytul3 .small-box {
+  padding: 0px 0px 0px 0px;
+  height: 40px;
+}
+
+label, .control-label h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.main-header .logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.radio span {
+  font-size: 12px;
+}
+
+.fa {
+  padding: 0px 20px 0px 10px;
+}
+
+.inner p {
+  font-size: 14px;
+
+}
+
+.counter, .counter1, .counter2
+{
+  font-size: 100px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+.counter-box .far, .counter-box .fas
+{
+    font-size: 120px;
+
+}
+
+.counter-box
+{
+  text-align: center;
+}
+.fade-text, .fade-text1, .fade-text2
+{
+  padding-top: 0px;
+  margin-top: 0px;
+  display: none;
+}
+
+/* .main-sidebar {
+  font-size: 20px;
+}
+.fa{
+  opacity: 1;
+  color: white;
+  font-size: 100px;
+  padding: 25px 10px 40px 10px;
+}
+
+.inner h3 {
+  font-size: 80px;
+}
+
+.inner p {
+  font-size: 20px;
+}
+
+
+.main-header .logo {
+  font-weight: bold;
+  font-size: 25px;
+} */
