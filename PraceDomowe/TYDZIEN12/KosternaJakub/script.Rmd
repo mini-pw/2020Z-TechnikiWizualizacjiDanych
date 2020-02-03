@@ -108,7 +108,7 @@ rpivotTable(escResultsFinal, cols = "Year",
 Wciągu kilkudziesięciu lat kilka razy zmienił się system głosowania, a i rosnąca liczba państw biorących udział również miała wpływ na pulę punktów do rozdania. Ile punktów zdobyły kraje o najbardziej "przeciętnym" wyniku? Zweryfikujmy to w zależności od dni koncertów!
 
 ```{r pivotTable3, message=FALSE}
-rpivotTable(escResults, cols = "TypeOfFinal", rows = "Year",
+rpivotTable(escResults, cols = "Year", rows = "TypeOfFinal",
             aggregatorName = "Median", vals = "Points",
             rendererName = "Line Chart",
             height = 700)
