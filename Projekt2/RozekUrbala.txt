@@ -1,3 +1,7 @@
 Grupa: Bartosz Rożek, Anna Urbala
+<<<<<<< HEAD
 Link: http://niladrem.github.io/star_wars_actors/
 Kod: https://github.com/niladrem/star_wars_actors
+=======
+Link: http://niladrem.github.io/star_wars_actors/
+>>>>>>> dcfc6e35f8b1080041b402cf6256fad3a00160bf
