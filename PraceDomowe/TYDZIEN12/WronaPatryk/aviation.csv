@@ -1,0 +1,606 @@
+"","Continent","Country","Passengers","Year"
+"1","Europe","Austria",1825,2008
+"2","Europe","Austria",1745,2009
+"3","Europe","Austria",1664,2010
+"4","Europe","Austria",1706,2011
+"5","Europe","Austria",1669,2012
+"6","Europe","Austria",1543,2013
+"7","Europe","Austria",1627,2014
+"8","Europe","Austria",1787,2015
+"9","Europe","Austria",2086,2016
+"10","Europe","Austria",2222,2017
+"11","Europe","Austria",2466,2018
+"12","Europe","Belgium",1398,2008
+"13","Europe","Belgium",1188,2009
+"14","Europe","Belgium",1121,2010
+"15","Europe","Belgium",1233,2011
+"16","Europe","Belgium",1294,2012
+"17","Europe","Belgium",1286,2013
+"18","Europe","Belgium",1439,2014
+"19","Europe","Belgium",1595,2015
+"20","Europe","Belgium",1464,2016
+"21","Europe","Belgium",1587,2017
+"22","Europe","Belgium",1642,2018
+"23","Europe","Bulgaria",965,2008
+"24","Europe","Bulgaria",866,2009
+"25","Europe","Bulgaria",844,2010
+"26","Europe","Bulgaria",863,2011
+"27","Europe","Bulgaria",902,2012
+"28","Europe","Bulgaria",972,2013
+"29","Europe","Bulgaria",1001,2014
+"30","Europe","Bulgaria",1121,2015
+"31","Europe","Bulgaria",1418,2016
+"32","Europe","Bulgaria",1814,2017
+"33","Europe","Bulgaria",1849,2018
+"34","Europe","Croatia",574,2008
+"35","Europe","Croatia",619,2009
+"36","Europe","Croatia",622,2010
+"37","Europe","Croatia",655,2011
+"38","Europe","Croatia",761,2012
+"39","Europe","Croatia",892,2013
+"40","Europe","Croatia",975,2014
+"41","Europe","Croatia",1058,2015
+"42","Europe","Croatia",1238,2016
+"43","Europe","Croatia",1615,2017
+"44","Europe","Croatia",1664,2018
+"45","Europe","Cyprus",2954,2008
+"46","Europe","Cyprus",2707,2009
+"47","Europe","Cyprus",2597,2010
+"48","Europe","Cyprus",2663,2011
+"49","Europe","Cyprus",2516,2012
+"50","Europe","Cyprus",2330,2013
+"51","Europe","Cyprus",2293,2014
+"52","Europe","Cyprus",2409,2015
+"53","Europe","Cyprus",2724,2016
+"54","Europe","Cyprus",3020,2017
+"55","Europe","Cyprus",3055,2018
+"56","Europe","Czech Republic",1816,2008
+"57","Europe","Czech Republic",1515,2009
+"58","Europe","Czech Republic",1276,2010
+"59","Europe","Czech Republic",1298,2011
+"60","Europe","Czech Republic",1370,2012
+"61","Europe","Czech Republic",1388,2013
+"62","Europe","Czech Republic",1506,2014
+"63","Europe","Czech Republic",1759,2015
+"64","Europe","Czech Republic",1928,2016
+"65","Europe","Czech Republic",2049,2017
+"66","Europe","Czech Republic",2270,2018
+"67","Europe","Denmark",2394,2008
+"68","Europe","Denmark",2451,2009
+"69","Europe","Denmark",2406,2010
+"70","Europe","Denmark",2558,2011
+"71","Europe","Denmark",2564,2012
+"72","Europe","Denmark",2771,2013
+"73","Europe","Denmark",2972,2014
+"74","Europe","Denmark",3361,2015
+"75","Europe","Denmark",3750,2016
+"76","Europe","Denmark",3580,2017
+"77","Europe","Denmark",3593,2018
+"78","Europe","Estonia",156,2008
+"79","Europe","Estonia",99,2009
+"80","Europe","Estonia",104,2010
+"81","Europe","Estonia",244,2011
+"82","Europe","Estonia",173,2012
+"83","Europe","Estonia",143,2013
+"84","Europe","Estonia",146,2014
+"85","Europe","Estonia",147,2015
+"86","Europe","Estonia",106,2016
+"87","Europe","Estonia",133,2017
+"88","Europe","Estonia",179,2018
+"89","Europe","Finland",958,2008
+"90","Europe","Finland",943,2009
+"91","Europe","Finland",981,2010
+"92","Europe","Finland",1007,2011
+"93","Europe","Finland",968,2012
+"94","Europe","Finland",1020,2013
+"95","Europe","Finland",1114,2014
+"96","Europe","Finland",1150,2015
+"97","Europe","Finland",1188,2016
+"98","Europe","Finland",1291,2017
+"99","Europe","Finland",1409,2018
+"100","Europe","France",11610,2008
+"101","Europe","France",10668,2009
+"102","Europe","France",9581,2010
+"103","Europe","France",10200,2011
+"104","Europe","France",10174,2012
+"105","Europe","France",10324,2013
+"106","Europe","France",10651,2014
+"107","Europe","France",11037,2015
+"108","Europe","France",11635,2016
+"109","Europe","France",12497,2017
+"110","Europe","France",12498,2018
+"111","Europe","Germany",11149,2008
+"112","Europe","Germany",10728,2009
+"113","Europe","Germany",11223,2010
+"114","Europe","Germany",11694,2011
+"115","Europe","Germany",11952,2012
+"116","Europe","Germany",12302,2013
+"117","Europe","Germany",12595,2014
+"118","Europe","Germany",13382,2015
+"119","Europe","Germany",13881,2016
+"120","Europe","Germany",14612,2017
+"121","Europe","Germany",15088,2018
+"122","Europe","Greece",5198,2008
+"123","Europe","Greece",4883,2009
+"124","Europe","Greece",4721,2010
+"125","Europe","Greece",4779,2011
+"126","Europe","Greece",4798,2012
+"127","Europe","Greece",4953,2013
+"128","Europe","Greece",5614,2014
+"129","Europe","Greece",6095,2015
+"130","Europe","Greece",6635,2016
+"131","Europe","Greece",7178,2017
+"132","Europe","Greece",7735,2018
+"133","Europe","Hungary",1096,2008
+"134","Europe","Hungary",962,2009
+"135","Europe","Hungary",954,2010
+"136","Europe","Hungary",1038,2011
+"137","Europe","Hungary",1245,2012
+"138","Europe","Hungary",1330,2013
+"139","Europe","Hungary",1507,2014
+"140","Europe","Hungary",1736,2015
+"141","Europe","Hungary",2032,2016
+"142","Europe","Hungary",2155,2017
+"143","Europe","Hungary",2256,2018
+"144","Europe","Irish Republic",12255,2008
+"145","Europe","Irish Republic",10841,2009
+"146","Europe","Irish Republic",9501,2010
+"147","Europe","Irish Republic",9670,2011
+"148","Europe","Irish Republic",9465,2012
+"149","Europe","Irish Republic",9644,2013
+"150","Europe","Irish Republic",10384,2014
+"151","Europe","Irish Republic",11524,2015
+"152","Europe","Irish Republic",12734,2016
+"153","Europe","Irish Republic",12799,2017
+"154","Europe","Irish Republic",12954,2018
+"155","Europe","Italy",10819,2008
+"156","Europe","Italy",9973,2009
+"157","Europe","Italy",9643,2010
+"158","Europe","Italy",10287,2011
+"159","Europe","Italy",10850,2012
+"160","Europe","Italy",11039,2013
+"161","Europe","Italy",11923,2014
+"162","Europe","Italy",12705,2015
+"163","Europe","Italy",14118,2016
+"164","Europe","Italy",15078,2017
+"165","Europe","Italy",15807,2018
+"166","Europe","Latvia",464,2008
+"167","Europe","Latvia",458,2009
+"168","Europe","Latvia",549,2010
+"169","Europe","Latvia",584,2011
+"170","Europe","Latvia",503,2012
+"171","Europe","Latvia",544,2013
+"172","Europe","Latvia",608,2014
+"173","Europe","Latvia",718,2015
+"174","Europe","Latvia",786,2016
+"175","Europe","Latvia",841,2017
+"176","Europe","Latvia",828,2018
+"177","Europe","Lithuania",358,2008
+"178","Europe","Lithuania",317,2009
+"179","Europe","Lithuania",473,2010
+"180","Europe","Lithuania",564,2011
+"181","Europe","Lithuania",728,2012
+"182","Europe","Lithuania",739,2013
+"183","Europe","Lithuania",737,2014
+"184","Europe","Lithuania",835,2015
+"185","Europe","Lithuania",987,2016
+"186","Europe","Lithuania",1042,2017
+"187","Europe","Lithuania",1181,2018
+"188","Europe","Luxembourg",216,2008
+"189","Europe","Luxembourg",198,2009
+"190","Europe","Luxembourg",210,2010
+"191","Europe","Luxembourg",251,2011
+"192","Europe","Luxembourg",276,2012
+"193","Europe","Luxembourg",370,2013
+"194","Europe","Luxembourg",382,2014
+"195","Europe","Luxembourg",395,2015
+"196","Europe","Luxembourg",434,2016
+"197","Europe","Luxembourg",550,2017
+"198","Europe","Luxembourg",555,2018
+"199","Europe","Malta",1063,2008
+"200","Europe","Malta",996,2009
+"201","Europe","Malta",1036,2010
+"202","Europe","Malta",1090,2011
+"203","Europe","Malta",1111,2012
+"204","Europe","Malta",1158,2013
+"205","Europe","Malta",1230,2014
+"206","Europe","Malta",1288,2015
+"207","Europe","Malta",1359,2016
+"208","Europe","Malta",1481,2017
+"209","Europe","Malta",1671,2018
+"210","Europe","Netherlands",7656,2008
+"211","Europe","Netherlands",6967,2009
+"212","Europe","Netherlands",6872,2010
+"213","Europe","Netherlands",7548,2011
+"214","Europe","Netherlands",7768,2012
+"215","Europe","Netherlands",8176,2013
+"216","Europe","Netherlands",8772,2014
+"217","Europe","Netherlands",9527,2015
+"218","Europe","Netherlands",10317,2016
+"219","Europe","Netherlands",10698,2017
+"220","Europe","Netherlands",10995,2018
+"221","Europe","Poland",5022,2008
+"222","Europe","Poland",4228,2009
+"223","Europe","Poland",4226,2010
+"224","Europe","Poland",4260,2011
+"225","Europe","Poland",4619,2012
+"226","Europe","Poland",5312,2013
+"227","Europe","Poland",5206,2014
+"228","Europe","Poland",6164,2015
+"229","Europe","Poland",7117,2016
+"230","Europe","Poland",7821,2017
+"231","Europe","Poland",8002,2018
+"232","Europe","Portugal & Madeira2",5431,2008
+"233","Europe","Portugal & Madeira2",4934,2009
+"234","Europe","Portugal & Madeira2",4882,2010
+"235","Europe","Portugal & Madeira2",5325,2011
+"236","Europe","Portugal & Madeira2",5129,2012
+"237","Europe","Portugal & Madeira2",5447,2013
+"238","Europe","Portugal & Madeira2",6094,2014
+"239","Europe","Portugal & Madeira2",6589,2015
+"240","Europe","Portugal & Madeira2",7376,2016
+"241","Europe","Portugal & Madeira2",8386,2017
+"242","Europe","Portugal & Madeira2",8170,2018
+"243","Europe","Romania",484,2008
+"244","Europe","Romania",544,2009
+"245","Europe","Romania",626,2010
+"246","Europe","Romania",717,2011
+"247","Europe","Romania",772,2012
+"248","Europe","Romania",826,2013
+"249","Europe","Romania",1153,2014
+"250","Europe","Romania",1552,2015
+"251","Europe","Romania",2225,2016
+"252","Europe","Romania",2855,2017
+"253","Europe","Romania",2948,2018
+"254","Europe","Slovak Republic",715,2008
+"255","Europe","Slovak Republic",561,2009
+"256","Europe","Slovak Republic",505,2010
+"257","Europe","Slovak Republic",468,2011
+"258","Europe","Slovak Republic",454,2012
+"259","Europe","Slovak Republic",439,2013
+"260","Europe","Slovak Republic",509,2014
+"261","Europe","Slovak Republic",653,2015
+"262","Europe","Slovak Republic",708,2016
+"263","Europe","Slovak Republic",620,2017
+"264","Europe","Slovak Republic",708,2018
+"265","Europe","Slovenia",168,2008
+"266","Europe","Slovenia",139,2009
+"267","Europe","Slovenia",126,2010
+"268","Europe","Slovenia",127,2011
+"269","Europe","Slovenia",124,2012
+"270","Europe","Slovenia",162,2013
+"271","Europe","Slovenia",153,2014
+"272","Europe","Slovenia",165,2015
+"273","Europe","Slovenia",187,2016
+"274","Europe","Slovenia",247,2017
+"275","Europe","Slovenia",250,2018
+"276","Europe","Spain & Canary Islands",34516,2008
+"277","Europe","Spain & Canary Islands",30416,2009
+"278","Europe","Spain & Canary Islands",28700,2010
+"279","Europe","Spain & Canary Islands",31477,2011
+"280","Europe","Spain & Canary Islands",31277,2012
+"281","Europe","Spain & Canary Islands",32728,2013
+"282","Europe","Spain & Canary Islands",34269,2014
+"283","Europe","Spain & Canary Islands",35725,2015
+"284","Europe","Spain & Canary Islands",41411,2016
+"285","Europe","Spain & Canary Islands",45213,2017
+"286","Europe","Spain & Canary Islands",43862,2018
+"287","Europe","Sweden",2296,2008
+"288","Europe","Sweden",2073,2009
+"289","Europe","Sweden",2188,2010
+"290","Europe","Sweden",2545,2011
+"291","Europe","Sweden",2493,2012
+"292","Europe","Sweden",2593,2013
+"293","Europe","Sweden",2608,2014
+"294","Europe","Sweden",2690,2015
+"295","Europe","Sweden",2787,2016
+"296","Europe","Sweden",2841,2017
+"297","Europe","Sweden",2828,2018
+"298","Europe","Gibraltar",368,2008
+"299","Europe","Gibraltar",356,2009
+"300","Europe","Gibraltar",300,2010
+"301","Europe","Gibraltar",384,2011
+"302","Europe","Gibraltar",386,2012
+"303","Europe","Gibraltar",385,2013
+"304","Europe","Gibraltar",414,2014
+"305","Europe","Gibraltar",439,2015
+"306","Europe","Gibraltar",543,2016
+"307","Europe","Gibraltar",563,2017
+"308","Europe","Gibraltar",435,2018
+"309","Europe","Norway",1990,2008
+"310","Europe","Norway",2015,2009
+"311","Europe","Norway",2082,2010
+"312","Europe","Norway",2238,2011
+"313","Europe","Norway",2426,2012
+"314","Europe","Norway",2742,2013
+"315","Europe","Norway",2749,2014
+"316","Europe","Norway",2738,2015
+"317","Europe","Norway",2608,2016
+"318","Europe","Norway",2551,2017
+"319","Europe","Norway",2580,2018
+"320","Europe","Russia",786,2008
+"321","Europe","Russia",671,2009
+"322","Europe","Russia",750,2010
+"323","Europe","Russia",864,2011
+"324","Europe","Russia",901,2012
+"325","Europe","Russia",1039,2013
+"326","Europe","Russia",1020,2014
+"327","Europe","Russia",846,2015
+"328","Europe","Russia",733,2016
+"329","Europe","Russia",861,2017
+"330","Europe","Russia",886,2018
+"331","Europe","Switzerland",5406,2008
+"332","Europe","Switzerland",5233,2009
+"333","Europe","Switzerland",5248,2010
+"334","Europe","Switzerland",5789,2011
+"335","Europe","Switzerland",5842,2012
+"336","Europe","Switzerland",5890,2013
+"337","Europe","Switzerland",6083,2014
+"338","Europe","Switzerland",6242,2015
+"339","Europe","Switzerland",6470,2016
+"340","Europe","Switzerland",6758,2017
+"341","Europe","Switzerland",6862,2018
+"342","America","Canada",3461,2008
+"343","America","Canada",3084,2009
+"344","America","Canada",3049,2010
+"345","America","Canada",3137,2011
+"346","America","Canada",3147,2012
+"347","America","Canada",3076,2013
+"348","America","Canada",3160,2014
+"349","America","Canada",3150,2015
+"350","America","Canada",3528,2016
+"351","America","Canada",3564,2017
+"352","America","Canada",3671,2018
+"353","America","USA",18299,2008
+"354","America","USA",16584,2009
+"355","America","USA",16060,2010
+"356","America","USA",17048,2011
+"357","America","USA",17382,2012
+"358","America","USA",17620,2013
+"359","America","USA",17996,2014
+"360","America","USA",18744,2015
+"361","America","USA",19412,2016
+"362","America","USA",20163,2017
+"363","America","USA",21614,2018
+"364","America","Mexico",540,2008
+"365","America","Mexico",487,2009
+"366","America","Mexico",511,2010
+"367","America","Mexico",600,2011
+"368","America","Mexico",670,2012
+"369","America","Mexico",819,2013
+"370","America","Mexico",926,2014
+"371","America","Mexico",1025,2015
+"372","America","Mexico",1098,2016
+"373","America","Mexico",1159,2017
+"374","America","Mexico",1161,2018
+"375","America","Brazil",387,2008
+"376","America","Brazil",465,2009
+"377","America","Brazil",502,2010
+"378","America","Brazil",551,2011
+"379","America","Brazil",615,2012
+"380","America","Brazil",620,2013
+"381","America","Brazil",625,2014
+"382","America","Brazil",629,2015
+"383","America","Brazil",561,2016
+"384","America","Brazil",511,2017
+"385","America","Brazil",573,2018
+"386","America","Caribbean",2626,2008
+"387","America","Caribbean",2440,2009
+"388","America","Caribbean",2344,2010
+"389","America","Caribbean",2285,2011
+"390","America","Caribbean",1991,2012
+"391","America","Caribbean",1943,2013
+"392","America","Caribbean",2017,2014
+"393","America","Caribbean",2225,2015
+"394","America","Caribbean",2317,2016
+"395","America","Caribbean",2436,2017
+"396","America","Caribbean",2433,2018
+"397","Africa","Egypt",2272,2008
+"398","Africa","Egypt",2668,2009
+"399","Africa","Egypt",2885,2010
+"400","Africa","Egypt",2147,2011
+"401","Africa","Egypt",2144,2012
+"402","Africa","Egypt",2042,2013
+"403","Africa","Egypt",1989,2014
+"404","Africa","Egypt",1884,2015
+"405","Africa","Egypt",614,2016
+"406","Africa","Egypt",767,2017
+"407","Africa","Egypt",1005,2018
+"408","Africa","Morocco",557,2008
+"409","Africa","Morocco",543,2009
+"410","Africa","Morocco",754,2010
+"411","Africa","Morocco",814,2011
+"412","Africa","Morocco",777,2012
+"413","Africa","Morocco",875,2013
+"414","Africa","Morocco",1033,2014
+"415","Africa","Morocco",1101,2015
+"416","Africa","Morocco",1092,2016
+"417","Africa","Morocco",1188,2017
+"418","Africa","Morocco",1265,2018
+"419","Africa","South Africa",1529,2008
+"420","Africa","South Africa",1465,2009
+"421","Africa","South Africa",1378,2010
+"422","Africa","South Africa",1332,2011
+"423","Africa","South Africa",1315,2012
+"424","Africa","South Africa",1305,2013
+"425","Africa","South Africa",1362,2014
+"426","Africa","South Africa",1356,2015
+"427","Africa","South Africa",1301,2016
+"428","Africa","South Africa",1330,2017
+"429","Africa","South Africa",1326,2018
+"430","Africa","Cape Verde Islands",85,2008
+"431","Africa","Cape Verde Islands",104,2009
+"432","Africa","Cape Verde Islands",114,2010
+"433","Africa","Cape Verde Islands",160,2011
+"434","Africa","Cape Verde Islands",233,2012
+"435","Africa","Cape Verde Islands",179,2013
+"436","Africa","Cape Verde Islands",185,2014
+"437","Africa","Cape Verde Islands",250,2015
+"438","Africa","Cape Verde Islands",307,2016
+"439","Africa","Cape Verde Islands",388,2017
+"440","Africa","Cape Verde Islands",372,2018
+"441","Asia","Israel",817,2008
+"442","Asia","Israel",846,2009
+"443","Asia","Israel",769,2010
+"444","Asia","Israel",812,2011
+"445","Asia","Israel",812,2012
+"446","Asia","Israel",892,2013
+"447","Asia","Israel",882,2014
+"448","Asia","Israel",985,2015
+"449","Asia","Israel",1048,2016
+"450","Asia","Israel",1151,2017
+"451","Asia","Israel",1230,2018
+"452","Asia","Qatar",749,2008
+"453","Asia","Qatar",823,2009
+"454","Asia","Qatar",885,2010
+"455","Asia","Qatar",922,2011
+"456","Asia","Qatar",1014,2012
+"457","Asia","Qatar",1019,2013
+"458","Asia","Qatar",1149,2014
+"459","Asia","Qatar",1449,2015
+"460","Asia","Qatar",1765,2016
+"461","Asia","Qatar",1873,2017
+"462","Asia","Qatar",1996,2018
+"463","Asia","Saudi Arabia",286,2008
+"464","Asia","Saudi Arabia",377,2009
+"465","Asia","Saudi Arabia",420,2010
+"466","Asia","Saudi Arabia",464,2011
+"467","Asia","Saudi Arabia",479,2012
+"468","Asia","Saudi Arabia",496,2013
+"469","Asia","Saudi Arabia",565,2014
+"470","Asia","Saudi Arabia",561,2015
+"471","Asia","Saudi Arabia",592,2016
+"472","Asia","Saudi Arabia",584,2017
+"473","Asia","Saudi Arabia",627,2018
+"474","Asia","Turkey",4370,2008
+"475","Asia","Turkey",4895,2009
+"476","Asia","Turkey",5450,2010
+"477","Asia","Turkey",5192,2011
+"478","Asia","Turkey",5140,2012
+"479","Asia","Turkey",5441,2013
+"480","Asia","Turkey",5729,2014
+"481","Asia","Turkey",5655,2015
+"482","Asia","Turkey",4620,2016
+"483","Asia","Turkey",4566,2017
+"484","Asia","Turkey",5855,2018
+"485","Asia","United Arab Emirates",4279,2008
+"486","Asia","United Arab Emirates",4562,2009
+"487","Asia","United Arab Emirates",4815,2010
+"488","Asia","United Arab Emirates",5107,2011
+"489","Asia","United Arab Emirates",5236,2012
+"490","Asia","United Arab Emirates",6297,2013
+"491","Asia","United Arab Emirates",6694,2014
+"492","Asia","United Arab Emirates",7249,2015
+"493","Asia","United Arab Emirates",7782,2016
+"494","Asia","United Arab Emirates",8218,2017
+"495","Asia","United Arab Emirates",7856,2018
+"496","Asia","China",571,2008
+"497","Asia","China",536,2009
+"498","Asia","China",606,2010
+"499","Asia","China",662,2011
+"500","Asia","China",745,2012
+"501","Asia","China",886,2013
+"502","Asia","China",973,2014
+"503","Asia","China",1079,2015
+"504","Asia","China",1224,2016
+"505","Asia","China",1315,2017
+"506","Asia","China",1504,2018
+"507","Asia","Hong Kong",2142,2008
+"508","Asia","Hong Kong",1995,2009
+"509","Asia","Hong Kong",1803,2010
+"510","Asia","Hong Kong",1834,2011
+"511","Asia","Hong Kong",1650,2012
+"512","Asia","Hong Kong",1538,2013
+"513","Asia","Hong Kong",1616,2014
+"514","Asia","Hong Kong",1708,2015
+"515","Asia","Hong Kong",1730,2016
+"516","Asia","Hong Kong",1865,2017
+"517","Asia","Hong Kong",1922,2018
+"518","Asia","Japan",963,2008
+"519","Asia","Japan",779,2009
+"520","Asia","Japan",684,2010
+"521","Asia","Japan",650,2011
+"522","Asia","Japan",720,2012
+"523","Asia","Japan",698,2013
+"524","Asia","Japan",722,2014
+"525","Asia","Japan",611,2015
+"526","Asia","Japan",605,2016
+"527","Asia","Japan",624,2017
+"528","Asia","Japan",716,2018
+"529","Asia","Republic of Korea",285,2008
+"530","Asia","Republic of Korea",280,2009
+"531","Asia","Republic of Korea",294,2010
+"532","Asia","Republic of Korea",311,2011
+"533","Asia","Republic of Korea",376,2012
+"534","Asia","Republic of Korea",426,2013
+"535","Asia","Republic of Korea",438,2014
+"536","Asia","Republic of Korea",456,2015
+"537","Asia","Republic of Korea",473,2016
+"538","Asia","Republic of Korea",507,2017
+"539","Asia","Republic of Korea",527,2018
+"540","Asia","Taiwan",2,2008
+"541","Asia","Taiwan",0,2009
+"542","Asia","Taiwan",48,2010
+"543","Asia","Taiwan",43,2011
+"544","Asia","Taiwan",8,2012
+"545","Asia","Taiwan",0,2013
+"546","Asia","Taiwan",0,2014
+"547","Asia","Taiwan",0,2015
+"548","Asia","Taiwan",0,2016
+"549","Asia","Taiwan",9,2017
+"550","Asia","Taiwan",114,2018
+"551","Asia","Singapore",1789,2008
+"552","Asia","Singapore",1683,2009
+"553","Asia","Singapore",1531,2010
+"554","Asia","Singapore",1577,2011
+"555","Asia","Singapore",1746,2012
+"556","Asia","Singapore",1405,2013
+"557","Asia","Singapore",1247,2014
+"558","Asia","Singapore",1268,2015
+"559","Asia","Singapore",1384,2016
+"560","Asia","Singapore",1462,2017
+"561","Asia","Singapore",1793,2018
+"562","Asia","Thailand",1032,2008
+"563","Asia","Thailand",1037,2009
+"564","Asia","Thailand",992,2010
+"565","Asia","Thailand",978,2011
+"566","Asia","Thailand",781,2012
+"567","Asia","Thailand",758,2013
+"568","Asia","Thailand",700,2014
+"569","Asia","Thailand",736,2015
+"570","Asia","Thailand",835,2016
+"571","Asia","Thailand",911,2017
+"572","Asia","Thailand",892,2018
+"573","Asia","India",2361,2008
+"574","Asia","India",2500,2009
+"575","Asia","India",2392,2010
+"576","Asia","India",2508,2011
+"577","Asia","India",2356,2012
+"578","Asia","India",2639,2013
+"579","Asia","India",2739,2014
+"580","Asia","India",2624,2015
+"581","Asia","India",2644,2016
+"582","Asia","India",2747,2017
+"583","Asia","India",2950,2018
+"584","Asia","Pakistan",771,2008
+"585","Asia","Pakistan",635,2009
+"586","Asia","Pakistan",689,2010
+"587","Asia","Pakistan",665,2011
+"588","Asia","Pakistan",551,2012
+"589","Asia","Pakistan",596,2013
+"590","Asia","Pakistan",513,2014
+"591","Asia","Pakistan",502,2015
+"592","Asia","Pakistan",582,2016
+"593","Asia","Pakistan",577,2017
+"594","Asia","Pakistan",612,2018
+"595","Oceania","Australia",0,2008
+"596","Oceania","Australia",0,2009
+"597","Oceania","Australia",1,2010
+"598","Oceania","Australia",0,2011
+"599","Oceania","Australia",0,2012
+"600","Oceania","Australia",0,2013
+"601","Oceania","Australia",0,2014
+"602","Oceania","Australia",0,2015
+"603","Oceania","Australia",0,2016
+"604","Oceania","Australia",0,2017
+"605","Oceania","Australia",123,2018
