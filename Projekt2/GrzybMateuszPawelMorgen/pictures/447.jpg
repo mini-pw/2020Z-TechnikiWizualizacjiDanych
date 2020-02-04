@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W865B8C');</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>404 - Page not found</title>
+<meta name="description" content="We have searched everywhere... we think.">
+<link rel="stylesheet" href="/css/spectre.min.css">
+<link rel="stylesheet" href="/css/main.min.css?v=1.0.45">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/js/main.min.js?v=1.0.10"></script>
+<script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<link rel="apple-touch-icon" sizes="180x180" href="/fave/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/fave/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/fave/favicon-16x16.png">
+<link rel="manifest" href="/fave/site.webmanifest">
+<link rel="mask-icon" href="/fave/safari-pinned-tab.svg" color="#29aae2">
+<meta name="msapplication-TileColor" content="#2d89ef">
+<meta name="theme-color" content="#ffffff">
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="404 - Page not found" />
+<meta property="og:description" content="We have searched everywhere... we think." />
+<meta property="og:url" content="https://www.superherodb.com/pictures2/portraits/10/100/1333.jpg" />
+<meta property="og:image" content="https://www.superherodb.com/img/fb-share.jpg" />
+<meta property="fb:app_id" content="129730140425989" />
+</head><body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W865B8C"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header>
+
+<div class="navbar grid-lg">
+<div class="navbar-section navbar-home">
+<div class="navbar-logo">
+<a href="/" class="btn btn-link" title="Home"><img src="/img/logohome-ls.svg?v1.0" alt="Superhero Database"></a>
+</div>
+<div class="navbar-icons show-md">
+<a href="#" class="btn btn-link btn-icon menu-toggle" title="menu"><i class="fal fa-bars"></i></a>
+</div>
+</div>
+<div class="navbar-section navbar-menu">
+<a href="/characters/" class="btn btn-link">Characters</a>
+<a href="/battle/" class="btn btn-link">Battles</a>
+<a href="/teams/" class="btn btn-link">Teams</a>
+<a href="/powers/" class="btn btn-link">Super Powers</a>
+<a href="/forum/" class="btn btn-link">Forum</a>
+<a href="/feed/" class="btn btn-link">Feed</a>
+<a href="/collections/" class="btn btn-link">Collections</a>
+</div>
+<div class="navbar-section navbar-menu">
+<a href="/register/" class="btn btn-link">Sign Up</a><a href="/login/" class="btn btn-link btn-icon-right">Login<i class="fal fa-sign-in"></i></a> </div>
+</div>
+
+
+<div class="search" search="site">
+<form method="get" action="/search/">
+<input type="text" name="q" aria-label="Search" placeholder="Search characters, teams, powers, objects, users, and more!" id="q">
+</form>
+</div>
+<ul class="search-result" search="site" id="searchresult"></ul>
+<script>
+
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+    
+// SEARCH
+$('#q').keyup(function() {
+	
+	delay(getsearch(), 1000 ); // milliseconds delay before doing query
+	
+});
+   
+function getsearch(){
+	
+    var $q = $('input#q').val();
+    
+	if($q.length > 1){
+		
+        console.log('Search > Start');
+        
+		$.ajax({
+			url: '/includes/site-quicksearch-ajax.php',
+			type: 'get',
+			data: {q: $('input#q').val()},
+			success: function(response) {
+				$('#searchresult').html(response);
+				$('#searchresult').css('display', 'block');
+			}
+		});
+        
+	} else {
+		$('#searchresult').css('display', 'none');
+	}
+}
+    
+</script>
+
+
+</header><main>
+<div class="container grid-xl">
+
+<div class="columns">
+<div class="column col-12 column-content">
+<h1>404 - Page not found</h1>
+<h2>We have searched everywhere... we think.</h2>
+</div>
+</div>
+
+<div class="columns">
+<div class="column col-12">
+<span class="note">Please use the searchbar at the top of the page to try to find what you were looking for.</span>
+</div>
+</div>
+<div class="columns">
+<div class="column col-12">
+
+<div class="banner-holder text-center hide-lg ">
+<ins class="adsbygoogle" style="display:inline-block;width:970px;height:250px" data-ad-client="ca-pub-7149894960674068" data-ad-slot="4477086540"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+<div class="banner-holder text-center show-md hide-sm">
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-7149894960674068" data-ad-slot="3742411761"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+<div class="banner-holder text-center show-sm">
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-7149894960674068" data-ad-slot="6261582841"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer>
+
+<div class="subfooter">
+<a href="/ezio/1000-32548/" class="chip" title="Ezio"><img src="/pictures2/portraits/1000/025/32548.jpg?u=1568095350" class="avatar avatar-sm" alt="Ezio">Ezio</a><a href="/deandinosaur6/1000-36117/" class="chip" title="DeanDinosaur6"><img src="/pictures2/portraits/1000/025/36117.jpg?u=1547424992" class="avatar avatar-sm" alt="DeanDinosaur6">DeanDinosaur6</a>
+</div>
+
+
+<div class="footer">
+<div class="container grid-xl space-top-xl">
+<div class="columns">
+<div class="column col-3 hide-md text-center">
+<img src="/img/logo-shdb-po.svg" width="110" alt="Superhero Database">
+</div>
+<div class="column col-3 col-md-12">
+<h4>The Website</h4>
+<ul class="fa-ul">
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/about/">About SHDb</a></li>
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/contact/">Contact</a></li>
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/forum/help/100-2909/">Help Forum</a></li>
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/thankyou/">Thank you</a></li>
+</ul>
+</div>
+<div class="column col-3 col-md-12">
+<h4>Community</h4>
+<ul class="fa-ul">
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/guidelines/">Guidelines</a></li>
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/faq/">FAQ</a></li>
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="/forum/">Forums</a></li>
+<li><span class="fa-li"><i class="fab fa-facebook"></i></span><a href="https://www.facebook.com/superherodatabase/">Facebook</a></li>
+<li><span class="fa-li"><i class="fab fa-instagram"></i></span><a href="https://www.instagram.com/superherodbcom/">Instagram</a></li>
+<li><span class="fa-li"><i class="fab fa-twitter"></i></span><a href="https://twitter.com/superherodb">Twitter</a></li>
+<li><span class="fa-li"><i class="fab fa-patreon"></i></span><a href="https://www.patreon.com/bePatron?u=19205444">Patreon</a></li>
+</ul>
+</div>
+<div class="column col-3 col-md-12">
+<h4>Projects</h4>
+<ul class="fa-ul">
+<li><span class="fa-li"><i class="fal fa-angle-right"></i></span><a href="https://www.superheromovies.net">Superhero Movies</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+</footer>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/fa/solid.min.css?v=5.10.0">
+<link rel="stylesheet" href="/css/fa/light.min.css?v=5.10.0">
+<link rel="stylesheet" href="/css/fa/brands.min.css?v=5.10.0">
+<link rel="stylesheet" href="/css/fa/fontawesome.min.css?v=5.10.0">
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" />
+<script async src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#237afc"
+    },
+    "button": {
+      "background": "#fff",
+      "text": "#237afc"
+    }
+  },
+  "content": {
+    "message": "We use cookies to personalise content, ads and to analyse our traffic. We also share information about your use of our site with our advertising and analytics partners who may combine it with other information youâ€™ve provided to them or theyâ€™ve collected from your use of their services."
+  }
+})});
+</script>
+</body>
+</html>

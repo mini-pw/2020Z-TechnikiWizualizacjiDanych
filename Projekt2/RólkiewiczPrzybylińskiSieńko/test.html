@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.icon-scroll {
+  color: #000;
+	position: absolute;
+	top: 50%;
+	left: 5%;
+  width: 1em;
+	height: 3.125em;
+	transform: translateX(-50%) scale(2);
+	z-index: 99999;
+}
+
+.icon-scroll span {
+	animation-delay: .2s;
+}
+
+.icon-scroll .mouse {
+	height: 1.375em;
+	width: .875em;
+	border: 1px solid rgba(0, 0, 0,.8);
+	border-radius: 2em;
+}
+
+.icon-scroll .wheel {
+  position: relative;
+  display: block;
+  height: 0.1875em;
+  width: 0.1875em;
+  margin: 0.1875em auto 0;
+  background: rgba(0,0,0,.8);
+  animation: mouse-wheel 1.2s ease infinite;
+  border-radius: 50%;
+}
+
+@keyframes mouse-wheel {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateY(.375em);
+	}
+}
+
+@keyframes mouse-scroll {
+	0%   { opacity: 0; }
+	50%  { opacity: .5; }
+	100% { opacity: 1; }
+}
+
+.icon-click {
+  color: #000;
+	position: absolute;
+	top: 60%;
+	left: 5%;
+  width: 1em;
+	height: 3.125em;
+	transform: translateX(-50%) scale(2);
+	z-index: 99999;
+}
+
+.icon-click .mouse {
+	height: 1.375em;
+	width: .875em;
+	border: 1px solid rgba(0, 0, 0,.8);
+	border-radius: 2em;
+}
+
+.icon-click .click {
+  position: relative;
+  display: block;
+  height: 0.1875em;
+  width: 0.1875em;
+  margin: 0.1875em auto 0;
+  background: rgba(240, 0, 0, 0.8);
+  border-radius: 50%;
+}
+
+
+
+.links line {
+  stroke-width: 1px;
+}
+
+.nodes circle {
+  pointer-events: all;
+  stroke-width: 2px;
+}
+
+#Year {
+  position:absolute;
+  left: 67%;
+  top: 40px;
+  width: 150px;
+  height: 65px;
+  border: 0px;
+  font-size: 55px;
+  font-weight:500;
+}
+
+#year {
+  position:absolute;
+  left: 45%;
+  top: 0px;
+  width: 150px;
+  height: 38px;
+  border: 0px;
+  font-size: 50px;
+  font-weight:500;
+}
+
+input[type=number]::-webkit-inner-spin-button
+input[type=number]::-webkit-outer-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]{
+  -moz-appearance: textfield;
+}
+
+
+.box1 {
+  display: inline-block;
+  position: relative;
+}
+
+.box1 :nth-child(0){
+  float: left;
+}
+
+.bubbles {
+  stroke-width: 1.3px;
+  stroke: white;
+}
+.bubbles:hover {
+  stroke: black;
+}
+
+#gdpPlot{
+  display:block;
+  position: absolute;
+  left: 40%;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 120px;					
+    height: 20px;					
+    padding: 2px;				
+    font: 16px sans-serif;		
+    background: #b8dadb;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+#selection2{
+  transform: translate(50px, -20px);
+}
+
+select{font-size:18px}
+
+
+
+
+</style>
+<script src="d3.js"></script>
+<body>
+  <div class="box1" id = Nodes>
+    <div class="icon-scroll" id=icon-scroll>    
+      <div class="mouse">
+        <div class="wheel"> 
+        </div>
+      </div>
+    </div>
+    <div class="icon-click" id=icon-click>    
+      <div class="mouse">
+        <div class="click"> 
+        </div>
+      </div>
+    </div>
+    <script src="graph.js"></script>
+    <input type="number" id="Year" class="wheelable" value="1994", min = "1994", max= "2017"/>
+  </div>
+  <div class="box2" id="plot">
+    <div id="gdpPlot">
+      <div id="selection2">
+        <select onchange="changeYear()" id="newCnt">
+          <option value="0" selected>Bez Polski</option>
+          <option value="Polska">Z Polską</option>
+        </select>
+		<select onchange="changeEmission()" id="emission">
+          <option value="0" selected>CO2</option>
+          <option value="1">CH4</option>
+        </select>
+        <input type="number" id="year" class="wheelable" value="1994"  min = "1991"  max= "2017"/>
+      </div>
+      <script src="plot2.js"></script>
+    </div>
+  </div>
+</body>
+</html>

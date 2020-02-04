@@ -1,0 +1,133 @@
+---
+title: "Pivot Table - ostatnia praca domowa"
+author: "Jakub Kosterna"
+date: "January 31, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Wizualizacje Konkursu Piosenki Eurowizji
+
+Choć publicznie trudno się przyznać (bo jednak wieś), od lat jestem pasjonatem Konkursu Piosenki Eurowizji. Śledzę i ekscytuję się widowiskiem rok w rok, więc nie kryję, że jestem szczerze podekscytowany moimi kolejnymi paroma godzinami życia, w których zajmę się danymi dotyczącymi tego eventu.
+
+## 1. Przygotowanie środowiska i zbiór danych
+
+Do analizy postanowiłem wybrać zbiór **Eurovision Song Contest Scores 1975-2019**, który znalazłem na w *datasetSearch.com* pod linkiem:
+
+https://data.world/datagraver/eurovision-song-contest-scores-1975-2019
+
+Zbiór danych zawiera jeden plik w formacie **.xlsx** składający się z trzech arkuszy:
+
+1. Data
+
+2. Remarks
+
+3. Sources
+
+... oczywiście do naszej analizy przyda się tylko ten pierwszy, składający się z aż z 49832 wierszy dotyczących informacji o tym który kraj w którym roku jakiemu państwu dał ile punktów.
+
+Po pierwsze - wczytajmy ten zbiór danych.
+Przed wykonaniem kolejnych linijek kodu, przekonwertowałem dodatkowo wejściowy zbiór danych z pliku **eurovision_song_contest_1975_2019v3.xlsx** do rozszerzenia **.csv** za pomocą narzędzia online (**https://www.zamzar.com/convert/xlsx-to-csv/**).
+
+```{r readingData}
+# setwd("/home/samba/kosternaj/Desktop/05Wiz/pdOstatnie") # required on my PC
+escResults <- read.table(file = "eurovision_song_contest_1975_2019v3.csv", 
+                      sep = ',', header = TRUE)
+```
+
+Sprawdźmy czy wszystko poszło zgodnie z planem - wyświetlmy losowe 10 wierszy.
+
+```{r checkingReading, message=FALSE}
+library(dplyr)
+library(DT)
+# install.packages("webshot") # if not installed
+# webshot::install_phantomjs() # if not installed
+datatable(escResults[sample(nrow(escResults)),])
+```
+
+Hurra! Wszystko poszło zgodnie z planem.
+
+## 2. Obróbka danych
+
+Tylko czy aż tak szczegółowe dane będą nam potrzebne? Zmodyfikuję moję ramkę danych, pozbywając się kolumn *Duplicate*, *From.country*, *To.country* i *Jury.or.Televoting*, po prostu sumując dla każdego konkursu liczbę punktów na państwo.
+
+```{r modifyDatatable, message=FALSE}
+escResults <- escResults %>%
+  select (-c(Edition, Jury.or.Televoting, Duplicate)) %>%
+  group_by(Year, X.semi...final, To.country) %>%
+  summarise(Points = sum(Points)) %>%
+  rename("TypeOfFinal" = "X.semi...final", "Country" = "To.country")
+```
+
+Raz jeszcze upewnijmy się, że operacja została zakończona powodzeniem.
+
+```{r checkModifying, message=FALSE}
+datatable(escResults[sample(nrow(escResults)),])
+```
+
+Wszystko poszło zgodnie z planem. Ale dobra, czas na tabele przestawne.
+
+## 3. Tabele przestawne
+
+### 3.1. Tabela ogólna
+
+Na początku wczytajmy cały zbiór danych
+
+```{r pivotTable1, message=FALSE}
+# install.packages("rpivotTable") # if not installed
+library(rpivotTable)
+rpivotTable(escResults,
+            height = 700)
+```
+
+No i fajnie - można się bawić.
+
+### 3.2. Punkty zwycięzców
+
+Wczytajmy tylko dane dotyczące punktów z finałów i wyświetlmy punkty krajow, które zdobyły ich największą ilość.
+
+```{r pivotTable2, message=FALSE}
+escResultsFinal <- escResults %>%
+  ungroup() %>%
+  filter(TypeOfFinal == "f") %>%
+  select(Year, Country, Points)
+
+rpivotTable(escResultsFinal, cols = "Year",
+            aggregatorName = "Maximum", vals = "Points",
+            rendererName = "Bar Chart",
+            height = 700)
+```
+
+... Widać wejście nowego systemu głosów w 2016 r. i dominację **Salvadora Sobrala** z Portugalii 2017 nad innymi latami!
+
+### 3.3. Mediana punktów na państwo w kolejnych latach
+
+Wciągu kilkudziesięciu lat kilka razy zmienił się system głosowania, a i rosnąca liczba państw biorących udział również miała wpływ na pulę punktów do rozdania. Ile punktów zdobyły kraje o najbardziej "przeciętnym" wyniku? Zweryfikujmy to w zależności od dni koncertów!
+
+```{r pivotTable3, message=FALSE}
+rpivotTable(escResults, cols = "Year", rows = "TypeOfFinal",
+            aggregatorName = "Median", vals = "Points",
+            rendererName = "Line Chart",
+            height = 700)
+```
+
+***
+
+### 3.4. Liczba występów
+
+Sprawdźmy ile razy na ekranie moglismy zobaczyć występy poszczególnych państw.
+
+```{r pivotTable4, message=FALSE}
+rpivotTable(escResults, rows = "Country",
+            aggregatorName = "Count",
+            rendererName = "Bar Chart",
+            height = 700)
+```
+
+Polska łącznie w finałach i półfinałach wystąpiła 27 razy dotychczas!
+Co mimo przerw w udziale, daje i tak ponad 1 występ na rok.
+
+Ode mnie na tyle, zachęcam do samodzielnej eksporacji!

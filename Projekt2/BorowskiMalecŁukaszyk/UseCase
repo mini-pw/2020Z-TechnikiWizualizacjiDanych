@@ -1,0 +1,20 @@
+1. Najlepsze filmy 2015 i kiedy się one odbywały w ciągu roku
+(year -> 2015 -> wykres filóm)
+
+2. Wyszukanie filmu Tytanik i znaleznienie go na osi czasu, w celu zobaczenia jakie inne super produkje były w tym roku
+(all -> wyszukiwarka -> year -> 1997 -> wykres filmów)
+
+3. Znalezienie wszystkich filmów Disneya i zobacznie jego zarobków na przestrzeni czasu
+(all -> filter -> przeklikanie na odpowiednią stronę -> wykres zarobków producenta)
+
+4. Jaka firma najwięcej zarobiła w ???? roku, na jakich filmach stracił
+(year -> ???? -> wykres producentów -> ?hower jakie to filmy)
+
+5. Jakie i ile zarobiły filmy w ciągu lata ???? roku / na Walentynki / na haloween / okres Bożego Narodzenia
+(year -> ???? -> hower jakie to filmy)
+
+możliwości:
+ilosc filmów danego producenta
+sumaryczne zarobki wszystkich filmów w ciagu roku
+wykres zarobki / koszty w danym okresie !!!
+rezyszerzy
