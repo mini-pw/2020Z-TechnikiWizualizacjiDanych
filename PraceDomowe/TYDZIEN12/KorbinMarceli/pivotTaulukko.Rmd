@@ -1,0 +1,77 @@
+---
+title: "Techniki wizualizacji danych - praca domowa nr 10"
+author: "Marceli Korbin"
+date: "3 II 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rpivotTable)
+```
+
+## Temat
+
+W ostatniej pracy domowej sprawdzam za pomocą rpivotTable kilka różnic płciowych w moim ulubionym kraju europejskim, do którego poważnie rozważam emigrację w najbliższych latach: Finlandii.
+
+Zbiór danych znajduje się w pliku _gender\_fin.csv_, a plik ten pobrałem z [tej strony](https://data.humdata.org/dataset/world-bank-gender-indicators-for-finland?force_layout=desktop).
+
+```{r dane}
+finlandia <- read.csv("gender_fin.csv")[-1, -c(1, 2, 5)] # przy pobieraniu od razu wyrzucam zbędne informacje
+```
+
+## Wykresy
+
+### Otyłość
+
+```{r wykres1}
+rpivotTable(finlandia, cols = "Year", rows = "Indicator.Name",
+            aggregatorName = "Average", vals = "Value",
+            inclusions = list(Indicator.Name = unique(finlandia$Indicator.Name)[c(145, 146)]),
+            rendererName = "Line Chart", height=700)
+```
+
+Otyłość rośnie w stałym tempie dla obu płci, ale do 1998 odsetek otyłych kobiet był większy niż mężczyzn.
+
+### Bezrobocie
+
+```{r wykres2}
+rpivotTable(finlandia, cols = "Year", rows = "Indicator.Name",
+            aggregatorName = "Average", vals = "Value",
+            inclusions = list(Indicator.Name = unique(finlandia$Indicator.Name)[c(110, 111)]),
+            rendererName = "Line Chart", height=700)
+```
+
+Żadna płeć nie miała szczególnie długiej przewagi nad drugą. Pod tym względem nie ma zatem znaczących różnic płciowych.
+
+### Urbanizacja
+
+```{r wykres3}
+rpivotTable(finlandia, cols = "Year", rows = "Indicator.Name", aggregatorName="Sum", vals = "Value",
+            inclusions = list(Indicator.Name = unique(finlandia$Indicator.Name)[c(157, 159, 158, 160)]),
+            rendererName = "Row Heatmap", height=350, subtotals=FALSE)
+```
+
+Fińscy mężczyźni i fińskie kobiety praktycznie w podobnym tempie przenoszą się ze wsi do miast.
+
+### Przewidywana długość życia przy porodzie i w wieku 60 lat
+
+```{r wykres4}
+rpivotTable(finlandia, cols = "Year", rows = "Indicator.Name", aggregatorName="Average", vals = "Value",
+            inclusions = list(Indicator.Name = unique(finlandia$Indicator.Name)[c(116, 117)]),
+            rendererName = "Bar Chart", height=700, subtotals=FALSE)
+```
+
+```{r wykres5}
+rpivotTable(finlandia, cols = "Year", rows = "Indicator.Name", aggregatorName="Average", vals = "Value",
+            inclusions = list(Indicator.Name = unique(finlandia$Indicator.Name)[c(154, 155)]),
+            rendererName = "Bar Chart", height=700, subtotals=FALSE)
+```
+
+Przewidywana długość życia w Finlandii od początku pomiarów była większa w wypadku kobiet, niezależnie od wieku badania.
+
+## Analiza własna
+
+```{r sandbox, echo=FALSE}
+rpivotTable(finlandia)
+```
