@@ -19,8 +19,8 @@ Uwaga, tematy spotkań mogą ulec zmianie.
 * 2019-12-12 W: Prezentacje studentów cz 1; L: [Wstęp do d3](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN10).
 * 2019-12-19 L: [Interaktywność w d3](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN11).
 * 2020-01-09 L: [Scrollytelling](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN12).
-* 2020-01-16
-* 2020-01-23
+* 2020-01-16 L: [JS w R](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN13).
+* 2020-01-23 L: [Łączenie d3 i R bez r2d3](https://github.com/mini-pw/2020Z-TechnikiWizualizacjiDanych/tree/master/Materia%C5%82y/TYDZIEN14).
 * 2020-01-30
 
 

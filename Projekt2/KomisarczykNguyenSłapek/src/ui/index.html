@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<head>
+    <title>Publikacje międzyuczelniane - pracownicy MiNI</title>
+    <style>
+        #author-info {
+            width: 400px;
+            position: absolute;
+            z-index: 100;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: rgba(150,150,150,0.8);
+            box-shadow: -2px 0px 5px 0px rgba(176,176,176,1);
+            visibility: hidden;
+        }
+        #search {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            height: 40px;
+            /*background: rgba(150,150,150,0.5);*/
+            padding: 20px;
+        }
+        #search > input {
+            height: 40px;
+            width: 350px;
+            border-radius: 25px;
+            padding-left: 20px;
+            padding-right: 50px;
+            font-size: 20px;
+            color: rgba(100, 100, 100, 1);
+            box-shadow: 0px 0px 5px 0px rgba(176,176,176,1);
+            border: 1px solid rgba(150, 150, 150, 0.5);
+        }
+        #search > button {
+            font-size: 20px;
+            background: none;
+            border: none;
+            transform: translateX(-50px);
+        }
+
+        #choice{
+            position: absolute;
+            left:10%;
+            top: 0;
+            height: 40px;
+            /*background: rgba(150,150,150,0.5);*/
+            padding: 20px;
+        }
+
+        #plot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .circle {
+            fill: #BBB;
+            stroke: #222;
+            stroke-width: 4;
+        }
+
+        .link {
+            stroke: #444;
+        }
+
+        #photo {
+            position: absolute;
+            width: 100%;
+            top: 20px;
+        }
+
+        #photo > img {
+            width: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+        }
+
+        #person-info {
+            width: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 350px;
+            position: absolute;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        #person-info > .icon {
+            display: block;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #person-info > #name {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        #barplot {
+            top: 20px;
+            fill: steelblue;
+            background: rgba(150,150,150,0.8);
+            stroke: black;
+            stroke-width: 1
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div id="plot"></div>
+</body>
+
+<div id="search">
+    <input id="targetNode" name="targetNode" type="text" list="datalist" onkeyup="ac(this.value)">
+    <datalist id="datalist">
+        <!-- This data list will be edited through javascript     -->
+    </datalist>
+    <button onclick="search()">🔍</button>
+</div>
+
+<div id="choice">
+    <select name="selector" id="selector" onchange="if (this.selectedIndex) changePlot(this)">
+        <option value="">Select type of graph</option>
+        <option value="1">MiNI</option>
+        <option value="2">All</option>
+    </select>
+</div>
+
+
+<div id="author-info">
+    <div id="photo">
+        photo
+    </div>
+    <div id="person-info">
+        <div id="name">
+            name
+        </div>
+        <div id="affiliation"></div>
+        <br/>
+        <span class="icon-websites">🌐</span>
+        <div id="websites">
+            <div id="web-usos"></div>
+            <div id="web-gs"></div>
+            <div id="web-personal"></div>
+        </div>
+        <svg width="325" height="300" id="barplot">
+        </svg>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var tags = [
+        "Cena Anna",
+        "Biecek Przemysław",
+        "Gągolewski Marek",
+        "Brengos Tomasz",
+        "Pytlak Radosław",
+        "Przelaskowski Artur",
+        "Ostrek Grzegorz",
+        "Ganzha Maria",
+        "Burdukiewicz Michał",
+        "Bartoszuk Maciej",
+        "Auguścik Paulina",
+        "Wróblewska Anna",
+        "Stanisławek Tomasz",
+        "Kosiński Marcin",
+        "Tenderenda Patryk",
+        "Sobkowicz Anotni",
+        "Jastrzębka Agnieszka",
+        "Prus-Zajączkowski Bartłomiej",
+        "Gacek Aleksandra",
+        "Balicki Jerzy",
+        "Rychalska Barbara",
+        "Sozańska Barbara",
+        "Grzegorzewski Przemysław",
+        "Toro Sluzhenko Rafael",
+        "Śleszyńska-Nowak Małgorzata",
+        "Grytczuk Jarosław",
+        "Chybowska-Sokół Joanna",
+        "Sokół Joanna",
+        "Filarski Piotr",
+        "Grabowski Kamil",
+        "Prus-Zajączkowski Bartłomiej",
+        "Kiełczewski Kornel",
+        "Bobecka-Wesołowska Konstancja",
+        "Rzeżuchowski Tadeusz",
+        "Kołacz Adam",
+        "Śpiewak Martyna",
+        "Zaborski Mateusz",
+        "Homenda Władysław",
+        "Rosłan Aneta",
+        "Grzenda Maciej",
+        "Luckner Marcin",
+        "Okulewicz Michał",
+        "Mańdziuk Jacek",
+        "Walędzik Karol",
+        "Żychowski Adam",
+        "Kordulewski Hubert",
+        "Kozak Marek",
+        "Porter-Sobieraj Joanna"
+    ];
+
+    function ac(value) {
+        document.getElementById('datalist').innerHTML = '';
+
+        for (var i = 0; i < tags.length; i++) {
+            if ((tags[i].toLowerCase()).indexOf(value.toLowerCase()) > -1){
+                var node = document.createElement("option");
+                var val = document.createTextNode(tags[i]);
+                node.appendChild(val);
+
+                document.getElementById("datalist").appendChild(node);
+            }
+        }
+    }
+
+</script>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+    var width  = 1024, height = 800;
+    var rSmall = 30, rBig = 60;
+
+    var parent = document.getElementById("plot");
+    var svg = d3.select(parent)
+        .append("svg")
+        .attr("width", parent.offsetWidth)
+        .attr("height", parent.offsetHeight)
+        .call(d3.zoom().on("zoom", function () {
+            svg.attr("transform", d3.event.transform)
+        }))
+        .append("g");
+
+
+    var simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(150))
+        .force("charge", d3.forceManyBody().strength(-100))
+        .force("center", d3.forceCenter(parent.offsetWidth / 2, height / 2));
+
+    var labelYPostition = function(r) {
+        return r + 18;
+    };
+
+    var initialsYPostition = function(r) {
+        return r * 0.67;
+    };
+
+    initialsFont = function (r) {
+        if (r === rSmall) {
+            return "16px";
+        } else {
+            return "32px";
+        }
+    };
+
+
+    var fillAuthorInfoPanelWithData = function(d) {
+        // showing photo
+        d3.select("#author-info")
+            .select("#photo")
+            .html("<img src='" + d.img + "' alt='" + d.name + " photo'>");
+
+        // showing name
+        d3.select("#author-info")
+            .select("#name")
+            .html(d.name);
+
+        // showing affiliation
+        d3.select("#author-info")
+            .select("#affiliation")
+            .html(d.affil);
+
+        // showing author weblinks
+        var websites = d3.select("#author-info")
+            .select("#websites");
+        if (d.web_usos.toString() !== "") {
+            websites.select("#web-usos")
+                .html("<a href='" + d.web_usos.toString() +  "' target='_blank'> USOS </a>");
+        } else {
+            websites.select("#web-usos")
+                .html("");
+        }
+        if (d.web_scholar.toString() !== "") {
+            websites.select("#web-gs")
+                .html("<a href='" + d.web_scholar.toString() +  "' target='_blank'> Google Scholar </a>");
+        } else {
+            websites.select("#web-gs")
+                .html("");
+        }
+        if (d.web_other.toString() !== "") {
+            websites.select("#web-personal")
+                .html("<a href='" + d.web_other.toString() +  "' target='_blank'> Prywatna strona </a>");
+        } else {
+            websites.select("#web-personal")
+                .html("");
+        }
+        if ((d.web_usos.toString() === "") && (d.web_scholar.toString() === "") && (d.web_other.toString() === "")) {
+            d3.select("#author-info")
+                .selectAll(".icon-websites")
+                .html(" ");
+        } else {
+            d3.select("#author-info")
+                .selectAll(".icon-websites")
+                .html("🌐");
+        }
+
+        // showing controls
+        d3.select("#author-info")
+            .select("#controls")
+            .html("controls of " + d.name);
+    };
+
+    var resizeNode = function (node, r) {
+        var durationTime = 350;
+        // set circle size
+        d3.select(node)
+            .select('circle')
+            .transition()
+            .duration(durationTime)
+            .attr("r", r);
+
+        // set image size
+        d3.select(node).select('image')
+            .transition()
+            .duration(durationTime)
+            .attr("x", function(d) { return -r;})
+            .attr("y", function(d) { return -r;})
+            .attr("width", function(d) { return r * 2;})
+            .attr("height", function(d) { return r * 2;});
+
+        // set text label position
+        d3.select(node)
+            .selectAll('g')
+            .selectAll('.label')
+            .transition()
+            .duration(durationTime)
+            .attr("y", function (d) { return labelYPostition(r)});
+
+        // set initials position and size
+        d3.select(node).selectAll('g')
+            .select('.initials')
+            .transition()
+            .duration(durationTime)
+            .attr("y", function (d) { return initialsYPostition(r)})
+            .style("font-size", initialsFont(r));
+    };
+
+    var nodeOnClick = function (node, d) {
+        if (d3.select(node).attr("class") === "node.unselected") {
+            d3.select(node).attr("class", "node.selected");
+
+            // increase size of node
+            resizeNode(node, rBig);
+
+            // show AuthorInfoPanel
+            fillAuthorInfoPanelWithData(d);
+            d3.select("#author-info")
+                .style("visibility", "visible");
+
+            topFriends(d.id);
+        } else {
+            d3.select(node).attr("class", "node.unselected");
+
+            // decrease size of node
+            resizeNode(node, rSmall);
+
+            // hide author-info panel
+            d3.select("#author-info")
+                .style("visibility", "hidden")
+        }
+    };
+
+
+
+    function changePlot(valueSelector) {
+        d3.json("final.json", function (error, graph) {
+
+            var plotSubset = function (nodesData, linksData) {
+                svg.selectAll("g").remove();
+                d3.select("#author-info")
+                    .style("visibility", "hidden");
+
+                //links
+                var link = svg.append("g")
+                    .attr("class", "link")
+                    .selectAll("line")
+                    .data(graph.links)
+                    .enter()
+                    .append("line")
+                    .style("stroke-width", function (d) {
+                        return +d.width;
+                    });
+
+                //node
+                var node = svg.selectAll(".node")
+                    .data(nodesData)
+                    .enter()
+                    .append("g")
+                    .attr("class", "node.unselected")
+                    .attr("id", function (d) {
+                        return "a" + d.id;
+                    })
+                    .call(d3.drag()
+                        .on("start", dragstarted)
+                        .on("drag", dragged)
+                        .on("end", dragended))
+                    .on("click", function (d) {
+                        nodeOnClick(this, d);
+                    })
+                    .on("mouseover", function () {
+                        // show label
+                        d3.select(this).selectAll('g')
+                            .selectAll('.label')
+                            .style("visibility", "visible");
+                    })
+                    .on("mouseout", function () {
+                        // hide label
+                        d3.select(this).selectAll('g')
+                            .selectAll('.label')
+                            .style("visibility", "hidden");
+                    });
+
+                // background circle
+                node.append("circle")
+                    .attr("class", "circle")
+                    .attr("r", function (d) {
+                        return rSmall;
+                    });
+
+                // photo
+                node.append("image")
+                    .attr("xlink:href", function (d) {
+                        return d.img;
+                    })
+                    .attr("x", function (d) {
+                        return -rSmall;
+                    })
+                    .attr("y", function (d) {
+                        return -rSmall;
+                    })
+                    .attr("width", function (d) {
+                        return rSmall * 2;
+                    })
+                    .attr("height", function (d) {
+                        return rSmall * 2;
+                    });
+
+                // name
+                node.append("g")
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("dx", 0)
+                    .attr("dy", "0em")
+                    .attr("x", function (d) {
+                        return 0;
+                    })
+                    .attr("y", function (d) {
+                        return labelYPostition(rSmall);
+                    })
+                    .style("text-anchor", "middle")
+                    .style("visibility", "hidden")
+                    .text(function (d) {
+                        return d.name;
+                    });
+
+                // affiliation
+                node.append("g")
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("dx", 0)
+                    .attr("dy", "1em")
+                    .attr("x", function (d) {
+                        return 0;
+                    })
+                    .attr("y", function (d) {
+                        return labelYPostition(rSmall);
+                    })
+                    .style("text-anchor", "middle")
+                    .style("visibility", "hidden")
+                    .text(function (d) {
+                        return d.affil;
+                    });
+
+                // initials
+                node.append("g")
+                    .append("text")
+                    .attr("class", "initials")
+                    .attr("dx", 0)
+                    .attr("dy", "0em")
+                    .attr("x", function (d) {
+                        return 0;
+                    })
+                    .attr("y", function (d) {
+                        return initialsYPostition(rSmall);
+                    })
+                    .style("text-anchor", "middle")
+                    .style("font-size", initialsFont(rSmall))
+                    .text(function (d) {
+                        if (d.img === "../../resources/processed-images/other.png" || d.img === "../../resources/processed-images/mini.png") {
+                            return d.initials;
+                        } else {
+                            return "";
+                        }
+                    });
+
+                simulation
+                    .nodes(nodesData)
+                    .on("tick", ticked);
+
+                simulation.force("link")
+                    .links(linksData);
+
+                function ticked() {
+                    link
+                        .attr("x1", function (d) {
+                            return d.source.x;
+                        })
+                        .attr("y1", function (d) {
+                            return d.source.y;
+                        })
+                        .attr("x2", function (d) {
+                            return d.target.x;
+                        })
+                        .attr("y2", function (d) {
+                            return d.target.y;
+                        });
+
+                    node
+                        .attr("transform", function (d) {
+                            return "translate(" + d.x + "," + d.y + ")";
+                        });
+                }
+            };
+
+
+            var miniWorkersNodes = graph.nodes.filter(function (v) {
+                return v.miniWorker === 1;
+            });
+
+            var miniWorkersLinks = graph.links.filter(function (link) {
+                var miniWorkersIds = miniWorkersNodes.map(function (node) {
+                    return node.id;
+                });
+                return miniWorkersIds.includes(link.source) & miniWorkersIds.includes(link.target);
+            });
+
+            if (valueSelector.value === "1") {
+                plotSubset(miniWorkersNodes, miniWorkersLinks);
+            } else {
+                plotSubset(graph.nodes, graph.links);
+            }
+        })
+    }
+
+
+    function focusAuthor(authorName) {
+        d3.json("final.json", function(error, graph) {
+            graph.nodes.filter(function (node) {
+                return node.name === authorName;
+            }).forEach(function (d) {
+
+                d3.select("#a" + d.id).attr("class", "node.unselected");
+                // activate node
+                nodeOnClick("#a" + d.id, d);
+
+                // center node
+                var translateString = d3.select("#a" + d.id).attr("transform");
+                var str1 = translateString.split(",")[0];
+                var str2 = translateString.split(",")[1];
+                var str2b = str2.split(")")[0];
+                var str1b = str1.split("(")[1];
+                var x = width / 2 - parseFloat(str1b);
+                var y = height / 2 - parseFloat(str2b);
+                svg
+                    .transition()
+                    .duration(1000)
+                    .attr("transform", "translate(" + x + "," + y + ")");
+            });
+
+        });
+    }
+
+    function search() {
+        focusAuthor(document.getElementById("targetNode").value.toString());
+    }
+
+    function topFriends(authorId) {
+        d3.json("final.json", function(error, graph) {
+            var friends = graph.links.filter(function (linkData) {
+                return (linkData.source === authorId) || (linkData.target === authorId);
+            }).map(function (linkData) {
+                if (linkData.source === authorId) {
+                    return {
+                        friendId : linkData.target,
+                        levelOfCoop : linkData.width,
+                        coauthorName : graph.nodes[linkData.target - 1].name,
+                        coauthorPhoto : graph.nodes[linkData.target - 1].img
+                    };
+                } else {
+                    return {
+                        friendId : linkData.source,
+                        levelOfCoop : linkData.width,
+                        coauthorName : graph.nodes[linkData.source - 1].name,
+                        coauthorPhoto : graph.nodes[linkData.source - 1].img
+                    };
+                }
+            });
+
+            friends.sort((a, b) => - a.levelOfCoop + b.levelOfCoop);
+
+            var nFriends = 3;
+
+
+            //friends to tablica danych o topCoautorach
+
+            var margin = {top: 20, right: 20, bottom: 70, left: 40},
+                width = d3.select("#barplot").attr("width") - margin.left - margin.right,
+                height = d3.select("#barplot").attr("height") - margin.top - margin.bottom;
+
+            d3.select("#barplot").selectAll("g").remove();
+
+            var svg = d3.select("#barplot").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            // Initialize the X axis
+            var x = d3.scaleBand()
+                .range([ 0, width ])
+                .domain(friends.slice(0, nFriends) .map(function(d) { return d.coauthorName.split(" ", 1); }))
+                .padding(0.2);
+
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .style("visibility", "hidden");
+
+            // Initialize the Y axis
+            var y = d3.scaleLinear()
+                .range([height, 0])
+                .domain([0, d3.max(friends.slice(0, 4) , function(d) { return +d.levelOfCoop; })]);
+
+            let yMax = d3.max(friends.slice(0, 4) , function(d) { return +d.levelOfCoop; });
+            svg.append("g")
+                .call(d3.axisLeft(y).tickValues([...Array(yMax + 1).keys()]).tickFormat(d3.format("d")));
+
+
+            // variable u: map data to existing bars
+            var bars = svg.selectAll("rect")
+                .data(friends.slice(0, nFriends) )
+                .enter()
+                .append("rect")
+                .on("mouseover", function () {
+                    d3.select(this)
+                        .attr("fill", " #6497b1")
+                        .attr("opcity", 0.5)
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                        .attr("fill", "#69b3a2")
+                        .attr("opacity", 1.0)
+                })
+                .transition()
+                .duration(1000)
+                .attr("x", function(d) { return x(d.coauthorName.split(" ", 1)); })
+                .attr("y", function(d) { return y(d.levelOfCoop); })
+                .attr("width", x.bandwidth())
+                .attr("height", function(d) { return height - y(d.levelOfCoop); })
+                .attr("fill", "#69b3a2");
+
+            d3.selectAll(".tick")
+                .data(friends.slice(0, nFriends))
+                .append("svg:image")
+                .attr("xlink:href", function (d) { return d.coauthorPhoto; })
+                .attr("x", -32)
+                .attr("y", 2)
+                .attr("width", 64)
+                .attr("height", 64)
+                .on("click", function (d) {
+                    return focusAuthor(d.coauthorName)
+                });
+
+
+
+        });
+    }
+
+
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
+
+</script>
