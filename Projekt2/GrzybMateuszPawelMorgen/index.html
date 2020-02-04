@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<style media="screen">
+  body {
+    display: none;
+  }
+  .links line {
+    stroke-opacity: 0.6;
+  }
+  .heroNodes rect{
+    fill: white;
+    stroke-width: 3px;
+  }
+  .otherNodes circle{
+    stroke: black;
+    fill: white;
+    stroke-width: 2px;
+  }
+</style>
+<link rel="stylesheet" type="text/css" href="autoComplete.css">
+
+<body>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="loadData.js"></script>
+  <script src="autoComplete.js"></script>
+  <script src="radarChart.js"></script>
+  <script src="render.js"></script>
+  <form autocomplete="off" action="javascript:render();">
+    <div class="autocomplete" style="width:300px;">
+      <input id="myInput" type="text" name="mySuperhero" placeholder="Superhero...">
+    </div>
+    <input type="submit" value="Submit">
+  </form>
+  <script type="text/javascript">
+    var data = []
+    var names = []
+    loadData.then(resolve => {
+      data = resolve
+
+      data.forEach(hero => names.push(hero.name + " (" + hero.id + ")"));
+
+      autocomplete(document.getElementById("myInput"), names)
+
+      mySuperhero = data[51]
+      console.log(mySuperhero);
+
+      var radarData = [{
+        name: mySuperhero.name,
+        axes: [{
+            axis: "Combat",
+            value: mySuperhero.powerstats.combat
+          },
+          {
+            axis: "Durability",
+            value: mySuperhero.powerstats.durability
+          },
+          {
+            axis: "Intelligence",
+            value: mySuperhero.powerstats.intelligence
+          },
+          {
+            axis: "Power",
+            value: mySuperhero.powerstats.power
+          },
+          {
+            axis: "Speed",
+            value: mySuperhero.powerstats.speed
+          },
+          {
+            axis: "Strength",
+            value: mySuperhero.powerstats.strength
+          }
+        ],
+      }];
+
+      radarChartOptions = {
+        w: 300,
+        h: 300,
+        margin: {
+          top: 50,
+          right: 50,
+          bottom: 50,
+          left: 50
+        },
+        levels: 4,
+        roundStrokes: false,
+        color: d3.scaleOrdinal().range(["green"]),
+        maxValue: 100,
+        format: ".0f",
+        labelFactor: 1.2,
+      };
+
+      svg_radar = RadarChart(".radarChart", radarData, radarChartOptions);
+
+      svg_image = d3.selectAll(".image").append("svg")
+        .attr("width", 400)
+        .attr("height", 320)
+        .attr("class", "svg_image")
+
+      svg_image.append("defs").append("svg:pattern")
+        .attr("id", "noimage")
+        .attr("width", 1)
+        .attr("height", 1)
+        .attr("viewBox", "0 0 100 100")
+        // .attr("patternUnits", "userSpaceOnUse")
+        .attr("preserveAspectRatio", "none")
+        .append("svg:image")
+        .attr("id", "noimage_link")
+        .attr("xlink:href", "noimg.png")
+        .attr("width", 100)
+        .attr("width", 100)
+        .attr("preserveAspectRatio", "none")
+
+      svg_image.append("defs").append("svg:pattern")
+        .attr("id", "image")
+        .attr("width", 1)
+        .attr("height", 1)
+        .attr("viewBox", "0 0 100 100")
+        // .attr("patternUnits", "userSpaceOnUse")
+        .attr("preserveAspectRatio", "none")
+        .append("svg:image")
+        .attr("id", "image_link")
+        .attr("xlink:href", "pictures/69.jpg")
+        .attr("width", 100)
+        .attr("width", 100)
+        .attr("preserveAspectRatio", "none")
+
+      svg_image.append("rect")
+        .attr("x", 47)
+        .attr("y", 2)
+        .attr("class", "border")
+        .attr("width", 306)
+        .attr("height", 306)
+        .style("fill", "green")
+
+      svg_image.append("rect")
+        .attr("x", 50)
+        .attr("y", 5)
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("fill", "url(#noimage)")
+      // .attr("stroke-width", 3)
+      // .attr("stroke", "DodgerBlue")
+
+      svg_image.append("rect")
+        .attr("x", 50)
+        .attr("y", 5)
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("fill", "url(#image)")
+      // .attr("stroke-width", 3)
+      // .attr("stroke", "DodgerBlue")
+
+      svg_image.append("rect")
+        .attr("x", 50)
+        .attr("y", 5)
+        .attr("class", "cover")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("fill", "black")
+        .style("opacity", 0)
+
+      document.body.style.display = "block"
+    }).catch(reject => console.log(reject))
+  </script>
+  <div class="visualization" , style="width: 100%; display: flex;">
+    <div class="graph" id="div_graph" style="width: calc(100% - 400px); height: 900px;">
+      <svg width="100%" height="100%" preserveAspectRatio="xMidYMin" id="svg_graph"></svg>
+    </div>
+    <div class="sidePanel" style="width: 400px; height: 835px; border: solid DodgerBlue; background-color: #f1f1f1;">
+      <h3 class="name" style="text-align: center">Batman (69)</h3>
+      <div class="image" ></div>
+      <div class="radarChart" style="width: 400px; margin: auto;"></div>
+    </div>
+  </div>
+  <script src="graph.js"></script>
+  <script>
+  var svg_graph = d3.select("#svg_graph"),
+      graph_width = 1500,
+      graph_height = 900;
+      drawGraph(69);
+
+  </script>
+</body>
+
+</html>
