@@ -3,6 +3,8 @@ library(rpivotTable)
 library(SmarterPoland)
 library(dplyr)
 
+# dane pochodzą ze zbioru ze strony https://data.world/azel/gun-deaths-in-america
+# liczba zgonów w USA w latach 2012-2014 w wyniku postrzelenia
 data <- read.csv("full_data.csv")
 
 ui = shinyUI(fluidPage(
